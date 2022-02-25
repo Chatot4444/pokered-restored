@@ -15,9 +15,11 @@ HealEffect_:
 	        ; causes the move to miss if max HP is 255 or 511 points higher than the current HP
 	inc de
 	inc hl
+	jr nz, .passed
 	ld a, [de]
 	sbc [hl]
 	jp z, .failed ; no effect if user's HP is already at its maximum
+.passed
 	ld a, b
 	cp REST
 	jr nz, .healHP
@@ -32,6 +34,27 @@ HealEffect_:
 	jr z, .restEffect
 	ld hl, wEnemyMonStatus
 .restEffect
+;remove toxic and clear toxic counter
+.checkToxic	;remove toxic and clear toxic counter
+	ld hl, wPlayerBattleStatus3	;load in for toxic bit
+	ld de, wPlayerToxicCounter	;load in for toxic counter
+	ld a, [hWhoseTurn]
+	and a
+	jr z, .undoToxic
+	ld hl, wEnemyBattleStatus3	;load in for toxic bit
+	ld de, wEnemyToxicCounter	;load in for toxic counter
+.undoToxic
+	res BADLY_POISONED, [hl] ; heal Toxic status
+	xor a	;clear a
+	ld [de], a	;write a to toxic counter
+;reload the initial status info so the correct condtions can be cleared
+	ld hl, wBattleMonStatus
+	ld a, [hWhoseTurn]
+	and a
+	jr z, .noCondition
+	ld hl, wEnemyMonStatus
+.noCondition
+;;;;;;;;
 	ld a, [hl]
 	and a
 	ld [hl], 2 ; clear status and set number of turns asleep to 2

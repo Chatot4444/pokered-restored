@@ -295,5 +295,20 @@ RocketHideout2EndBattleText2:
 	text_end
 
 RocketHideout2AfterBattleTxt2:
+	text_asm
+	ld hl, RocketHideout2AfterBattleTxt2Normal
+	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+	jr nz, .done
+	ld hl, RocketHideout2AfterBattleTxt2After
+.done
+	call PrintText
+	jp TextScriptEnd
+	
+	
+RocketHideout2AfterBattleTxt2Normal:	
 	text_far _RocketHideout2AfterBattleTxt2
+	text_end
+
+RocketHideout2AfterBattleTxt2After:
+	text_far _RocketHideout2AfterBattleTxt2After
 	text_end

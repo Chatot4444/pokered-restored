@@ -100,7 +100,10 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ETHER
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
-
+	dw ItemUseEvoStone   ; TRADE_STONE
+	dw ItemUseEvoStone   ; FRIEND_STONE
+	dw ItemUseEvoStone   ; SUN_STONE
+	dw ItemUseEvoStone   ; ICE_STONE
 ItemUseBall:
 
 ; Balls can't be used out of battle.
@@ -179,7 +182,8 @@ ItemUseBall:
 ; The ranges are as follows.
 ; Poké Ball:         [0, 255]
 ; Great Ball:        [0, 200]
-; Ultra/Safari Ball: [0, 150]
+; Ultra Ball:		 [0, 150]
+; Safari Ball:		 [0, 100]
 ; Loop until an acceptable number is found.
 
 .loop
@@ -208,11 +212,21 @@ ItemUseBall:
 	cp GREAT_BALL
 	jr z, .checkForAilments
 
-; If it's an Ultra/Safari Ball and Rand1 is greater than 150, try again.
+; If it's an Ultra Ball and Rand1 is greater than 150, try again.
 	ld a, 150
 	cp b
 	jr c, .loop
+	
+; Less than or equal to 150 is good enough for an Ultra Ball.
+	ld a, [hl]
+	cp ULTRA_BALL
+	jr z, .checkForAilments
 
+; If it's a Safari Ball and Rand1 is greater than 100, try again.
+	ld a, 100
+	cp b
+	jr c, .loop
+	
 .checkForAilments
 ; Pokémon can be caught more easily with a status ailment.
 ; Depending on the status ailment, a certain value will be subtracted from
@@ -2234,6 +2248,21 @@ ItemUseTMHM:
 .checkIfAlreadyLearnedMove
 	callfar CheckIfMoveIsKnown ; check if the pokemon already knows the move
 	jr c, .chooseMon
+	farcall FindFieldMove
+	ld a, [wMoveNum]
+	cp d
+	jr nz, .notFieldMove
+	ld hl, CanAlreadyUseFieldMoveText
+	call PrintText
+	hlcoord 14, 7
+	lb bc, 8, 15
+	ld a, TWO_OPTION_MENU
+	ld [wTextBoxID], a
+	call DisplayTextBoxID ; yes/no menu
+	ld a, [wCurrentMenuItem]
+	and a
+	jp nz, .chooseMon
+.notFieldMove
 	predef LearnMove ; teach move
 	pop af
 	ld [wcf91], a
@@ -2261,6 +2290,10 @@ TeachMachineMoveText:
 
 MonCannotLearnMachineMoveText:
 	text_far _MonCannotLearnMachineMoveText
+	text_end
+
+CanAlreadyUseFieldMoveText:
+	text_far _CanAlreadyUseFieldMoveText
 	text_end
 
 PrintItemUseTextAndRemoveItem:
@@ -2298,8 +2331,8 @@ ThrowBallAtTrainerMon:
 	ld hl, ThrowBallAtTrainerMonText1
 	call PrintText
 	ld hl, ThrowBallAtTrainerMonText2
-	call PrintText
-	jr RemoveUsedItem
+	jp PrintText  ;this was a call
+;	jr RemoveUsedItem
 
 NoCyclingAllowedHere:
 	ld hl, NoCyclingAllowedHereText

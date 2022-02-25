@@ -108,6 +108,15 @@ _RoseText::
 	text " rose!"
 	prompt
 
+_MonsStatsWontRiseText::
+	text "<USER>'s"
+	line "@"
+	text_ram wcf4b
+	text "@"
+	text " won't go"
+	cont "any higher!"
+	prompt
+
 _MonsStatsFellText::
 	text "<TARGET>'s"
 	line "@"
@@ -121,6 +130,15 @@ _GreatlyFellText::
 
 _FellText::
 	text " fell!"
+	prompt
+
+_MonsStatsWontFallText::
+	text "<TARGET>'s"
+	line "@"
+	text_ram wcf4b
+	text "@"
+	text " won't go"
+	cont "any lower!"
 	prompt
 
 _RanFromBattleText::
@@ -170,6 +188,11 @@ _FlewUpHighText::
 _DugAHoleText::
 	text_start
 	line "dug a hole!"
+	prompt
+
+_SprangUpText::
+	text_start
+	line "sprang up!"
 	prompt
 
 _BecameConfusedText::

@@ -11,5 +11,6 @@ BrunosRoom_Object:
 
 	def_objects
 	object SPRITE_BRUNO, 5, 2, STAY, DOWN, 1, OPP_BRUNO, 1
+	object SPRITE_BRUNO, 5, 2, STAY, DOWN, 2, OPP_BRUNO, 2
 
 	def_warps_to BRUNOS_ROOM

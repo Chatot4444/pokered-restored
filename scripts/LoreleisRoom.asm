@@ -75,7 +75,7 @@ LoreleiScript0:
 	CheckAndSetEvent EVENT_AUTOWALKED_INTO_LORELEIS_ROOM
 	jr z, LoreleiScriptWalkIntoRoom
 .stopPlayerFromLeaving
-	ld a, $2
+	ld a, $3
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID  ; "Don't run away!"
 	ld a, D_UP
@@ -113,19 +113,33 @@ LoreleiScript2:
 	jp z, ResetLoreleiScript
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .firstTime
+	ld a, $2
+	ldh [hSpriteIndexOrTextID], a
+.firstTime
 	jp DisplayTextID
 
 LoreleisRoom_TextPointers:
 	dw LoreleiText1
+	dw LoreleiText2
 	dw LoreleiDontRunAwayText
 
 LoreleiTrainerHeader0:
 	trainer EVENT_BEAT_LORELEIS_ROOM_TRAINER_0, 0, LoreleiBeforeBattleText, LoreleiEndBattleText, LoreleiAfterBattleText
+LoreleiTrainerHeader1:
+	trainer EVENT_BEAT_LORELEIS_ROOM_TRAINER_0, 0, LoreleiBeforeRematchText, LoreleiEndRematchText, LoreleiAfterRematchText
 	db -1 ; end
 
 LoreleiText1:
 	text_asm
 	ld hl, LoreleiTrainerHeader0
+	call TalkToTrainer
+	jp TextScriptEnd
+	
+LoreleiText2:
+	text_asm
+	ld hl, LoreleiTrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
 
@@ -143,4 +157,16 @@ LoreleiAfterBattleText:
 
 LoreleiDontRunAwayText:
 	text_far _LoreleiDontRunAwayText
+	text_end
+
+LoreleiBeforeRematchText:
+	text_far _LoreleiBeforeRematchText
+	text_end
+
+LoreleiEndRematchText:
+	text_far _LoreleiEndRematchText
+	text_end
+
+LoreleiAfterRematchText:
+	text_far _LoreleiAfterRematchText
 	text_end

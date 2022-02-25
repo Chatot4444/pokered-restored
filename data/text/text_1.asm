@@ -79,7 +79,7 @@ _OaksAideHiText::
 	text_start
 	line "kinds of #MON,"
 	cont "I'm supposed to"
-	cont "give you an"
+	cont "give you this"
 	cont "@"
 	text_ram wOaksAideRewardItemName
 	text "!"
@@ -147,3 +147,15 @@ _OaksAideNoRoomText::
 	text_ram wOaksAideRewardItemName
 	text "."
 	done
+
+_CanAlreadyUseFieldMoveText::
+	text_ram wcd6d
+	text " can"
+	line "already use"
+	cont "@"
+	text_ram wcf4b
+	text " as a"
+	cont "field move."
+	
+	para "Teach anyways?"
+	prompt

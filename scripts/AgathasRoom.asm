@@ -73,7 +73,7 @@ AgathaScript0:
 	CheckAndSetEvent EVENT_AUTOWALKED_INTO_AGATHAS_ROOM
 	jr z, AgathaScriptWalkIntoRoom
 .stopPlayerFromLeaving
-	ld a, $2
+	ld a, $3
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID  ; "Don't run away!"
 	ld a, D_UP
@@ -111,6 +111,11 @@ AgathaScript2:
 	jp z, ResetAgathaScript
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .firstTime
+	ld a, $2
+	ldh [hSpriteIndexOrTextID], a
+.firstTime
 	call DisplayTextID
 	ld a, $1
 	ld [wChampionsRoomCurScript], a
@@ -118,10 +123,13 @@ AgathaScript2:
 
 AgathasRoom_TextPointers:
 	dw AgathaText1
+	dw AgathaText2
 	dw AgathaDontRunAwayText
 
 AgathaTrainerHeader0:
 	trainer EVENT_BEAT_AGATHAS_ROOM_TRAINER_0, 0, AgathaBeforeBattleText, AgathaEndBattleText, AgathaAfterBattleText
+AgathaTrainerHeader1:
+	trainer EVENT_BEAT_AGATHAS_ROOM_TRAINER_0, 0, AgathaBeforeRematchText, AgathaEndRematchText, AgathaAfterRematchText
 	db -1 ; end
 
 AgathaText1:
@@ -130,6 +138,12 @@ AgathaText1:
 	call TalkToTrainer
 	jp TextScriptEnd
 
+AgathaText2:
+	text_asm
+	ld hl, AgathaTrainerHeader1
+	call TalkToTrainer
+	jp TextScriptEnd
+	
 AgathaBeforeBattleText:
 	text_far _AgathaBeforeBattleText
 	text_end
@@ -144,4 +158,16 @@ AgathaAfterBattleText:
 
 AgathaDontRunAwayText:
 	text_far _AgathaDontRunAwayText
+	text_end
+
+AgathaBeforeRematchText:
+	text_far _AgathaBeforeRematchText
+	text_end
+
+AgathaEndRematchText:
+	text_far _AgathaEndRematchText
+	text_end
+
+AgathaAfterRematchText:
+	text_far _AgathaAfterRematchText
 	text_end

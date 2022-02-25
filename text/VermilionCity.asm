@@ -125,3 +125,14 @@ _VermilionCityText12::
 _VermilionCityText13::
 	text "VERMILION HARBOR"
 	done
+
+_MewText::
+	text "We found this"
+	line "weird #MON"
+	cont "under a truck"
+	cont "back there."
+	
+	para "Hey! you're a"
+	line "trainer!"
+	cont "You take it!"
+	done

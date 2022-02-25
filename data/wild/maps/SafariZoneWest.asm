@@ -18,9 +18,9 @@ IF DEF(_BLUE)
 	db 26, EXEGGCUTE
 	db 25, NIDORAN_M
 ENDC
-	db 31, VENOMOTH
+	db 31, KANGASKHAN
 	db 26, TAUROS
-	db 28, KANGASKHAN
+	db 31, EXEGGUTORA
 	end_grass_wildmons
 
 	def_water_wildmons 0 ; encounter rate

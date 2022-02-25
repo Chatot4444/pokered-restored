@@ -242,7 +242,26 @@ PlayCry::
 	dec a
 	ld e, a
 	ld d, 0
+	
+	cp DEX_RATTATAA - 1
+	jr nc, .normalCry
+	cp DEX_MIME_JR - 1
+	jr c, .normalCry
 
+	sub 170
+	ld e, a
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(PlayWavSoundClip)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	call PlayWavSoundClip
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	jr .done
+
+.normalCry
 	ldh a, [hLoadedROMBank]
 	push af
 
@@ -279,7 +298,8 @@ endr
 	pop af
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
-	
+
+.done	
 	call WaitForSoundToFinish
 
 	pop af
@@ -328,6 +348,55 @@ PlayBattleSound::
 	pop bc
 	pop de
 	pop hl
+	ret
+
+PlayPikachuPCM::
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, b
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	ld a, [hli]
+	ld c, a
+	ld a, [hli]
+	ld b, a
+.loop
+	ld a, [hli]
+	ld d, a
+	ld a, $3
+.playSingleSample
+	dec a
+	jr nz, .playSingleSample
+
+REPT 7
+	call LoadNextSoundClipSample
+	call PlaySoundClipSample
+ENDR
+
+	call LoadNextSoundClipSample
+	dec bc
+	ld a, c
+	or b
+	jr nz, .loop
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	ret
+
+LoadNextSoundClipSample::
+	ld a, d
+	and $80
+	srl a
+	srl a
+	ldh [rNR32], a
+	sla d
+	ret
+
+PlaySoundClipSample::
+	ld a, $3
+.loop
+	dec a
+	jr nz, .loop
 	ret
 
 PlaySFX::

@@ -15,12 +15,36 @@ _CeruleanTrashedText_1d6ab::
 	done
 
 _CeruleanTrashedText_1d6b0::
-	text "I figure what's"
-	line "lost is lost!"
+	text "I told SILPH CO."
+	line "what happened."
 
-	para "I decided to teach"
-	line "DIGLETT how to"
-	cont "DIG without a TM!"
+	para "They sent me a"
+	line "whole load of"
+	cont "TMs to make up"
+	cont "for it!"
+	
+	para "Do you want"
+	line "a TM28"
+	cont "for just ¥2000?"
+	done
+
+_CeruleanHouseTrashedNoText::
+	text "Ha, more for me!"
+	done
+
+_CeruleanHouseTrashedNoMoneyText::
+	text "You don't have"
+	line "enough money."
+	done
+
+_CeruleanHouseTrashedNoRoomText::
+	text "You don't have"
+	line "room for this."
+	done
+	
+_ReceivedTM28Text3::
+	text "<PLAYER> received"
+	line "TM28!"
 	done
 
 _CeruleanHouseTrashedText2::

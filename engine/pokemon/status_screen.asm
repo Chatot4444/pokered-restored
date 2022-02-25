@@ -399,20 +399,25 @@ StatusScreen2:
 	inc a
 	ld [wLoadedMonLevel], a ; Increase temporarily if not 100
 .Level100
-	hlcoord 14, 6
+	hlcoord 14, 4
 	ld [hl], "<to>"
 	inc hl
 	inc hl
 	call PrintLevel
 	pop af
 	ld [wLoadedMonLevel], a
-	ld de, wLoadedMonExp
-	hlcoord 12, 4
+	farcall FindFieldMove
+	ld a, d
+	ld [wd11e], a
+	ld de, NoneText
+	and a
+	call nz, GetMoveName
+	hlcoord 11, 6
 	lb bc, 3, 7
-	call PrintNumber ; exp
+	call PlaceString ; field move
 	call CalcExpToLevelUp
 	ld de, wLoadedMonExp
-	hlcoord 7, 6
+	hlcoord 7, 4
 	lb bc, 3, 7
 	call PrintNumber ; exp needed to level up
 	hlcoord 9, 0
@@ -463,9 +468,12 @@ CalcExpToLevelUp:
 	ld [hl], a
 	ret
 
+NoneText:
+	db "NONE@"
+
 StatusScreenExpText:
-	db   "EXP POINTS"
-	next "LEVEL UP@"
+	db   "LEVEL UP"
+	next "FIELD MOVE@"
 
 StatusScreen_ClearName:
 	ld bc, 10

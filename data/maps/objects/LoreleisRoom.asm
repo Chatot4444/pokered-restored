@@ -11,5 +11,6 @@ LoreleisRoom_Object:
 
 	def_objects
 	object SPRITE_LORELEI, 5, 2, STAY, DOWN, 1, OPP_LORELEI, 1
+	object SPRITE_LORELEI, 5, 2, STAY, DOWN, 2, OPP_LORELEI, 2
 
 	def_warps_to LORELEIS_ROOM

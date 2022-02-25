@@ -72,7 +72,7 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 	res 6, [hl]
 	call HandleMenuInput
 	bit BIT_B_BUTTON, a
-	ret nz
+	jr nz, .alreadyGaveDrink
 	ld hl, wFilteredBagItems
 	ld a, [wCurrentMenuItem]
 	ld d, 0
@@ -85,8 +85,8 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 	cp SODA_POP
 	jr z, .gaveSodaPop
 ; gave Lemonade
-	CheckEvent EVENT_GOT_TM49
-	jr nz, .alreadyGaveDrink
+	; CheckEvent EVENT_GOT_TM49
+	; jr nz, .alreadyGaveDrink
 	ld hl, CeladonMartRoofText_48515
 	call PrintText
 	call RemoveItemByIDBank12
@@ -98,8 +98,8 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 	SetEvent EVENT_GOT_TM49
 	ret
 .gaveSodaPop
-	CheckEvent EVENT_GOT_TM48
-	jr nz, .alreadyGaveDrink
+	; CheckEvent EVENT_GOT_TM48
+	; jr nz, .alreadyGaveDrink
 	ld hl, CeladonMartRoofText_48504
 	call PrintText
 	call RemoveItemByIDBank12
@@ -111,8 +111,8 @@ CeladonMartRoofScript_GiveDrinkToGirl:
 	SetEvent EVENT_GOT_TM48
 	ret
 .gaveFreshWater
-	CheckEvent EVENT_GOT_TM13
-	jr nz, .alreadyGaveDrink
+	; CheckEvent EVENT_GOT_TM13
+	; jr nz, .alreadyGaveDrink
 	ld hl, CeladonMartRoofText_484f3
 	call PrintText
 	call RemoveItemByIDBank12

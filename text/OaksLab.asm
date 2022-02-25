@@ -114,8 +114,15 @@ _OaksLabAroundWorldText::
 	cont "you, <PLAYER>!"
 	done
 
+_OaksLabGivePokeballsTextGreeting::
+	text "OAK: Oh, <PLAYER>!"
+	line "Have you caught"
+	cont "any #MON yet?"
+	done
+
 _OaksLabGivePokeballsText1::
-	text "OAK: You can't get"
+	text_start
+	para "You can't get"
 	line "detailed data on"
 	cont "#MON by just"
 	cont "seeing them."
@@ -137,7 +144,7 @@ _OaksLabGivePokeballsText2::
 
 	para "Just throw a #"
 	line "BALL at it and try"
-	line "to catch it!"
+	cont "to catch it!"
 
 	para "This won't always"
 	line "work, though."
@@ -325,13 +332,18 @@ _OaksLabText26::
 
 	para "That was my dream!"
 
-	para "But, I'm too old!"
-	line "I can't do it!"
+	para "But, the world"
+	line "changed! There's"
+	cont "more #MON than"
+	cont "ever before!"
 
 	para "So, I want you two"
 	line "to fulfill my"
 	cont "dream for me!"
+	done
 
+_OaksLabText26Part2::
+	text_start
 	para "Get moving, you"
 	line "two!"
 
@@ -416,8 +428,8 @@ _OaksLabText_4421a::
 	text "You finally got at"
 	line "least 50 species!"
 	cont "Be sure to get"
-	cont "EXP.ALL from my"
-	cont "AIDE!"
+	cont "a LUCKY EGG from"
+	cont "my AIDE!"
 	done
 
 _OaksLabText_4421f::
@@ -476,6 +488,18 @@ _OaksLabText_44247::
 	done
 
 _OaksLabText_4424c::
+	text "Wow! This is"
+	line "as many #MON"
+	cont "as I found when"
+	cont "I was your age!"
+	
+	para "But don't stop"
+	line "yet! There's"
+	cont "still more new"
+	cont "#MON to find!"
+	done
+
+_OaksLabText_All::
 	text "Your #DEX is"
 	line "entirely complete!"
 	cont "Congratulations!"

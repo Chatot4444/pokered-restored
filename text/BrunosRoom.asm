@@ -35,3 +35,31 @@ _BrunoDontRunAwayText::
 	text "Someone's voice:"
 	line "Don't run away!"
 	done
+
+_BrunoBeforeRematchText::
+	text "I have been"
+	line "training with my"
+	cont "#MON since you"
+	cont "last defeated us."
+	
+	para "Champion <PLAYER>!"
+	
+	para "Can you stand up"
+	line "to our superior"
+	cont "training?"
+	done
+	
+_BrunoEndRematchText::
+	text "It seems"
+	line "you have been"
+	cont "training as well."
+	prompt
+	
+_BrunoAfterRematchText::
+	text "You have shown me"
+	line "the strength of"
+	cont "a champion."
+	
+	para "Go face your next"
+	line "challenger!"
+	done

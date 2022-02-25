@@ -11,6 +11,8 @@ LeechSeedEffect_:
 	ld hl, wPlayerBattleStatus2
 	ld de, wBattleMonType1
 .leechSeedEffect
+	bit HAS_SUBSTITUTE_UP, [hl] ; test bit 4 of d063/d068 flags [target has substitute flag]
+	jr nz, .moveMissed ; return if they have a substitute, can't effect them
 ; miss if the target is grass-type or already seeded
 	ld a, [de]
 	cp GRASS

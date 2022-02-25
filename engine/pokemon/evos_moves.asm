@@ -75,13 +75,65 @@ Evolution_PartyMonLoop: ; loop over party mons
 	jr z, Evolution_PartyMonLoop ; if trading, go the next mon
 	ld a, b
 	cp EV_ITEM
-	jr z, .checkItemEvo
+	jp z, .checkItemEvo
 	ld a, [wForceEvolution]
 	and a
 	jr nz, Evolution_PartyMonLoop
 	ld a, b
 	cp EV_LEVEL
 	jr z, .checkLevel
+	cp EV_BABY
+	jr z, .checkBaby
+	push bc
+	push de
+	push hl
+	ld a, [wLoadedMonLevel]
+	ld [wCurEnemyLVL], a
+	ld hl, wLoadedMonHPExp - 1
+	ld de, wLoadedMonStats
+	ld b, $1
+	call CalcStats
+	pop hl
+	pop de
+	pop bc
+	ld a, b
+	cp EV_TOP
+	jr z, .hitmontop
+	cp EV_LEE
+	jr z, .hitmonlee
+	cp EV_CHAN
+	jr z, .hitmonchan
+.hitmontop
+	ld a, [wLoadedMonAttack + 1]
+	ld b, a
+	ld a, [wLoadedMonDefense + 1]
+	cp b
+	jr z, .checkLevel
+	jp .nextEvoEntry1
+.hitmonlee
+	ld a, [wLoadedMonAttack + 1]
+	ld b, a
+	ld a, [wLoadedMonDefense + 1]
+	cp b
+	jr c, .checkLevel
+	jp .nextEvoEntry1
+.hitmonchan
+	ld a, [wLoadedMonDefense + 1]
+	ld b, a
+	ld a, [wLoadedMonAttack + 1]
+	cp b
+	jr c, .checkLevel
+	jp .nextEvoEntry1
+.checkBaby
+	ld a, [hli] ; level requirement
+	ld b, a
+	ld a, [wLoadedMonLevel]
+	cp b ; is the mon's level greater than the evolution requirement?
+	jr nc, .checkLevel
+	call Random
+	cp $50
+	jp nc, .nextEvoEntry2
+	jp .checkLevel
 .checkTradeEvo
 	ld a, [wLinkState]
 	cp LINK_STATE_TRADING
@@ -104,6 +156,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wLoadedMonLevel]
 	cp b ; is the mon's level greater than the evolution requirement?
 	jp c, .nextEvoEntry2 ; if so, go the next evolution entry
+	
 .doEvolution
 	ld [wCurEnemyLVL], a
 	ld a, 1
@@ -506,8 +559,225 @@ WriteMonMoves_ShiftMoveData:
 	dec c
 	jr nz, .loop
 	ret
+	
+PrepareRelearnableMoveList::
+; Loads relearnable move list to wRelearnableMoves.
+; Input: party mon index = [wWhichPokemon]
+	; Get mon id.
+	ld a, [wWhichPokemon]
+	ld c, a
+	ld b, 0
+	ld hl, wPartySpecies
+	add hl, bc
+	ld a, [hl] ; a = mon id
+	push af
+	ld [wd0b5], a
+	call GetMonHeader
+	xor a
+	ld [wMonHGrowthRate], a
+	ld hl, wMonHMoves
+	push hl 
+	; Get pointer to mon's currently-known moves.
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Level
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld a, [hl]
+	ld b, a
+	push bc
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Moves
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	pop bc
+	ld d, h
+	ld e, l
+	pop hl
+	; Write list of relearnable moves, while keeping count along the way.
+	; de = pointer to mon's currently-known moves
+	; hl = pointer to moves data for our mon
+	;  b = mon's level
+	ld c, 0 ; c = count of relearnable moves
+.loop
+	ld a, [hl]
+	and a
+	jr z, .next
+.addMove
+	push bc
+	ld a, [hli] ; move id
+	ld b, a
+	; Check if move is already known by our mon.
+	push de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove
+	inc de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove
+	inc de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove
+	inc de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove
+.relearnableMove
+	pop de
+	push hl
+	; Add move to the list, and update the running count.
+	ld a, b
+	ld b, 0
+	ld hl, wRelearnableMoves + 1
+	add hl, bc
+	ld [hl], a
+	pop hl
+	pop bc
+	inc c
+	jr .loop
+.knowsMove
+	pop de
+	pop bc
+	jr .loop
+.next
+	pop af
+	push bc
+	push de
+	; Get pointer to evos moves data.
+	dec a
+	ld c, a
+	ld b, 0
+	ld hl, EvosMovesPointerTable
+	add hl, bc
+	add hl, bc
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a  ; hl = pointer to evos moves data for our mon
+	; Skip over evolution data.
+.skipEvoEntriesLoop
+	ld a, [hli]
+	and a
+	jr nz, .skipEvoEntriesLoop
+	; Write list of relearnable moves, while keeping count along the way.
+	; de = pointer to mon's currently-known moves
+	; hl = pointer to moves data for our mon
+	;  b = mon's level
+	; c = count of relearnable moves
+	pop de
+	pop bc
+.loop2
+	ld a, [hli]
+	and a
+	jr z, .done
+	cp b
+	jr c, .addMove2
+	jr nz, .done
+.addMove2
+	push bc
+	ld a, [hli] ; move id
+	ld b, a
+	; Check if move is already known by our mon.
+	push de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove2
+	inc de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove2
+	inc de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove2
+	inc de
+	ld a, [de]
+	cp b
+	jr z, .knowsMove2
+.relearnableMove2
+	pop de
+	push hl
+	; Add move to the list, and update the running count.
+	ld a, b
+	ld b, 0
+	ld hl, wRelearnableMoves + 1
+	add hl, bc
+	ld [hl], a
+	pop hl
+	pop bc
+	inc c
+	jr .loop2
+.knowsMove2
+	pop de
+	pop bc
+	jr .loop2
+.done
+	push de
+	push bc
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1CatchRate
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	pop bc
+	ld a, [hl]
+	cp 151
+	jr z, .wasBaby
+	cp 51
+	jr z, .wasBaby
+	pop de
+	jr .noBabyMove
+.wasBaby
+	ld a, [wMonHIndex]
+	ld d, a
+	ld hl, BabyMoves
+.babyLoop
+	ld a, [hli]
+	cp d
+	jr z, .foundBabyMove
+	inc hl
+	inc a
+	jr nz, .babyLoop
+	pop de
+	jr .noBabyMove
+.foundBabyMove
+	pop de
+	ld a, [hl] ; index of baby move
+	ld l, a
+	; Check if move is already known by our mon.
+	ld a, [de]
+	cp l
+	jr z, .noBabyMove ; if already know baby move, jump to .noBabyMove
+	inc de
+	ld a, [de]
+	cp l
+	jr z, .noBabyMove
+	inc de
+	ld a, [de]
+	cp l
+	jr z, .noBabyMove
+	inc de
+	ld a, [de]
+	cp l
+	jr z, .noBabyMove
+	;baby move not known, add to list
+	ld b, 0
+	ld a, l
+	ld hl, wRelearnableMoves + 1
+	add hl, bc
+	ld [hl], a
+	inc c
+.noBabyMove
+	ld b, 0
+	ld hl, wRelearnableMoves + 1
+	add hl, bc
+	ld a, $ff
+	ld [hl], a
+	ld hl, wRelearnableMoves
+	ld [hl], c
+	ret
 
 Evolution_FlagAction:
 	predef_jump FlagActionPredef
-
+	
+INCLUDE "data/pokemon/baby_moves.asm"
 INCLUDE "data/pokemon/evos_moves.asm"

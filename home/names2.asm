@@ -2,7 +2,7 @@ NamePointers::
 ; entries correspond to *_NAME constants
 	dw MonsterNames
 	dw MoveNames
-	dw UnusedBadgeNames
+	;dw UnusedBadgeNames
 	dw ItemNames
 	dw wPartyMonOT ; player's OT names list
 	dw wEnemyMonOT ; enemy's OT names list
@@ -15,14 +15,21 @@ GetName::
 ; [wPredefBank] = bank of list
 ;
 ; returns pointer to name in de
+	ld a, [wNameListType]
+	cp ITEM_NAME
 	ld a, [wd0b5]
 	ld [wd11e], a
+	jr nz, .noItem
 
 	; TM names are separate from item names.
-	; BUG: This applies to all names instead of just items.
+	; Only call this code if we are looking up an Item name
+	; This originally applied to all name lists, not just items
+	; This caused issues such as new moves having the wrong name
+	; This also caused name issues upon evolution with Pokemon in the TM/HM ID range
 	cp HM01
 	jp nc, GetMachineName
 
+.noItem
 	ldh a, [hLoadedROMBank]
 	push af
 	push hl

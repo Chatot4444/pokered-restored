@@ -6,10 +6,10 @@ TunnelMonsB1:
 	db 15, MACHOP
 	db 16, GEODUDE
 	db 18, ZUBAT
-	db 15, ZUBAT
+	db 15, GEODUDEA
 	db 17, MACHOP
 	db 13, ONIX
-	db 15, ONIX
+	db 13, CHARMANDER
 	end_grass_wildmons
 
 	def_water_wildmons 0 ; encounter rate

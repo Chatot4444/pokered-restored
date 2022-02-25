@@ -63,6 +63,11 @@ LanceScript0:
 	jr nc, .notStandingNextToLance
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .firstTime
+	ld a, $2
+	ldh [hSpriteIndexOrTextID], a
+.firstTime
 	jp DisplayTextID
 .notStandingNextToLance
 	cp $5  ; Is player standing on the entrance staircase?
@@ -127,14 +132,29 @@ LanceScript3:
 
 LancesRoom_TextPointers:
 	dw LanceText1
+	dw LanceText2
 
 LanceTrainerHeader0:
 	trainer EVENT_BEAT_LANCES_ROOM_TRAINER_0, 0, LanceBeforeBattleText, LanceEndBattleText, LanceAfterBattleText
+LanceTrainerHeader1:
+	trainer EVENT_BEAT_LANCES_ROOM_TRAINER_0, 0, LanceBeforeRematchText, LanceEndRematchText, LanceAfterRematchText
 	db -1 ; end
 
 LanceText1:
 	text_asm
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr nz, .rematch
 	ld hl, LanceTrainerHeader0
+	jr .done
+.rematch
+	ld hl, LanceTrainerHeader1
+.done
+	call TalkToTrainer
+	jp TextScriptEnd
+	
+LanceText2:
+	text_asm
+	ld hl, LanceTrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
 
@@ -148,6 +168,20 @@ LanceEndBattleText:
 
 LanceAfterBattleText:
 	text_far _LanceAfterBattleText
+	text_asm
+	SetEvent EVENT_BEAT_LANCE
+	jp TextScriptEnd
+
+LanceBeforeRematchText:
+	text_far _LanceBeforeRematchText
+	text_end
+
+LanceEndRematchText:
+	text_far _LanceEndRematchText
+	text_end
+
+LanceAfterRematchText:
+	text_far _LanceAfterRematchText
 	text_asm
 	SetEvent EVENT_BEAT_LANCE
 	jp TextScriptEnd

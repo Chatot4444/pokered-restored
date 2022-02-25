@@ -47,6 +47,7 @@ CinnabarGym_ScriptPointers:
 	dw CinnabarGymScript1
 	dw CinnabarGymScript2
 	dw CinnabarGymScript3
+	dw CinnabarGymScript4
 
 CinnabarGymScript0:
 	ld a, [wOpponentAfterWrongAnswer]
@@ -142,20 +143,20 @@ CinnabarGymScript3:
 	ld a, $f0
 	ld [wJoyIgnore], a
 CinnabarGymScript3_75857:
-	ld a, $a
+	ld a, $C
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_BLAINE
 	lb bc, TM_FIRE_BLAST, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $b
+	ld a, $D
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM38
 	jr .gymVictory
 .BagFull
-	ld a, $c
+	ld a, $E
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -182,6 +183,8 @@ CinnabarGym_TextPointers:
 	dw CinnabarGymText7
 	dw CinnabarGymText8
 	dw CinnabarGymText9
+	dw CinnabarGymTextA
+	dw CinnabarGymTextB
 	dw BlaineBadgeText
 	dw ReceivedTM38Text
 	dw TM38NoRoomText
@@ -471,4 +474,71 @@ CinnabarGymText_75ac2:
 
 CinnabarGymText_75ac7:
 	text_far _CinnabarGymText_75ac7
+	text_end
+
+CinnabarGymTextA:
+	text_asm
+	ld hl, CinnabarGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, CinnabarGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, CinnabarGymText_RematchWin
+	ld de, CinnabarGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $7
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wCinnabarGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, CinnabarGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+CinnabarGymScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, CinnabarGymScript_75792
+	ld a, $f0
+	ld [wJoyIgnore], a
+CinnabarGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_BLAINE2
+	ld a, $B
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp CinnabarGymScript_75792
+	
+CinnabarGymText_Rematch:
+	text_far _CinnabarGymText_Rematch
+	text_end
+
+CinnabarGymText_RematchConfirm:
+	text_far _CinnabarGymText_RematchConfirm
+	text_end
+
+CinnabarGymText_RematchCancel:
+	text_far _CinnabarGymText_RematchCancel
+	text_end
+	
+CinnabarGymText_RematchWin:
+	text_far _CinnabarGymText_RematchWin
+	text_end
+	
+CinnabarGymTextB:
+	text_far _CinnabarGymText_AfterWin
 	text_end

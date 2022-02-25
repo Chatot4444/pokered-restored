@@ -50,16 +50,40 @@ _TM41ExplanationText::
 	text "TM41 teaches"
 	line "SOFTBOILED!"
 
-	para "Only one #MON"
+	para "Some pink #MON"
 	line "can use it!"
 
-	para "That #MON is"
-	line "CHANSEY!"
+	para "It will heal"
+	line "half their HP."
 	done
 
 _TM41NoRoomText::
 	text "Oh, your pack is"
 	line "full of items!"
+	done
+
+_SoftboiledText1::
+	text "Oh! Do you want"
+	line "another TM41?"
+
+	para "Sorry, but I'll"
+	line "have to sell"
+	cont "you this one."
+
+	para "Would you like"
+	line "another TM41"
+	cont "for just ¥2000?"
+	done
+
+_CeladonCityNoText::
+	text "I understand."
+	line "It was nice"
+	cont "talking to you!"
+	done
+
+_CeladonCityNoMoneyText::
+	text "You don't have"
+	line "enough money."
 	done
 
 _CeladonCityText6::

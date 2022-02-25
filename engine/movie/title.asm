@@ -1,15 +1,12 @@
-; copy text of fixed length NAME_LENGTH (like player name, rival name, mon names, ...)
-CopyFixedLengthText:
-	ld bc, NAME_LENGTH
-	jp CopyData
-
 SetDefaultNamesBeforeTitlescreen::
 	ld hl, NintenText
 	ld de, wPlayerName
-	call CopyFixedLengthText
+	ld bc, NAME_LENGTH
+	call CopyData
 	ld hl, SonyText
 	ld de, wRivalName
-	call CopyFixedLengthText
+	ld c, NAME_LENGTH
+	call CopyData
 	xor a
 	ldh [hWY], a
 	ld [wLetterPrintingDelayFlags], a
@@ -22,6 +19,16 @@ SetDefaultNamesBeforeTitlescreen::
 ;	ld [wAudioSavedROMBank], a
 
 DisplayTitleScreen:
+	ld a, SRAM_ENABLE
+	ld [MBC1SRamEnable], a
+	ld a, $1
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamBank], a
+	ld a, [sPlayerGender]
+	ld [wPlayerGender], a
+	xor a
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamEnable], a
 	call GBPalWhiteOut
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
@@ -93,10 +100,28 @@ DisplayTitleScreen:
 	call DrawPlayerCharacter
 
 ; put a pokeball in the player's hand
+	ld hl, wOAMBuffer
+	ld a, $74
+	ld [hli], a
+	ld a, $5A
+	ld [hli], a
+	ld a, $0A
+	ld [hli], a
+	ld a, $02
+	ld [hl], a
+	ldh a, [hGBC]
+	and a
+	jr z, .notGBC
 	ld hl, wOAMBuffer + $28
 	ld a, $74
+	ld [hli], a
+	ld a, $5A
+	ld [hli], a
+	ld a, $23
+	ld [hli], a
+	ld a, $04
 	ld [hl], a
-
+.notGBC
 ; place tiles for title screen copyright
 	hlcoord 2, 17
 	ld de, .tileScreenCopyrightTiles
@@ -140,6 +165,13 @@ ENDC
 	call GBPalNormal
 	ld a, %11100100
 	ldh [rOBP0], a
+	call UpdateGBCPal_OBP0
+	
+	push de
+	ld d, CONVERT_BGP
+	ld e, 2
+	callfar TransferMonPal ;gbcnote - update the bg pal for the new title mon
+	pop de
 
 ; make pokemon logo bounce up and down
 	ld bc, hSCY ; background scroll Y
@@ -218,6 +250,16 @@ ENDC
 	xor a
 	ld [wUnusedCC5B], a
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;gbcnote - The tiles in the window need to be shifted so that the bottom
+;half of the title screen is in the top half of the window area.
+;This is accomplished by copying the tile map to vram at an offset.
+;The goal is to get the tile map for the bottom half of the title screen
+;resides in the BGMap1 address space (address $9c00).
+	ld a, (vBGMap0 + $300) / $100
+	call TitleScreenCopyTileMapToVRAM
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 ; Keep scrolling in new mons indefinitely until the user performs input.
 .awaitUserInterruptionLoop
 	ld c, 200
@@ -285,6 +327,12 @@ TitleScreenPickNewMon:
 	ld [hl], a
 	call LoadTitleMonSprite
 
+	push de
+	ld d, CONVERT_BGP
+	ld e, 2
+	callfar TransferMonPal ;gbcnote - update the bg pal for the new title mon
+	pop de
+	
 	ld a, $90
 	ldh [hWY], a
 	ld d, 1 ; scroll out
@@ -294,7 +342,14 @@ TitleScreenPickNewMon:
 TitleScreenScrollInMon:
 	ld d, 0 ; scroll in
 	farcall TitleScroll
-	xor a
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;gbcnote - The window normally covers the whole screen when picking a new title screen mon.
+;This is not desired since it applies BG pal 2 to the whole screen when on a gbc.
+;Instead, shift the window downwards by 40 tiles to just cover the version text and below.
+;This makes it so the map attributes for BGMap1 (address $9c00) are covering the bottom half 
+;of the screen.
+	ld a, $40
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ldh [hWY], a
 	ret
 
@@ -306,6 +361,7 @@ ScrollTitleScreenGameVersion:
 
 	ld a, h
 	ldh [rSCX], a
+	ldh [hSCX], a
 
 .wait2
 	ldh a, [rLY]
@@ -314,10 +370,18 @@ ScrollTitleScreenGameVersion:
 	ret
 
 DrawPlayerCharacter:
+	ld hl, GirlPlayerCharacterTitleGraphics
+	ld de, vSprites
+	ld bc, GirlPlayerCharacterTitleGraphicsEnd - GirlPlayerCharacterTitleGraphics
+	ld a, [wPlayerGender]
+	and a
+	ld a, BANK(GirlPlayerCharacterTitleGraphics)
+	jr nz, .isGirl
 	ld hl, PlayerCharacterTitleGraphics
 	ld de, vSprites
 	ld bc, PlayerCharacterTitleGraphicsEnd - PlayerCharacterTitleGraphics
 	ld a, BANK(PlayerCharacterTitleGraphics)
+.isGirl
 	call FarCopyData2
 	call ClearSprites
 	xor a
@@ -337,6 +401,16 @@ DrawPlayerCharacter:
 	ld e, a
 	ld a, [wPlayerCharacterOAMTile]
 	ld [hli], a ; tile
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;gbcnote - set the palette for the player tiles
+;These bits only work on the GBC
+	push af
+	ld a, [hl]	;Attributes/Flags
+	and %11111000
+	or  %00000010
+	ld [hl], a
+	pop af
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;	
 	inc a
 	ld [wPlayerCharacterOAMTile], a
 	inc hl
@@ -405,5 +479,5 @@ IF DEF(_BLUE)
 	db $61,$62,$63,$64,$65,$66,$67,$68,"@" ; "Blue Version"
 ENDC
 
-NintenText: db "NINTEN@"
-SonyText:   db "SONY@"
+NintenText: db "CHELLE@"
+SonyText:   db "GARY@"

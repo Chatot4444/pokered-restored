@@ -2,25 +2,17 @@ GainExperience:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ret z ; return if link battle
-	call DivideExpDataByNumMonsGainingExp
+;	call DivideExpDataByNumMonsGainingExp
+	
 	ld hl, wPartyMon1
 	xor a
+	ld [wWastedByteCD39], a
 	ld [wWhichPokemon], a
 .partyMonLoop ; loop over each mon and add gained exp
 	inc hl
 	ld a, [hli]
 	or [hl] ; is mon's HP 0?
 	jp z, .nextMon ; if so, go to next mon
-	push hl
-	ld hl, wPartyGainExpFlags
-	ld a, [wWhichPokemon]
-	ld c, a
-	ld b, FLAG_TEST
-	predef FlagActionPredef
-	ld a, c
-	and a ; is mon's gain exp flag set?
-	pop hl
-	jp z, .nextMon ; if mon's gain exp flag not set, go to next mon
 	ld de, (wPartyMon1HPExp + 1) - (wPartyMon1HP + 1)
 	add hl, de
 	ld d, h
@@ -64,8 +56,19 @@ GainExperience:
 	call Multiply
 	ld a, 7
 	ldh [hDivisor], a
+	ld hl, wPartyGainExpFlags
+	ld a, [wWhichPokemon]
+	ld c, a
+	ld b, FLAG_TEST
+	predef FlagActionPredef
+	ld a, c
+	and a ; is mon's gain exp flag set?
+	jr nz, .inBattle ; if mon's gain exp flag set, don't divide exp gain by 2
+	ld a, 14
+	ldh [hDivisor] , a
+.inBattle
 	ld b, 4
-	call Divide
+	call Divide	
 	ld hl, wPartyMon1OTID - (wPartyMon1DVs - 1)
 	add hl, de
 	ld b, [hl] ; party mon OTID
@@ -106,6 +109,11 @@ GainExperience:
 	inc hl
 .noCarry
 ; calculate exp for the mon at max level, and cap the exp at that value
+	dec hl ;wPartyMonExp
+	ld a, [hl]
+	cp $B ;check if high byte of total experience is greater than 12 to see if we are close to max exp
+	jr c, .next2 ; if less than 12, skip checking max exp
+	inc hl
 	inc hl
 	push hl
 	ld a, [wWhichPokemon]
@@ -146,8 +154,14 @@ GainExperience:
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
+	ld a, [wWastedByteCD39]
+	cp $0
+	jr nz, .skipText
 	ld hl, GainedText
 	call PrintText
+	ld a, $1
+	ld [wWastedByteCD39], a
+.skipText
 	xor a ; PLAYER_PARTY_DATA
 	ld [wMonDataLocation], a
 	call LoadMonData
@@ -155,9 +169,15 @@ GainExperience:
 	ld bc, wPartyMon1Level - wPartyMon1Exp
 	add hl, bc
 	push hl
-	farcall CalcLevelFromExperience
+	ld a, [hl]
+	ld d, a
+	ld a, [wLoadedMonSpecies]
+	ld [wd0b5], a
+	call GetMonHeader
+	farcall CalcLevelFromExperienceStartingAtD
 	pop hl
 	ld a, [hl] ; current level
+	ld [wTempLevel], a
 	cp d
 	jp z, .nextMon ; if level didn't change, go to next mon
 	ld a, [wCurEnemyLVL]
@@ -253,7 +273,21 @@ GainExperience:
 	ld [wMonDataLocation], a
 	ld a, [wd0b5]
 	ld [wd11e], a
+; In case the Pokemon gained enough EXP to skip one or more levels, check all gained levels for moves
+	ld a, [wCurEnemyLVL]
+	ld c, a
+	ld a, [wTempLevel]
+	ld b, a
+.levelLoop
+	inc b
+	ld a, b
+	ld [wCurEnemyLVL], a
+	push bc
 	predef LearnMoveFromLevelUp
+	pop bc
+	ld a, b
+	cp c
+	jr nz, .levelLoop
 	ld hl, wCanEvolveFlags
 	ld a, [wWhichPokemon]
 	ld c, a
@@ -278,6 +312,7 @@ GainExperience:
 .done
 	ld hl, wPartyGainExpFlags
 	xor a
+	ld [wWastedByteCD39], a
 	ld [hl], a ; clear gain exp flags
 	ld a, [wPlayerMonNumber]
 	ld c, a
@@ -291,38 +326,38 @@ GainExperience:
 	predef_jump FlagActionPredef ; set the fought current enemy flag for the mon that is currently out
 
 ; divide enemy base stats, catch rate, and base exp by the number of mons gaining exp
-DivideExpDataByNumMonsGainingExp:
-	ld a, [wPartyGainExpFlags]
-	ld b, a
-	xor a
-	ld c, $8
-	ld d, $0
-.countSetBitsLoop ; loop to count set bits in wPartyGainExpFlags
-	xor a
-	srl b
-	adc d
-	ld d, a
-	dec c
-	jr nz, .countSetBitsLoop
-	cp $2
-	ret c ; return if only one mon is gaining exp
-	ld [wd11e], a ; store number of mons gaining exp
-	ld hl, wEnemyMonBaseStats
-	ld c, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
-.divideLoop
-	xor a
-	ldh [hDividend], a
-	ld a, [hl]
-	ldh [hDividend + 1], a
-	ld a, [wd11e]
-	ldh [hDivisor], a
-	ld b, $2
-	call Divide ; divide value by number of mons gaining exp
-	ldh a, [hQuotient + 3]
-	ld [hli], a
-	dec c
-	jr nz, .divideLoop
-	ret
+; DivideExpDataByNumMonsGainingExp:
+	; ld a, [wPartyGainExpFlags]
+	; ld b, a
+	; xor a
+	; ld c, $8
+	; ld d, $0
+; .countSetBitsLoop ; loop to count set bits in wPartyGainExpFlags
+	; xor a
+	; srl b
+	; adc d
+	; ld d, a
+	; dec c
+	; jr nz, .countSetBitsLoop
+	; cp $2
+	; ret c ; return if only one mon is gaining exp
+	; ld [wd11e], a ; store number of mons gaining exp
+	; ld hl, wEnemyMonBaseStats
+	; ld c, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
+; .divideLoop
+	; xor a
+	; ldh [hDividend], a
+	; ld a, [hl]
+	; ldh [hDividend + 1], a
+	; ld a, [wd11e]
+	; ldh [hDivisor], a
+	; ld b, $2
+	; call Divide ; divide value by number of mons gaining exp
+	; ldh a, [hQuotient + 3]
+	; ld [hli], a
+	; dec c
+	; jr nz, .divideLoop
+	; ret
 
 ; multiplies exp by 1.5
 BoostExp:

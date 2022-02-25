@@ -47,7 +47,7 @@ _CeladonGymText_48a68::
 	cont "unattractive."
 	done
 
-_CeladonGymText9::
+_CeladonGymTextB::
 	text "The RAINBOWBADGE"
 	line "will make #MON"
 	cont "up to L50 obey."
@@ -217,4 +217,36 @@ _CeladonGymAfterBattleText8::
 
 	para "Wait 'til next"
 	line "time!"
+	done
+
+_CeladonGymText_Rematch::
+	text "What a surprise,"
+	line "The champion is"
+	cont "back in our gym."
+	
+	para "Do you wish to"
+	line "challenge me"
+	cont "again?"
+	done
+	
+_CeladonGymText_RematchConfirm::
+	text "Very well."
+	line "Let's begin."
+	done
+	
+_CeladonGymText_RematchCancel::
+	text "Just here to"
+	line "smell the flowers?"
+	done
+	
+_CeladonGymText_RematchWin::
+	text "I expected"
+	line "nothing less from"
+	cont "the new champion."
+	prompt
+	
+_CeladonGymText_AfterWin::
+	text "Maybe next time"
+	line "you visit we can"
+	cont "arrange flowers."
 	done

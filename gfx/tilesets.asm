@@ -46,7 +46,6 @@ Facility_Block::    INCBIN "gfx/blocksets/facility.bst"
 
 
 SECTION "Tilesets 3", ROMX
-
 Cemetery_GFX::      INCBIN "gfx/tilesets/cemetery.2bpp"
 Cemetery_Block::    INCBIN "gfx/blocksets/cemetery.bst"
 Cavern_GFX::        INCBIN "gfx/tilesets/cavern.2bpp"

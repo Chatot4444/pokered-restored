@@ -2603,6 +2603,119 @@ _PlayCry::
 	call MusicOn
 	ret
 
+PlayWavSoundClip::
+	ld a, e
+	ld e, a
+	ld d, $0
+	ld hl, WavCriesPointerTable
+	add hl, de
+	add hl, de
+	add hl, de
+	ld b, [hl] ; bank of wav cry data
+	inc hl
+	ld a, [hli] ; cry data pointer
+	ld h, [hl]
+	ld l, a
+	ld c, $4
+.loop
+	dec c
+	jr z, .done_delay
+	call DelayFrame
+	jr .loop
+
+.done_delay
+	di
+	push bc
+	push hl
+	ld a, $80
+	ldh [rNR52], a
+	ld a, $77
+	ldh [rNR50], a
+	xor a
+	ldh [rNR30], a
+	ld hl, rWave_0 ; wave data
+	ld de, wRedrawRowOrColumnSrcTiles
+.saveWaveDataLoop
+	ld a, [hl]
+	ld [de], a
+	inc de
+	ld a, $ff
+	ld [hli], a
+	ld a, l
+	cp $40 ; end of wave data
+	jr nz, .saveWaveDataLoop
+	ld a, $80
+	ldh [rNR30], a
+	ldh a, [rNR51]
+	or $44
+	ldh [rNR51], a
+	ld a, $ff
+	ldh [rNR31], a
+	ld a, $20
+	ldh [rNR32], a
+	ld a, $ff
+	ldh [rNR33], a
+	ld a, $87
+	ldh [rNR34], a
+	pop hl
+	pop bc
+	call PlayPikachuPCM
+	xor a
+;	ld [wc0f3], a
+;	ld [wc0f3 + 1], a
+	ld a, $80
+	ldh [rNR52], a
+	xor a
+	ldh [rNR30], a
+	ld hl, rWave_0
+	ld de, wRedrawRowOrColumnSrcTiles
+.reloadWaveDataLoop
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, l
+	cp $40 ; end of wave data
+	jr nz, .reloadWaveDataLoop
+	ld a, $80
+	ldh [rNR30], a
+	ldh a, [rNR51]
+	and $bb
+	ldh [rNR51], a
+	xor a
+;	ld [wChannelSoundIDs + Ch5], a
+;	ld [wChannelSoundIDs + Ch6], a
+;	ld [wChannelSoundIDs + Ch7], a
+;	ld [wChannelSoundIDs + Ch8], a
+	ldh a, [hLoadedROMBank]
+	ei
+	ret
+
+WavCriesPointerTable::
+; format:
+; db bank
+; dw pointer to cry
+
+; bank 21
+	pikacry_def PikachuCry1
+	pikacry_def PikachuCry2
+	pikacry_def PikachuCry3
+	pikacry_def PikachuCry4
+
+; bank 22
+	pikacry_def PikachuCry5
+	pikacry_def PikachuCry6
+	pikacry_def PikachuCry7
+
+; bank 23
+	pikacry_def PikachuCry8
+	pikacry_def PikachuCry9
+	pikacry_def PikachuCry10
+
+; bank 24
+	pikacry_def PikachuCry11
+	pikacry_def PikachuCry12
+	pikacry_def PikachuCry13
+
 _PlayBattleSound::
 ; clear channels if they aren't already
 	call MusicOff

@@ -298,6 +298,26 @@ _TangelaDexEntry::
 	next "shake as it walks"
 	dex
 
+_CrobatDexEntry::
+	text "As a result of its"
+	next "pursuit of faster,"
+	next "yet more silent"
+	
+	page "flight, a new set"
+	next "of wings grew on"
+	next "its legs"
+	dex
+	
+_BellossomDexEntry::
+	text "BELLOSSOM gather"
+	next "at times and"
+	next "appear to dance."
+
+	page "They say that the"
+	next "dance is a ritual"
+	next "to summon the sun"
+	dex
+	
 _GrowlitheDexEntry::
 	text "Very protective"
 	next "of its territory."
@@ -468,6 +488,16 @@ _GolemDexEntry::
 	next "without damage"
 	dex
 
+_PolitoedDexEntry::
+	text "If POLIWAG and"
+	next "POLIWHIRL hear its"
+	next "echoing cry, they"
+
+	page "respond by gather-"
+	next "ing from far and"
+	next "wide"
+	dex 
+	
 _MagmarDexEntry::
 	text "Its body always"
 	next "burns with an"
@@ -478,6 +508,16 @@ _MagmarDexEntry::
 	next "among flames"
 	dex
 
+_EspeonDexEntry::
+	text "It uses the fine"
+	next "hair that covers"
+	next "its body to sense"
+
+	page "air currents and"
+	next "predict its ene-"
+	next "my's actions"
+	dex
+	
 _ElectabuzzDexEntry::
 	text "Normally found"
 	next "near power plants,"
@@ -508,6 +548,16 @@ _KoffingDexEntry::
 	next "without warning"
 	dex
 
+_UmbreonDexEntry::
+	text "When darkness"
+	next "falls, the rings"
+	next "on the body begin"
+
+	page "to glow, striking"
+	next "fear in the hearts"
+	next "of anyone nearby"
+	dex
+	
 _MankeyDexEntry::
 	text "Extremely quick to"
 	next "anger. It could"
@@ -548,6 +598,36 @@ _TaurosDexEntry::
 	next "long tails"
 	dex
 
+_SlowkingDexEntry::
+	text "It has incredible"
+	next "intellect and in-"
+	next "tuition. Whatever"
+
+	page "the situation, it"
+	next "remains calm and"
+	next "collected"
+	dex
+	
+_SteelixDexEntry::
+	text "Its body has been"
+	next "compressed deep"
+	next "under the ground."
+
+	page "As a result, it is"
+	next "even harder than a"
+	next "diamond"
+	dex
+	
+_ScizorDexEntry::
+	text "It swings its eye-"
+	next "patterned pincers"
+	next "up to scare its"
+
+	page "foes. This makes"
+	next "it look like it"
+	next "has three heads"
+	dex
+	
 _FarfetchdDexEntry::
 	text "The sprig of"
 	next "green onions it"
@@ -578,6 +658,36 @@ _DragoniteDexEntry::
 	next "that of humans"
 	dex
 
+_KingdraDexEntry::
+	text "It is said that it"
+	next "usually hides in"
+	next "underwater caves."
+
+	page "It can create"
+	next "whirlpools by"
+	next "yawning"
+	dex
+	
+_BlisseyDexEntry::
+	text  "Anyone who takes"
+	next "even one bite of"
+	next "BLISSEY's egg be-"
+
+	page "comes unfailingly"
+	next "caring and pleas-"
+	next "ant to everyone"
+	dex
+	
+_Porygon2DexEntry::
+	text "This upgraded"
+	next "version of PORYGON"
+	next "is designed for"
+
+	page "space exploration."
+	next "It can't fly,"
+	next "though"
+	dex
+	
 _DoduoDexEntry::
 	text "A bird that makes"
 	next "up for its poor"
@@ -668,6 +778,36 @@ _KrabbyDexEntry::
 	next "sideways"
 	dex
 
+_MagnezoneDexEntry::
+	text "It evolved from"
+	next "exposure to a"
+	next "special magnetic"
+	
+	page "field. Three"
+	next "units generate"
+	next "magnetism"
+	dex
+	
+_LickilickyDexEntry::
+	text "It wraps things"
+	next "with its exten-"
+	next "sible tongue."
+	
+	page "Getting close to"
+	next "it will leave you"
+	next "soaked with drool"
+	dex
+	
+_RhyperiorDexEntry::
+	text "From holes in its"
+	next "palms, it fires"
+	next "out GEODUDE. Its"
+	
+	page "carapace can"
+	next "withstand vol-"
+	next "canic eruptions"
+	dex
+	
 _VulpixDexEntry::
 	text "At the time of"
 	next "birth, it has"
@@ -708,6 +848,26 @@ _RaichuDexEntry::
 	next "power"
 	dex
 
+_TangrowthDexEntry::
+	text "Its vines grow so"
+	next "profusely that,"
+	next "in the warm"
+	
+	page "season, you can't"
+	next "even see its"
+	next "eyes"
+	dex
+	
+_ElectivireDexEntry::
+	text "As its electric"
+	next "charge amplifies,"
+	next "blue sparks begin"
+	
+	page "to crackle"
+	next "between its"
+	next "horns"
+	dex 
+	
 _DratiniDexEntry::
 	text "Long considered a"
 	next "mythical #MON"
@@ -768,6 +928,26 @@ _SeadraDexEntry::
 	next "stout tail"
 	dex
 
+_MagmortarDexEntry::
+	text "It blasts fire-"
+	next "balls of over"
+	next "3,600 degrees F"
+	
+	page "from the ends of"
+	next "its arms. It"
+	next "likes volcanos"
+	dex
+
+_LeafeonDexEntry::
+	text "LEAFEON is always"
+	next "surrounded by"
+	next "fresh clean air"
+
+	page "because it uses"
+	next "photosynthesis"
+	next "just like a plant"
+	dex
+	
 _SandshrewDexEntry::
 	text "Burrows deep"
 	next "underground in"
@@ -958,6 +1138,16 @@ _BeedrillDexEntry::
 	next "and tail"
 	dex
 
+_GlaceonDexEntry::
+	text "As a protective"
+	next "technique, it can"
+	next "completely freeze"
+	
+	page "its fur to make"
+	next "its hairs stand"
+	next "like needles"
+	dex
+	
 _DodrioDexEntry::
 	text "Uses its three"
 	next "brains to execute"
@@ -1008,6 +1198,26 @@ _DewgongDexEntry::
 	next "cold waters"
 	dex
 
+_PorygonZDexEntry::
+	text "Additional soft-"
+	next "ware was added to"
+	next "make it a better"
+	
+	page "#MON. It began"
+	next "acting oddly,"
+	next "however"
+	dex
+	
+_SylveonDexEntry::
+	text "It sends a"
+	next "soothing aura"
+	next "from its"
+	
+	page "ribbonlike"
+	next "feelers to calm"
+	next "fights"
+	dex
+	
 _CaterpieDexEntry::
 	text "Its short feet"
 	next "are tipped with"
@@ -1095,7 +1305,7 @@ _SnorlaxDexEntry::
 
 	page "bulk builds, it"
 	next "becomes steadily"
-	next "more slothful"
+	next "more sleepy"
 	dex
 
 _MagikarpDexEntry::
@@ -1483,8 +1693,8 @@ _BellsproutDexEntry::
 	next "#MON that traps"
 	next "and eats bugs."
 
-	page "It uses its root"
-	next "feet to soak up"
+	page "It uses its roots"
+	next "to soak up"
 	next "needed moisture"
 	dex
 

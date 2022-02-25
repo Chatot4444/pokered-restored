@@ -1,4 +1,4 @@
-_SaffronHouse1Text1::
+_SaffronHouse1Text4::
 	text "Thank you for"
 	line "writing. I hope"
 	cont "to see you soon!"
@@ -17,7 +17,7 @@ _SaffronHouse1Text3::
 	cont "her a # DOLL!"
 	done
 
-_SaffronHouse1Text4::
+_SaffronHouse1Text1::
 	text "I was given a PP"
 	line "UP as a gift."
 

@@ -66,8 +66,12 @@ RocketHideoutElevator_TextPointers:
 RocketHideoutElevatorText1:
 	text_asm
 	ld b, LIFT_KEY
+	call IsItemInPC
+	jr nz, .youHaveKey
+	ld b, LIFT_KEY
 	call IsItemInBag
 	jr z, .asm_45782
+.youHaveKey
 	call RocketHideoutElevatorScript_45741
 	ld hl, RocketHideoutElevatorWarpMaps
 	predef DisplayElevatorFloorMenu

@@ -210,3 +210,38 @@ _CinnabarGymText_75ac7::
 	text "<PLAYER>! You beat"
 	line "that fire brand!"
 	done
+
+_CinnabarGymText_Rematch::
+	text "Hah! I hear"
+	line "you're the new"
+	cont "champion!"
+	
+	para "Well how about"
+	line "another battle?"
+	done
+	
+_CinnabarGymText_RematchConfirm::
+	text "Yeah! I hope"
+	line "you still have" 
+	cont "BURN HEAL!"
+	done
+	
+_CinnabarGymText_RematchCancel::
+	text "Just here for"
+	line "some trivia? Haha!"
+	done
+	
+_CinnabarGymText_RematchWin::
+	text "Ha! You"
+	line "still burn me up!"
+	prompt
+	
+_CinnabarGymText_AfterWin::
+	text "You've got a fire"
+	line "within you, kid."
+
+	para "It's what made you"
+	line "the champ, and it"
+	cont "will push you to"
+	cont "go even higher."
+	done

@@ -43,6 +43,7 @@ RocketHideoutB1F_TextPointers:
 	dw RocketHideout1Text5
 	dw PickUpItemText
 	dw PickUpItemText
+	dw RocketHideout1Text8
 
 RocketHideout1TrainerHeader0:
 	trainer EVENT_BEAT_ROCKET_HIDEOUT_1_TRAINER_0, 3, RocketHideout1BattleText2, RocketHideout1EndBattleText2, RocketHideout1AfterBattleTxt2
@@ -130,7 +131,21 @@ RocketHideout1EndBattleText4:
 	text_end
 
 RocketHideout1AfterBattleTxt4:
+	text_asm
+	ld hl, RocketHideout1AfterBattleTxt4Normal
+	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+	jr nz, .done
+	ld hl, RocketHideout1AfterBattleTxt4After
+.done
+	call PrintText
+	jp TextScriptEnd
+
+RocketHideout1AfterBattleTxt4Normal:
 	text_far _RocketHideout1AfterBattleTxt4
+	text_end
+
+RocketHideout1AfterBattleTxt4After:
+	text_far _RocketHideout1AfterBattleTxt4After
 	text_end
 
 RocketHideout1BattleText5:
@@ -142,7 +157,21 @@ RocketHideout1EndBattleText5:
 	text_end
 
 RocketHideout1AfterBattleTxt5:
+	text_asm
+	ld hl, RocketHideout1AfterBattleTxt5Normal
+	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+	jr nz, .done
+	ld hl, RocketHideout1AfterBattleTxt5After
+.done
+	call PrintText
+	jp TextScriptEnd
+
+RocketHideout1AfterBattleTxt5Normal:
 	text_far _RocketHideout1AfterBattleTxt5
+	text_end
+
+RocketHideout1AfterBattleTxt5After:
+	text_far _RocketHideout1AfterBattleTxt5After
 	text_end
 
 RocketHideout1BattleText6:
@@ -151,4 +180,42 @@ RocketHideout1BattleText6:
 
 RocketHideout1AfterBattleTxt6:
 	text_far _RocketHideout1AfterBattleTxt6
+	text_end
+
+RocketHideout1Text8:
+	text_asm
+	ld b, COIN_CASE
+	call IsItemInBag
+	jr z, .noCoinCase
+	ld hl, .RocketHideoutAskForCoins
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jp nz, .choseNo
+	ld a, $99
+	ld hl, wPlayerCoins
+	ld [hli], a
+	ld [hl], a
+	ld hl, .RocketHideout1CoinText
+	call PrintText
+.choseNo
+	jp TextScriptEnd
+	
+.noCoinCase
+	ld hl, .RocketHideoutNoCoins
+	call PrintText
+	jr .choseNo
+	
+.RocketHideoutAskForCoins
+	text_far _RocketHideout1Text8
+	text_end
+	
+.RocketHideoutNoCoins
+	text_far _RocketHideout1Text8NoCoin
+	text_end
+	
+.RocketHideout1CoinText
+	text_far _RocketHideout1CoinText
+	sound_get_item_1
 	text_end

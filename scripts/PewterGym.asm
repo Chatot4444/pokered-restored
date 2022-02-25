@@ -34,6 +34,7 @@ PewterGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw PewterGymScript3
+	dw PewterGymScript4
 
 PewterGymScript3:
 	ld a, [wIsInBattle]
@@ -42,20 +43,20 @@ PewterGymScript3:
 	ld a, $f0
 	ld [wJoyIgnore], a
 PewterGymScript_5c3df:
-	ld a, $4
+	ld a, $5
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_BROCK
-	lb bc, TM_BIDE, 1
+	lb bc, TM_ROCK_TOMB, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $5
+	ld a, $6
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM34
 	jr .gymVictory
 .BagFull
-	ld a, $6
+	ld a, $7
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -85,6 +86,8 @@ PewterGym_TextPointers:
 	dw PewterGymText4
 	dw PewterGymText5
 	dw PewterGymText6
+	dw PewterGymText7
+	dw PewterGymText8
 
 PewterGymTrainerHeader0:
 	trainer EVENT_BEAT_PEWTER_GYM_TRAINER_0, 5, PewterGymBattleText1, PewterGymEndBattleText1, PewterGymAfterBattleText1
@@ -134,17 +137,17 @@ PewterGymText_5c4a3:
 	text_far _PewterGymText_5c4a3
 	text_end
 
-PewterGymText4:
+PewterGymText5:
 	text_far _TM34PreReceiveText
 	text_end
 
-PewterGymText5:
+PewterGymText6:
 	text_far _ReceivedTM34Text
 	sound_get_item_1
 	text_far _TM34ExplanationText
 	text_end
 
-PewterGymText6:
+PewterGymText7:
 	text_far _TM34NoRoomText
 	text_end
 
@@ -217,4 +220,72 @@ PewterGymText_5c524:
 
 PewterGymText_5c529:
 	text_far _PewterGymText_5c529
+	text_end
+
+PewterGymText4:
+	text_asm
+	ld hl, PewterGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, PewterGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, PewterGymText_RematchWin
+	ld de, PewterGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $1
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wPewterGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, PewterGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+	
+PewterGymScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z,  PewterGymScript_5c3bf
+	ld a, $f0
+	ld [wJoyIgnore], a
+PewterGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_BROCK2
+	ld a, $8
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp PewterGymScript_5c3bf
+	
+PewterGymText_Rematch:
+	text_far _PewterGymText_Rematch
+	text_end
+
+PewterGymText_RematchConfirm:
+	text_far _PewterGymText_RematchConfirm
+	text_end
+
+PewterGymText_RematchCancel:
+	text_far _PewterGymText_RematchCancel
+	text_end
+	
+PewterGymText_RematchWin:
+	text_far _PewterGymText_RematchWin
+	text_end
+	
+PewterGymText8:
+	text_far _PewterGymText8
 	text_end

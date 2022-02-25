@@ -259,9 +259,9 @@ FIRST_INDOOR_MAP EQU const_value
 	mapconst UNUSED_MAP_EE,                  0,  0 ; $EE
 	mapconst TRADE_CENTER,                   4,  5 ; $EF
 	mapconst COLOSSEUM,                      4,  5 ; $F0
-	mapconst UNUSED_MAP_F1,                  0,  0 ; $F1
-	mapconst UNUSED_MAP_F2,                  0,  0 ; $F2
-	mapconst UNUSED_MAP_F3,                  0,  0 ; $F3
+	mapconst VIRIDIAN_WILDS,                  18,  22 ; $F1
+	mapconst MT_MOON_SUMMIT,                  9,  22 ; $F2
+	mapconst TOWER_GROUNDS,                  22,  18 ; $F3
 	mapconst UNUSED_MAP_F4,                  0,  0 ; $F4
 	mapconst LORELEIS_ROOM,                  6,  5 ; $F5
 	mapconst BRUNOS_ROOM,                    6,  5 ; $F6

@@ -1,6 +1,6 @@
 	db DEX_POLIWRATH ; pokedex id
 
-	db  90,  85,  95,  70,  70
+	db  90,  95,  95,  70,  70
 	;   hp  atk  def  spd  spc
 
 	db WATER, FIGHTING ; type
@@ -10,15 +10,15 @@
 	INCBIN "gfx/pokemon/front/poliwrath.pic", 0, 1 ; sprite dimensions
 	dw PoliwrathPicFront, PoliwrathPicBack
 
-	db HYPNOSIS, WATER_GUN, DOUBLESLAP, BODY_SLAM ; level 1 learnset
+	db HYPNOSIS, KARATE_CHOP, FEINT_ATTACK, BODY_SLAM ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
 	     DOUBLE_EDGE,  BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     BLIZZARD,     \
-	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
+	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS,                  \
 	     EARTHQUAKE,   FISSURE,      PSYCHIC_M,    MIMIC,        DOUBLE_TEAM,  \
-	     BIDE,         METRONOME,    SKULL_BASH,   REST,         PSYWAVE,      \
+	      ROCK_TOMB,               METRONOME,    SKULL_BASH,   REST,         PSYWAVE,      \
 	     SUBSTITUTE,   SURF,         STRENGTH
 	; end
 

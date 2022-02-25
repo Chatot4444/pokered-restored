@@ -43,7 +43,7 @@ _ViridianGymText_74ad9::
 	cont "Farewell!@"
 	text_end
 
-_ViridianGymText12::
+_ViridianGymTextD::
 	text "The EARTHBADGE"
 	line "makes #MON of"
 	cont "any level obey!"
@@ -237,4 +237,50 @@ _ViridianGymText_74bd9::
 	text "Blow me away!"
 	line "GIOVANNI was the"
 	cont "GYM LEADER here?"
+	done
+
+_ViridianGymText_Rematch::
+	text "<RIVAL>: Heh, bet"
+	line "you weren't"
+	line "expecting to see"
+	cont "me here, <PLAYER>!"
+	
+	para "The old GYM LEADER"
+	line "ran off, so I'm"
+	cont "in charge of this"
+	cont "GYM now!"
+	
+	para "The LEAGUE wants"
+	line "me to only use"
+	cont "ground #MON,"
+	cont "but I think I'll"
+	cont "mix it up a bit."
+	
+	para "You ready to"
+	line "to battle, <PLAYER>?"
+	done
+	
+_ViridianGymText_RematchConfirm::
+	text "Alright! But when"
+	line "I win you'll be" 
+	cont "calling me the"
+	cont "champion again!"
+	done
+	
+_ViridianGymText_RematchCancel::
+	text "Ha! Smell you"
+	line "later, <PLAYER>!"
+	done
+	
+_ViridianGymText_RematchWin::
+	text "<RIVAL>: Ha, I"
+	line "hate to admit it,"
+	cont "but you're good."
+	prompt
+	
+_ViridianGymText_AfterWin::
+	text "You make a good"
+	line "champion, but so"
+	cont "do I, so don't"
+	cont "get too cocky!"
 	done

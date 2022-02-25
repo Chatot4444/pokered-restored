@@ -1,6 +1,6 @@
 	db DEX_VILEPLUME ; pokedex id
 
-	db  75,  80,  85,  50, 100
+	db  75,  80,  85,  50, 110
 	;   hp  atk  def  spd  spc
 
 	db GRASS, POISON ; type
@@ -10,13 +10,13 @@
 	INCBIN "gfx/pokemon/front/vileplume.pic", 0, 1 ; sprite dimensions
 	dw VileplumePicFront, VileplumePicBack
 
-	db STUN_SPORE, SLEEP_POWDER, ACID, PETAL_DANCE ; level 1 learnset
+	db LEECH_SEED, GROWTH, RAZOR_LEAF, LEECH_LIFE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    MIMIC,        \
-	     DOUBLE_TEAM,  REFLECT,      BIDE,         REST,         SUBSTITUTE,   \
+	     HYPER_BEAM,                    MEGA_DRAIN,   SOLARBEAM,    MIMIC,        \
+	     DOUBLE_TEAM,  REFLECT,      SLUDGE_BOMB,    REST,         SUBSTITUTE,   \
 	     CUT
 	; end
 

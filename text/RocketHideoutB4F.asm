@@ -72,3 +72,39 @@ _RocketHideout4Text_455ec::
 	text "Oh no! I dropped"
 	line "the LIFT KEY!"
 	done
+
+_GiovanniText_Rematch::
+	text "TEAM ROCKET is"
+	line "finished."
+	
+	para "Its bittersweet"
+	line "seeing it come"
+	cont "to an end..."
+	
+	para "I suppose"
+	line "you're here for"
+	cont "a rematch?"
+	done
+	
+_GiovanniText_RematchConfirm::
+	text "I trust you'll"
+	line "make this worth"
+	cont "my time."
+	done
+_GiovanniText_RematchCancel::
+	text "Is it past"
+	line "your bedtime,"
+	cont "Champion?"
+	done
+	
+_GiovanniText_RematchWin::
+	text "Hmm..."
+	line "Well done."
+	prompt
+	
+_GiovanniText_AfterWin::
+	text "Perhaps you"
+	line "would have made"
+	cont "a good leader"
+	cont "for TEAM ROCKET"
+	done

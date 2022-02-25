@@ -40,7 +40,7 @@ DisplayDiploma::
 	call PlaceString
 	farcall DrawPlayerCharacter
 
-; Move the player 33 pixels right and set the priority bit so he appears
+; Move the player 33 pixels right and set the priority bit so they appears
 ; behind the background layer.
 	ld hl, wOAMBuffer + $01
 	lb bc, $80, $28
@@ -57,12 +57,14 @@ DisplayDiploma::
 
 	call EnableLCD
 	farcall LoadTrainerInfoTextBoxTiles
+	ld a, $90
+	ldh [rOBP0], a
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
 	call Delay3
-	call GBPalNormal
-	ld a, $90
-	ldh [rOBP0], a
+	ld a, %11100100 ; 3210
+	ldh [rBGP], a
+	call UpdateGBCPal_BGP
 	call WaitForTextScrollButtonPress
 	ld hl, wd730
 	res 6, [hl]

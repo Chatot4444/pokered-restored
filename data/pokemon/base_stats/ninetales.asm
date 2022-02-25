@@ -10,13 +10,13 @@
 	INCBIN "gfx/pokemon/front/ninetales.pic", 0, 1 ; sprite dimensions
 	dw NinetalesPicFront, NinetalesPicBack
 
-	db EMBER, TAIL_WHIP, QUICK_ATTACK, ROAR ; level 1 learnset
+	db EMBER, TAIL_WHIP, QUICK_ATTACK, OMINOUS_WIND ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
 	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
-	     RAGE,         DIG,          MIMIC,        DOUBLE_TEAM,  REFLECT,      \
-	     BIDE,         FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         \
+	      FLAMETHROWER,                DIG,          MIMIC,        DOUBLE_TEAM,  REFLECT,      \
+	                     FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,   PSYWAVE,      \
 	     SUBSTITUTE
 	; end
 

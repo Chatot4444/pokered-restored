@@ -7,6 +7,7 @@ MtMoon1F_Object:
 	warp  5,  5, 0, MT_MOON_B1F
 	warp 17, 11, 2, MT_MOON_B1F
 	warp 25, 15, 3, MT_MOON_B1F
+	warp 37, 3, 0, MT_MOON_SUMMIT
 
 	def_signs
 	sign 15, 23, 14 ; MtMoon1Text14
@@ -25,5 +26,6 @@ MtMoon1F_Object:
 	object SPRITE_POKE_BALL, 36, 23, STAY, NONE, 11, ESCAPE_ROPE
 	object SPRITE_POKE_BALL, 20, 33, STAY, NONE, 12, POTION
 	object SPRITE_POKE_BALL, 5, 32, STAY, NONE, 13, TM_WATER_GUN
+	object SPRITE_BOULDER, 35, 4, STAY, BOULDER_MOVEMENT_BYTE_2, 14 ;person
 
 	def_warps_to MT_MOON_1F

@@ -11,6 +11,7 @@ SilphCo1F_Object:
 	def_signs
 
 	def_objects
-	object SPRITE_LINK_RECEPTIONIST, 4, 2, STAY, DOWN, 1 ; person
+	object SPRITE_LINK_RECEPTIONIST,  3,  2, STAY, DOWN, 1 ; person
+	object SPRITE_CLERK,  5,  2, STAY, DOWN, 2 ; person
 
 	def_warps_to SILPH_CO_1F

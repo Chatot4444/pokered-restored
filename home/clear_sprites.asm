@@ -1,21 +1,7 @@
 ClearSprites::
-	xor a
-	ld hl, wOAMBuffer
-	ld b, wOAMBufferEnd - wOAMBuffer
-.loop
-	ld [hli], a
-	dec b
-	jr nz, .loop
+	homecall ClearSprites_
 	ret
 
 HideSprites::
-	ld a, 160
-	ld hl, wOAMBuffer
-	ld de, 4
-	ld b, 40
-.loop
-	ld [hl], a
-	add hl, de
-	dec b
-	jr nz, .loop
+	homecall HideSprites_
 	ret

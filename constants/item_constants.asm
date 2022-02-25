@@ -92,23 +92,28 @@ SAFARI_ROCK           EQU $16 ; overload
 	const MAX_ETHER     ; $51
 	const ELIXER        ; $52
 	const MAX_ELIXER    ; $53
+	const TRADE_STONE   ; $54
+	const FRIEND_STONE  ; $55
+	const SUN_STONE     ; $56
+	const ICE_STONE     ; $57
+	
 NUM_ITEMS EQU const_value - 1
 
 ; elevator floors use item IDs
-	const FLOOR_B2F     ; $54
-	const FLOOR_B1F     ; $55
-	const FLOOR_1F      ; $56
-	const FLOOR_2F      ; $57
-	const FLOOR_3F      ; $58
-	const FLOOR_4F      ; $59
-	const FLOOR_5F      ; $5A
-	const FLOOR_6F      ; $5B
-	const FLOOR_7F      ; $5C
-	const FLOOR_8F      ; $5D
-	const FLOOR_9F      ; $5E
-	const FLOOR_10F     ; $5F
-	const FLOOR_11F     ; $60
-	const FLOOR_B4F     ; $61
+	const FLOOR_B2F     ; $57
+	const FLOOR_B1F     ; $58
+	const FLOOR_1F      ; $59
+	const FLOOR_2F      ; $5A
+	const FLOOR_3F      ; $5B
+	const FLOOR_4F      ; $5C
+	const FLOOR_5F      ; $5D
+	const FLOOR_6F      ; $5E
+	const FLOOR_7F      ; $5F
+	const FLOOR_8F      ; $60
+	const FLOOR_9F      ; $61
+	const FLOOR_10F     ; $62
+	const FLOOR_11F     ; $63
+	const FLOOR_B4F     ; $64
 NUM_FLOORS EQU const_value - 1 - NUM_ITEMS
 
 	const_next $C4
@@ -172,7 +177,7 @@ __tmhm_value__ = __tmhm_value__ + 1
 ENDM
 
 	add_tm MEGA_PUNCH   ; $C9
-	add_tm RAZOR_WIND   ; $CA
+	add_tm AERIAL_ACE   ; $CA
 	add_tm SWORDS_DANCE ; $CB
 	add_tm WHIRLWIND    ; $CC
 	add_tm MEGA_KICK    ; $CD
@@ -190,7 +195,7 @@ ENDM
 	add_tm SUBMISSION   ; $D9
 	add_tm COUNTER      ; $DA
 	add_tm SEISMIC_TOSS ; $DB
-	add_tm RAGE         ; $DC
+	add_tm FLAMETHROWER ; $DC
 	add_tm MEGA_DRAIN   ; $DD
 	add_tm SOLARBEAM    ; $DE
 	add_tm DRAGON_RAGE  ; $DF
@@ -204,10 +209,10 @@ ENDM
 	add_tm MIMIC        ; $E7
 	add_tm DOUBLE_TEAM  ; $E8
 	add_tm REFLECT      ; $E9
-	add_tm BIDE         ; $EA
+	add_tm ROCK_TOMB    ; $EA
 	add_tm METRONOME    ; $EB
 	add_tm SELFDESTRUCT ; $EC
-	add_tm EGG_BOMB     ; $ED
+	add_tm SLUDGE_BOMB     ; $ED
 	add_tm FIRE_BLAST   ; $EE
 	add_tm SWIFT        ; $EF
 	add_tm SKULL_BASH   ; $F0

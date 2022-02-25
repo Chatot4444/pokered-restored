@@ -131,7 +131,7 @@ RocketHideoutB3F_TextPointers:
 	dw PickUpItemText
 
 RocketHideout3TrainerHeader0:
-	trainer EVENT_BEAT_ROCKET_HIDEOUT_3_TRAINER_0, 2, RocketHideout3BattleText2, RocketHideout3EndBattleText2, RocketHideout3AfterBattleTxt2
+	trainer EVENT_BEAT_ROCKET_HIDEOUT_3_TRAINER_0, 2, RocketHideout3BattleText2, RocketHideout3EndBattleText2, RocketHideout3AfterBattleText2
 RocketHideout3TrainerHeader1:
 	trainer EVENT_BEAT_ROCKET_HIDEOUT_3_TRAINER_1, 4, RocketHideout3BattleTxt, RocketHideout3EndBattleText3, RocketHideout3AfterBattleText3
 	db -1 ; end
@@ -150,8 +150,22 @@ RocketHideout3EndBattleText2:
 	text_far _RocketHideout3EndBattleText2
 	text_end
 
-RocketHideout3AfterBattleTxt2:
+RocketHideout3AfterBattleText2:
+	text_asm
+	ld hl, RocketHideout3AfterBattleText2Normal
+	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+	jr nz, .done
+	ld hl, RocketHideout3AfterBattleText2After
+.done
+	call PrintText
+	jp TextScriptEnd
+	
+RocketHideout3AfterBattleText2Normal:
 	text_far _RocketHideout3AfterBattleTxt2
+	text_end
+
+RocketHideout3AfterBattleText2After:
+	text_far _RocketHideout3AfterBattleTxt2After
 	text_end
 
 RocketHideout3Text2:
@@ -169,5 +183,19 @@ RocketHideout3EndBattleText3:
 	text_end
 
 RocketHideout3AfterBattleText3:
-	text_far _RocketHide3AfterBattleText3
+	text_asm
+	ld hl, RocketHideout3AfterBattleText3Normal
+	CheckEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
+	jr nz, .done
+	ld hl, RocketHideout3AfterBattleText3After
+.done
+	call PrintText
+	jp TextScriptEnd
+	
+RocketHideout3AfterBattleText3Normal:
+	text_far _RocketHideout3AfterBattleTxt3
+	text_end
+	
+RocketHideout3AfterBattleText3After:
+	text_far _RocketHideout3AfterBattleTxt3After
 	text_end

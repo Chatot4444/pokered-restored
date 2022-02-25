@@ -9,10 +9,10 @@ _KogaExplainToxicText::
 	line "terrorize foes!"
 	done
 
-_FuchsiaGymText9::
+_FuchsiaGymTextB::
 	text "Now that you have"
 	line "the SOULBADGE,"
-	cont "the DEFENSE of"
+	cont "the SPEED of"
 	cont "your #MON"
 	cont "increases!"
 
@@ -115,7 +115,7 @@ _FuchsiaGymBattleText4::
 
 _FuchsiaGymEndBattleText4::
 	text "Whoa!"
-	line "He's got it!"
+	line "You got it!"
 	prompt
 
 _FuchsiaGymAfterBattleText4::
@@ -191,4 +191,50 @@ _FuchsiaGymText_75653::
 	text "It's amazing how"
 	line "ninja can terrify"
 	cont "even now!"
+	done
+
+_KogaAfterBattleText::
+	text "Humph!"
+	line "You have proven"
+	cont "your worth!"
+
+	para "Here! Take the"
+	line "SOULBADGE!"
+	prompt
+
+_FuchsiaGymText_Rematch::
+	text "Ah, the child"
+	line "returns, now as"
+	cont "the champion."
+	
+	para "Do you challenge"
+	line "me once again?"
+	done
+	
+_FuchsiaGymText_RematchConfirm::
+	text "Be warned, I can"
+	line "battle at my full" 
+	cont "strength against"
+	cont "the champion."
+	done
+	
+_FuchsiaGymText_RematchCancel::
+	text "A wise decision."
+	done
+	
+_FuchsiaGymText_RematchWin::
+	text "You've proven"
+	line "you are worthy"
+	cont "of your title."
+	prompt
+	
+_FuchsiaGymText_AfterWin::
+	text "You are strong,"
+	line "but don't get"
+	cont "complacent."
+	
+	para "I have my eyes"
+	line "set on the Indigo"
+	cont "Plateau, as do"
+	cont "many others."
 	done

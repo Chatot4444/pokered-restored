@@ -36,12 +36,12 @@ TrainerAIPointers:
 	dbw 3, GenericAI
 	dbw 2, CooltrainerMAI ; cooltrainerm
 	dbw 1, CooltrainerFAI ; cooltrainerf
-	dbw 2, BrunoAI ; bruno
-	dbw 5, BrockAI ; brock
+	dbw 1, BrunoAI ; bruno
+	dbw 1, BrockAI ; brock
 	dbw 1, MistyAI ; misty
 	dbw 1, LtSurgeAI ; surge
-	dbw 1, ErikaAI ; erika
-	dbw 2, KogaAI ; koga
+	dbw 2, ErikaAI ; erika
+	dbw 3, KogaAI ; koga
 	dbw 2, BlaineAI ; blaine
 	dbw 1, SabrinaAI ; sabrina
 	dbw 3, GenericAI
@@ -50,5 +50,6 @@ TrainerAIPointers:
 	dbw 2, LoreleiAI ; lorelei
 	dbw 3, GenericAI
 	dbw 2, AgathaAI ; agatha
-	dbw 1, LanceAI ; lance
+	dbw 2, LanceAI ; lance
+	dbw 3, GenericAI 
 	assert_table_length NUM_TRAINERS

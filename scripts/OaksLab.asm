@@ -381,6 +381,8 @@ OaksLabScript11:
 	ret nz
 
 	; define which team rival uses, and fight it
+	ld a, 1
+	ld [wIsTrainerBattle], a
 	ld a, OPP_RIVAL1
 	ld [wCurOpponent], a
 	ld a, [wRivalStarter]
@@ -415,6 +417,8 @@ OaksLabScript11:
 	ret
 
 OaksLabScript12:
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, PLAYER_DIR_UP
@@ -584,6 +588,8 @@ OaksLabScript16:
 	ld [wMissableObjectIndex], a
 	predef HideObject
 	call OaksLabScript_1cefd
+	lb bc, POKE_BALL, 5
+	call GiveItem
 	ld a, $1a
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -1055,6 +1061,7 @@ OaksLabAroundWorldText:
 	text_end
 
 OaksLabGivePokeballsText:
+	text_far _OaksLabGivePokeballsTextGreeting
 	text_far _OaksLabGivePokeballsText1
 	sound_get_key_item
 	text_far _OaksLabGivePokeballsText2
@@ -1215,6 +1222,9 @@ OaksLabText25:
 
 OaksLabText26:
 	text_far _OaksLabText26
+	text_far _OaksLabGivePokeballsText1
+	sound_get_key_item
+	text_far _OaksLabText26Part2
 	text_end
 
 OaksLabText27:

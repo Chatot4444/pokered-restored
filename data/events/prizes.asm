@@ -19,14 +19,14 @@ ENDC
 
 PrizeMenuMon1Cost:
 IF DEF(_RED)
-	coins 180
-	coins 500
+	coins 18
+	coins 50
 ENDC
 IF DEF(_BLUE)
-	coins 120
-	coins 750
+	coins 12
+	coins 75
 ENDC
-	coins 1200
+	coins 120
 	db "@"
 
 PrizeMenuMon2Entries:
@@ -43,14 +43,14 @@ ENDC
 
 PrizeMenuMon2Cost:
 IF DEF(_RED)
-	coins 2800
-	coins 5500
-	coins 9999
+	coins 280
+	coins 550
+	coins 990
 ENDC
 IF DEF(_BLUE)
-	coins 2500
-	coins 4600
-	coins 6500
+	coins 250
+	coins 460
+	coins 650
 ENDC
 	db "@"
 
@@ -61,7 +61,7 @@ PrizeMenuTMsEntries:
 	db "@"
 
 PrizeMenuTMsCost:
-	coins 3300
-	coins 5500
-	coins 7700
+	coins 150
+	coins 200
+	coins 250
 	db "@"

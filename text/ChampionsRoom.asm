@@ -144,3 +144,129 @@ _GaryText_7612a::
 	para "<PLAYER>!"
 	line "Come with me!"
 	done
+
+_GaryChampionRematchIntroText::
+	text "<RIVAL>: Hey!"
+	line "Are you happy to"
+	cont "see me here"
+	cont "again, <PLAYER>?"
+	
+	para "I know what"
+	line "you're thinking:"
+	
+	para "Should't he be"
+	line "at the VIRIDIAN"
+	cont "GYM?"
+	
+	para "Well I just had"
+	line "to take some time"
+	cont "off to challenge"
+	cont "the new champion!"
+	
+	para "Besides, what's a"
+	line "VIRIDIAN GYM"
+	cont "LEADER who doesn't"
+	cont "disappear every"
+	cont "now and then?"
+	
+	para "You knew I"
+	line "wouldn't let you"
+	cont "keep that title"
+	cont "forever."
+	
+	para "Tell you what,"
+	line "once I'm champion"
+	cont "again, you can be"
+	cont "the GYM LEADER!"
+	done
+	
+_GaryAfterLossText::
+	text "You win, <PLAYER>."
+	line "You're still the"
+	cont "champion."
+	
+	para "But don't think"
+	line "I'm done yet."
+	
+	para "Me and my #MON"
+	line "will be back even"
+	cont "stronger to"
+	cont "challenge you"
+	cont "again."
+	
+	para "After all the hard"
+	line "work they've done,"
+	cont "my #MON"
+	cont "deserve to win."
+	done 
+	
+_OakAfterWinToPlayerText::
+	text "OAK: Well done,"
+	line "You've defended"
+	cont "your title of"
+	cont "#MON LEAGUE"
+	cont "champion!"
+	
+	para "You and your"
+	line "@"
+	text_ram wcd6d
+	text " have"
+	cont "accomplished so"
+	cont "much together."
+	done
+	
+_OakAfterWinToGaryText::
+	text "OAK: <RIVAL>!"
+	line "You've grown so"
+	cont "much through your"
+	cont "rivalry with"
+	cont "<PLAYER>."
+	
+	para "You finally"
+	line "learned to trust"
+	cont "and care for"
+	cont "your #MON."
+	
+	para "You have become a"
+	line "truly exceptional"
+	cont "#MON trainer."
+	
+	para "And so has <PLAYER>."
+	line "The two of you"
+	cont "have pushed each"
+	cont "other to reach"
+	cont "new heights!"
+	done
+	
+_OakAfterWinVictoryText::
+	text "OAK: The rivalry"
+	line "between you two"
+	cont "will last for"
+	cont "years to come."
+	
+	para "I can't wait to"
+	line "see what else you"
+	cont "two can achieve!"
+	
+	para "With each other,"
+	line "and with your"
+	cont "#MON, anything"
+	cont "is possible!"
+	
+	para "<PLAYER>!"
+	
+	para "Come with me!"
+	done
+	
+_GaryRematchDefeatedText::
+	text "You know, I"
+	line "really thought I"
+	cont "had you this time."
+	prompt
+	
+_GaryRematchVictoryText::
+	text "<RIVAL>: I didn't"
+	line "know you wanted to"
+	cont "be VIRIDIAN GYM"
+	cont "LEADER that bad!"
+	prompt

@@ -23,13 +23,14 @@ MewtwoTrainerHeader:
 
 MewtwoText:
 	text_asm
+	SetEvent EVENT_BATTLE_MEWTWO
 	ld hl, MewtwoTrainerHeader
 	call TalkToTrainer
 	jp TextScriptEnd
 
 MewtwoBattleText:
 	text_far _MewtwoBattleText
-	text_asm
+	text_asm	
 	ld a, MEWTWO
 	call PlayCry
 	call WaitForSoundToFinish

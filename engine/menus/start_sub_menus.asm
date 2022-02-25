@@ -132,6 +132,10 @@ StartMenu_Pokemon::
 .fly
 	bit BIT_THUNDERBADGE, a
 	jp z, .newBadgeRequired
+	ld a, HM_FLY
+	ld [wLastFieldMoveID], a
+	callfar HasHM
+	jp z, .newHMRequired
 	call CheckIfInOutsideMap
 	jr z, .canFly
 	ld a, [wWhichPokemon]
@@ -152,6 +156,10 @@ StartMenu_Pokemon::
 .cut
 	bit BIT_CASCADEBADGE, a
 	jp z, .newBadgeRequired
+	ld a, HM_CUT
+	ld [wLastFieldMoveID], a
+	callfar HasHM
+	jp z, .newHMRequired
 	predef UsedCut
 	ld a, [wActionResultOrTookBattleTurn]
 	and a
@@ -160,6 +168,10 @@ StartMenu_Pokemon::
 .surf
 	bit BIT_SOULBADGE, a
 	jp z, .newBadgeRequired
+	ld a, HM_SURF
+	ld [wLastFieldMoveID], a
+	callfar HasHM
+	jp z, .newHMRequired
 	farcall IsSurfingAllowed
 	ld hl, wd728
 	bit 1, [hl]
@@ -177,12 +189,20 @@ StartMenu_Pokemon::
 .strength
 	bit BIT_RAINBOWBADGE, a
 	jp z, .newBadgeRequired
+	ld a, HM_STRENGTH
+	ld [wLastFieldMoveID], a
+	callfar HasHM
+	jp z, .newHMRequired
 	predef PrintStrengthTxt
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
 .flash
 	bit BIT_BOULDERBADGE, a
 	jp z, .newBadgeRequired
+	ld a, HM_FLASH
+	ld [wLastFieldMoveID], a
+	callfar HasHM
+	jp z, .newHMRequired
 	xor a
 	ld [wMapPalOffset], a
 	ld hl, .flashLightsAreaText
@@ -281,6 +301,16 @@ StartMenu_Pokemon::
 	jp .loop
 .newBadgeRequiredText
 	text_far _NewBadgeRequiredText
+	text_end
+.newHMRequired
+	ld a, [wLastFieldMoveID]
+	ld [wd11e], a
+	call GetItemName
+	ld hl, .newHMRequiredText
+	call PrintText
+	jp .loop
+.newHMRequiredText
+	text_far _NewHMRequiredText
 	text_end
 
 ; writes a blank tile to all possible menu cursor positions on the party menu
@@ -478,6 +508,12 @@ StartMenu_TrainerInfo::
 DrawTrainerInfo:
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $01
+	ld a, [wPlayerGender]
+	and a 
+	jr z, .AreBoy
+	ld de, GreenPicFront
+	lb bc, BANK(GreenPicFront), $01
+.AreBoy
 	predef DisplayPicCenteredOrUpperRight
 	call DisableLCD
 	hlcoord 0, 2

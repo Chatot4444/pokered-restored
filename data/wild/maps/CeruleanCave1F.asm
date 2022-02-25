@@ -17,5 +17,15 @@ ENDC
 	db 53, DITTO
 	end_grass_wildmons
 
-	def_water_wildmons 0 ; encounter rate
+	def_water_wildmons 5 ; encounter rate
+	db 46, KABUTO
+	db 46, OMANYTE
+	db 46, KABUTO
+	db 46, OMANYTE
+	db 49, KABUTO
+	db 49, OMANYTE
+	db 46, OMANYTE
+	db 52, AERODACTYL
+	db 53, AERODACTYL
+	db 53, AERODACTYL
 	end_water_wildmons

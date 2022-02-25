@@ -26,7 +26,7 @@ MoveEffectPointerTable:
 	dw StatModifierDownEffect    ; EVASION_DOWN1_EFFECT
 	dw ConversionEffect          ; CONVERSION_EFFECT
 	dw HazeEffect                ; HAZE_EFFECT
-	dw BideEffect                ; BIDE_EFFECT
+	dw NULL                      ; BIDE_EFFECT
 	dw ThrashPetalDanceEffect    ; THRASH_PETAL_DANCE_EFFECT
 	dw SwitchAndTeleportEffect   ; SWITCH_AND_TELEPORT_EFFECT
 	dw TwoToFiveAttacksEffect    ; TWO_TO_FIVE_ATTACKS_EFFECT
@@ -72,7 +72,7 @@ MoveEffectPointerTable:
 	dw StatModifierDownEffect    ; DEFENSE_DOWN_SIDE_EFFECT
 	dw StatModifierDownEffect    ; SPEED_DOWN_SIDE_EFFECT
 	dw StatModifierDownEffect    ; SPECIAL_DOWN_SIDE_EFFECT
-	dw StatModifierDownEffect    ; unused effect
+	dw StatModifierDownEffect    ; ACCURACY_DOWN_SIDE_EFFECT
 	dw StatModifierDownEffect    ; unused effect
 	dw StatModifierDownEffect    ; unused effect
 	dw StatModifierDownEffect    ; unused effect
@@ -87,4 +87,10 @@ MoveEffectPointerTable:
 	dw LeechSeedEffect           ; LEECH_SEED_EFFECT
 	dw SplashEffect              ; SPLASH_EFFECT
 	dw DisableEffect             ; DISABLE_EFFECT
+	dw AncientpowerEffect        ; ANCIENTPOWER_EFFECT
+	dw TriAttackEffect           ; TRI_ATTACK_EFFECT
+	dw GrowthEffect				 ; GROWTH_EFFECT
+	dw ElementalPunchEffect     ; PHYS_BURN_SIDE_EFFECT1     
+	dw ElementalPunchEffect		 ; PHYS_FREEZE_SIDE_EFFECT 
+	dw ElementalPunchEffect		 ; PHYS_PARALYZE_SIDE_EFFECT1 
 	assert_table_length NUM_MOVE_EFFECTS

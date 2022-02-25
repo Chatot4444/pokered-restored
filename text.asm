@@ -278,3 +278,10 @@ INCLUDE "data/pokemon/dex_text.asm"
 SECTION "Move Names", ROMX
 
 INCLUDE "data/moves/names.asm"
+
+SECTION "Pokédex Text 2", ROMX
+
+INCLUDE "data/pokemon/dex_text2.asm"
+INCLUDE "text/move_relearner.asm"
+INCLUDE "text/move_deleter.asm"
+INCLUDE "text/TowerGrounds.asm"

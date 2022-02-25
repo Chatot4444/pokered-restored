@@ -56,12 +56,69 @@ CeladonCityText5:
 	ld hl, ReceivedTM41Text
 	call PrintText
 	SetEvent EVENT_GOT_TM41
+	ld hl, TM41ExplanationText
+	call PrintText
 	jr .Done
 .asm_7053f
-	ld hl, TM41ExplanationText
+	ld hl, .Text1
+	call PrintText
+	ld a, MONEY_BOX
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jp nz, .choseNo
+	ldh [hMoney], a
+	ldh [hMoney + 2], a
+	ld a, $20
+	ldh [hMoney + 1], a
+	call HasEnoughMoney
+	jr nc, .enoughMoney
+	ld hl, .NoMoneyText
+	jr .printText
+.enoughMoney
+	lb bc, TM_SOFTBOILED, 1
+	call GiveItem
+	jr nc, .bag_full
+	xor a
+	ld [wPriceTemp], a
+	ld [wPriceTemp + 2], a
+	ld a, $20
+	ld [wPriceTemp + 1], a
+	ld hl, wPriceTemp + 2
+	ld de, wPlayerMoney + 2
+	ld c, $3
+	predef SubBCDPredef
+	ld a, MONEY_BOX
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	ld hl, ReceivedTM41Text
+	call PrintText
+	jr .Done
+.choseNo
+	ld hl, .RefuseText
+	jr .printText
+.printText
 	call PrintText
 .Done
 	jp TextScriptEnd
+	
+.bag_full
+	ld hl, TM41NoRoomText
+	jr .printText
+
+.Text1
+	text_far _SoftboiledText1
+	text_end
+
+.RefuseText
+	text_far _CeladonCityNoText
+	text_end
+
+.NoMoneyText
+	text_far _CeladonCityNoMoneyText
+	text_end
 
 TM41PreText:
 	text_far _TM41PreText

@@ -21,6 +21,7 @@ ViridianForest_TextPointers:
 	dw PickUpItemText
 	dw PickUpItemText
 	dw ViridianForestText8
+	dw BoulderText
 	dw ViridianForestText9
 	dw ViridianForestText10
 	dw ViridianForestText11

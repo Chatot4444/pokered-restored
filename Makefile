@@ -46,6 +46,7 @@ blue_debug: pokeblue_debug.gbc
 
 clean: tidy
 	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
+	find audio/pikachu_cries \( -iname '*.pcm' \) -delete
 
 tidy:
 	rm -f $(roms) $(pokered_obj) $(pokeblue_obj) $(pokeblue_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
@@ -100,9 +101,9 @@ pokered_pad        = 0x00
 pokeblue_pad       = 0x00
 pokeblue_debug_pad = 0xff
 
-pokered_opt        = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
-pokeblue_opt       = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
-pokeblue_debug_opt = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
+pokered_opt        = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
+pokeblue_opt       = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
+pokeblue_debug_opt = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
 
 %.gbc: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -d -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
@@ -150,3 +151,10 @@ gfx/trade/game_boy.2bpp: tools/gfx += --remove-duplicates
 
 %.pic: %.2bpp
 	tools/pkmncompress $< $@
+
+### Catch-all audio rules
+
+%.wav: ;
+
+%.pcm: %.wav
+	tools/pcm $< $@

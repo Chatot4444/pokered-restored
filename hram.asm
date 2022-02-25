@@ -399,4 +399,10 @@ hJoyInput:: db
 
 hDisableJoypadPolling:: db
 
-	ds 5
+hLCDCPointer:: db
+
+hRGB:: db   ; 3 bytes, used to store color RGB color values for color correction
+
+	ds 2
+
+hGBC:: db

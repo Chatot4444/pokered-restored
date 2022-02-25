@@ -34,6 +34,7 @@ SaffronGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw SaffronGymScript3
+	dw SaffronGymScript4
 
 SaffronGymScript3:
 	ld a, [wIsInBattle]
@@ -43,20 +44,20 @@ SaffronGymScript3:
 	ld [wJoyIgnore], a
 
 SaffronGymText_5d068:
-	ld a, $a
+	ld a, $C
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_SABRINA
 	lb bc, TM_PSYWAVE, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $b
+	ld a, $D
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM46
 	jr .gymVictory
 .BagFull
-	ld a, $c
+	ld a, $E
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -80,9 +81,11 @@ SaffronGym_TextPointers:
 	dw SaffronGymText7
 	dw SaffronGymText8
 	dw SaffronGymText9
-	dw SaffronGymText10
-	dw SaffronGymText11
-	dw SaffronGymText12
+	dw SaffronGymTextA
+	dw SaffronGymTextB
+	dw SaffronGymTextC
+	dw SaffronGymTextD
+	dw SaffronGymTextE
 
 SaffronGymTrainerHeader0:
 	trainer EVENT_BEAT_SAFFRON_GYM_TRAINER_0, 3, SaffronGymBattleText1, SaffronGymEndBattleText1, SaffronGymAfterBattleText1
@@ -147,17 +150,17 @@ SaffronGymText_5d16e:
 	text_far _SaffronGymText_5d16e
 	text_end
 
-SaffronGymText10:
+SaffronGymTextC:
 	text_far _SaffronGymText_5d173
 	text_end
 
-SaffronGymText11:
+SaffronGymTextD:
 	text_far ReceivedTM46Text
 	sound_get_item_1
 	text_far _TM46ExplanationText
 	text_end
 
-SaffronGymText12:
+SaffronGymTextE:
 	text_far _TM46NoRoomText
 	text_end
 
@@ -306,4 +309,71 @@ SaffronGymEndBattleText7:
 
 SaffronGymAfterBattleText7:
 	text_far _SaffronGymAfterBattleText7
+	text_end
+
+SaffronGymTextA:
+	text_asm
+	ld hl, SaffronGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, SaffronGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, SaffronGymText_RematchWin
+	ld de, SaffronGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $6
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wSaffronGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, SaffronGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+SaffronGymScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, SaffronGymText_5d048
+	ld a, $f0
+	ld [wJoyIgnore], a
+SaffronGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_SABRINA2
+	ld a, $B
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp SaffronGymText_5d048
+	
+SaffronGymText_Rematch:
+	text_far _SaffronGymText_Rematch
+	text_end
+
+SaffronGymText_RematchConfirm:
+	text_far _SaffronGymText_RematchConfirm
+	text_end
+
+SaffronGymText_RematchCancel:
+	text_far _SaffronGymText_RematchCancel
+	text_end
+	
+SaffronGymText_RematchWin:
+	text_far _SaffronGymText_RematchWin
+	text_end
+	
+SaffronGymTextB:
+	text_far _SaffronGymText_AfterWin
 	text_end

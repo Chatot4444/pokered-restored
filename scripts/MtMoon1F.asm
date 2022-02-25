@@ -26,7 +26,9 @@ MtMoon1F_TextPointers:
 	dw PickUpItemText
 	dw PickUpItemText
 	dw PickUpItemText
+	dw BoulderText
 	dw MtMoon1Text14
+	
 
 MtMoon1TrainerHeader0:
 	trainer EVENT_BEAT_MT_MOON_1_TRAINER_0, 2, MtMoon1BattleText2, MtMoon1EndBattleText2, MtMoon1AfterBattleText2

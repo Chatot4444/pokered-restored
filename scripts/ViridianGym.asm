@@ -29,6 +29,7 @@ ViridianGym_ScriptPointers:
 	dw EndTrainerBattle
 	dw ViridianGymScript3
 	dw ViridianGymScript4
+	dw ViridianGymScript5
 
 ViridianGymScript0:
 	ld a, [wYCoord]
@@ -134,20 +135,20 @@ ViridianGymScript3:
 	ld a, $f0
 	ld [wJoyIgnore], a
 ViridianGymScript3_74995:
-	ld a, $c
+	ld a, $d
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_VIRIDIAN_GYM_GIOVANNI
 	lb bc, TM_FISSURE, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $d
+	ld a, $e
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM27
 	jr .gymVictory
 .BagFull
-	ld a, $e
+	ld a, $f
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -176,10 +177,11 @@ ViridianGym_TextPointers:
 	dw ViridianGymText8
 	dw ViridianGymText9
 	dw ViridianGymText10
-	dw PickUpItemText
-	dw ViridianGymText12
-	dw ViridianGymText13
-	dw ViridianGymText14
+	dw ViridianGymTextB
+	dw ViridianGymTextC
+	dw ViridianGymTextD
+	dw ViridianGymTextE
+	dw ViridianGymTextF
 
 ViridianGymTrainerHeader0:
 	trainer EVENT_BEAT_VIRIDIAN_GYM_TRAINER_0, 4, ViridianGymBattleText1, ViridianGymEndBattleText1, ViridianGymAfterBattleText1
@@ -255,11 +257,11 @@ ViridianGymText_74ad9:
 	text_waitbutton
 	text_end
 
-ViridianGymText12:
-	text_far _ViridianGymText12
+ViridianGymTextD:
+	text_far _ViridianGymTextD
 	text_end
 
-ViridianGymText13:
+ViridianGymTextE:
 	text_far _ReceivedTM27Text
 	sound_get_item_1
 
@@ -267,7 +269,7 @@ TM27ExplanationText:
 	text_far _TM27ExplanationText
 	text_end
 
-ViridianGymText14:
+ViridianGymTextF:
 	text_far _TM27NoRoomText
 	text_end
 
@@ -434,4 +436,71 @@ ViridianGymText_74bd4:
 
 ViridianGymText_74bd9:
 	text_far _ViridianGymText_74bd9
+	text_end
+
+ViridianGymTextB:
+	text_asm
+	ld hl, ViridianGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, ViridianGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, ViridianGymText_RematchWin
+	ld de, ViridianGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $8
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $5
+	ld [wViridianGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, ViridianGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+ViridianGymScript5:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, ViridianGymScript_748d6
+	ld a, $f0
+	ld [wJoyIgnore], a
+ViridianGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_VIRIDIAN_GYM_RIVAL
+	ld a, $C
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp ViridianGymScript_748d6
+	
+ViridianGymText_Rematch:
+	text_far _ViridianGymText_Rematch
+	text_end
+
+ViridianGymText_RematchConfirm:
+	text_far _ViridianGymText_RematchConfirm
+	text_end
+
+ViridianGymText_RematchCancel:
+	text_far _ViridianGymText_RematchCancel
+	text_end
+	
+ViridianGymText_RematchWin:
+	text_far _ViridianGymText_RematchWin
+	text_end
+	
+ViridianGymTextC:
+	text_far _ViridianGymText_AfterWin
 	text_end

@@ -40,3 +40,34 @@ _LoreleiDontRunAwayText::
 	text "Someone's voice:"
 	line "Don't run away!"
 	done
+
+_LoreleiBeforeRematchText::
+	text "I hope you"
+	line "weren't expecting"
+	cont "a warm welcome,"
+	cont "Champion <PLAYER>."
+	
+	para "We ELITE FOUR"
+	line "are the first in"
+	cont "line to take that"
+	cont "title from you."
+	
+	para "Prove to me that"
+	line "you deserve to be"
+	cont "the #MON"
+	cont "LEAGUE champion!"
+	done
+	
+_LoreleiEndRematchText::
+	text "Fine."
+	line "You've shown your"
+	cont "worth."
+	prompt
+	
+_LoreleiAfterRematchText::
+	text "You've proven"
+	line "yourself to me,"
+	cont "but the other"
+	cont "three are eager"
+	cont "to defeat you."
+	done

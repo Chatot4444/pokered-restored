@@ -63,6 +63,7 @@ VermilionDock_1db9b:
 	ldh [hAutoBGTransferEnabled], a
 	ld [wSSAnneSmokeDriftAmount], a
 	ldh [rOBP1], a
+	call UpdateGBCPal_OBP1
 	ld a, 88
 	ld [wSSAnneSmokeX], a
 	ld hl, wMapViewVRAMPointer
@@ -173,6 +174,7 @@ VermilionDock_1dc7c:
 	jr nz, .asm_1dc86
 	ld a, h
 	ldh [rSCX], a
+	ldh [hSCX], a
 .asm_1dc8e
 	ldh a, [rLY]
 	cp h

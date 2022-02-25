@@ -1,6 +1,4 @@
-_RocketHideout1EndBattleText6::
-	text "Why...?@"
-	text_end
+
 
 _RocketHideout1BattleText2::
 	text "Who are you? How"
@@ -47,6 +45,12 @@ _RocketHideout1AfterBattleTxt4::
 	cont "where it is!"
 	done
 
+_RocketHideout1AfterBattleTxt4After::
+	text "TEAM ROCKET was"
+	line "like a family"
+	cont "to me."
+	done
+
 _RocketHideout1BattleText5::
 	text "Why did you come"
 	line "here?"
@@ -63,12 +67,38 @@ _RocketHideout1AfterBattleTxt5::
 	cont "to see my BOSS!"
 	done
 
+_RocketHideout1AfterBattleTxt5After::
+	text "It can't end"
+	line "like this..."
+	done
+
 _RocketHideout1BattleText6::
 	text "Are you lost, you"
 	line "little rat?"
 	done
 
+_RocketHideout1EndBattleText6::
+	text "Why...?@"
+	text_end
+	
 _RocketHideout1AfterBattleTxt6::
 	text "Uh-oh, that fight"
 	line "opened the door!"
+	done
+
+_RocketHideout1Text8::
+	text "The box is full"
+	line "of coins."
+	
+	para "Take some?"
+	prompt
+	
+_RocketHideout1CoinText::
+	text "You filled your"
+	line "COIN CASE!"
+	done
+	
+_RocketHideout1Text8NoCoin::
+	text "The box is full"
+	line "of coins."
 	done

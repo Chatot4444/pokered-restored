@@ -4,14 +4,12 @@ INCLUDE "constants.asm"
 SECTION "bank1", ROMX
 
 INCLUDE "data/sprites/facings.asm"
-INCLUDE "engine/events/black_out.asm"
-INCLUDE "data/pokemon/mew.asm"
-INCLUDE "engine/battle/safari_zone.asm"
+
 INCLUDE "engine/movie/title.asm"
 INCLUDE "engine/pokemon/load_mon_data.asm"
 INCLUDE "data/items/prices.asm"
 INCLUDE "data/items/names.asm"
-INCLUDE "data/text/unused_names.asm"
+;INCLUDE "data/text/unused_names.asm"
 INCLUDE "engine/gfx/sprite_oam.asm"
 INCLUDE "engine/gfx/oam_dma.asm"
 INCLUDE "engine/link/print_waiting_text.asm"
@@ -26,7 +24,7 @@ INCLUDE "engine/overworld/special_warps.asm"
 INCLUDE "engine/debug/debug_party.asm"
 INCLUDE "engine/menus/naming_screen.asm"
 INCLUDE "engine/movie/oak_speech/oak_speech2.asm"
-INCLUDE "engine/items/subtract_paid_money.asm"
+
 INCLUDE "engine/menus/swap_items.asm"
 INCLUDE "engine/events/pokemart.asm"
 INCLUDE "engine/pokemon/learn_move.asm"
@@ -39,7 +37,7 @@ INCLUDE "engine/menus/text_box.asm"
 INCLUDE "engine/battle/move_effects/drain_hp.asm"
 INCLUDE "engine/menus/players_pc.asm"
 INCLUDE "engine/pokemon/remove_mon.asm"
-INCLUDE "engine/events/display_pokedex.asm"
+INCLUDE "engine/overworld/field_moves.asm"
 
 
 SECTION "bank3", ROMX
@@ -76,7 +74,7 @@ INCLUDE "engine/events/hidden_objects/book_or_sculpture.asm"
 INCLUDE "engine/events/hidden_objects/elevator.asm"
 INCLUDE "engine/events/hidden_objects/town_map.asm"
 INCLUDE "engine/events/hidden_objects/pokemon_stuff.asm"
-
+INCLUDE "engine/events/display_pokedex.asm"
 
 SECTION "Font Graphics", ROMX
 
@@ -94,11 +92,8 @@ INCLUDE "engine/menus/start_sub_menus.asm"
 INCLUDE "engine/items/tms.asm"
 INCLUDE "engine/battle/end_of_battle.asm"
 INCLUDE "engine/battle/wild_encounters.asm"
-INCLUDE "engine/battle/move_effects/recoil.asm"
-INCLUDE "engine/battle/move_effects/conversion.asm"
-INCLUDE "engine/battle/move_effects/haze.asm"
 INCLUDE "engine/battle/get_trainer_name.asm"
-INCLUDE "engine/math/random.asm"
+
 
 
 SECTION "Battle Engine 2", ROMX
@@ -189,16 +184,9 @@ SECTION "Battle Engine 7", ROMX
 
 INCLUDE "data/moves/moves.asm"
 INCLUDE "data/pokemon/base_stats.asm"
-INCLUDE "data/pokemon/cries.asm"
-INCLUDE "engine/battle/unused_stats_functions.asm"
-INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
-INCLUDE "engine/battle/trainer_ai.asm"
-INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
-INCLUDE "gfx/trade.asm"
+;INCLUDE "data/pokemon/cries.asm"
 INCLUDE "engine/pokemon/evos_moves.asm"
-INCLUDE "engine/battle/move_effects/heal.asm"
-INCLUDE "engine/battle/move_effects/transform.asm"
-INCLUDE "engine/battle/move_effects/reflect_light_screen.asm"
+
 
 
 SECTION "Battle Core", ROMX
@@ -213,6 +201,7 @@ INCLUDE "engine/menus/pokedex.asm"
 INCLUDE "engine/movie/trade.asm"
 INCLUDE "engine/movie/intro.asm"
 INCLUDE "engine/movie/trade2.asm"
+INCLUDE "gfx/trade.asm"
 
 
 SECTION "Pokédex Rating", ROMX
@@ -239,8 +228,13 @@ INCLUDE "engine/predefs.asm"
 SECTION "Battle Engine 8", ROMX
 
 INCLUDE "engine/battle/init_battle_variables.asm"
+INCLUDE "engine/battle/move_effects/heal.asm"
+INCLUDE "engine/battle/move_effects/transform.asm"
+INCLUDE "engine/battle/move_effects/reflect_light_screen.asm"
 INCLUDE "engine/battle/move_effects/paralyze.asm"
-
+INCLUDE "engine/battle/move_effects/recoil.asm"
+INCLUDE "engine/battle/move_effects/conversion.asm"
+INCLUDE "engine/battle/move_effects/haze.asm"
 
 SECTION "Hidden Objects 2", ROMX
 
@@ -314,7 +308,7 @@ INCLUDE "gfx/version.asm"
 
 SECTION "bank1C", ROMX
 
-INCLUDE "engine/movie/splash.asm"
+
 INCLUDE "engine/movie/hall_of_fame.asm"
 INCLUDE "engine/overworld/healing_machine.asm"
 INCLUDE "engine/overworld/player_animations.asm"
@@ -325,6 +319,7 @@ INCLUDE "engine/gfx/mon_icons.asm"
 INCLUDE "engine/events/in_game_trades.asm"
 INCLUDE "engine/gfx/palettes.asm"
 INCLUDE "engine/menus/save.asm"
+
 
 
 SECTION "Itemfinder 1", ROMX
@@ -354,6 +349,29 @@ INCLUDE "gfx/fishing.asm"
 INCLUDE "data/moves/animations.asm"
 INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
-INCLUDE "engine/movie/evolution.asm"
-INCLUDE "engine/overworld/elevator.asm"
+
+
+
+SECTION "we need to make room", ROMX
+
+INCLUDE "engine/gfx/bg_map_attributes.asm"
+INCLUDE "data/sgb/bg_map_attributes.asm"
 INCLUDE "engine/items/tm_prices.asm"
+INCLUDE "engine/overworld/advance_player_sprite.asm"
+INCLUDE "engine/movie/splash.asm"
+INCLUDE "engine/overworld/elevator.asm"
+INCLUDE "engine/movie/evolution.asm"
+
+
+SECTION "we need to make more room", ROMX
+INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
+INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
+INCLUDE "engine/battle/unused_stats_functions.asm"
+INCLUDE "engine/battle/trainer_ai.asm"
+INCLUDE "engine/battle/func_ai.asm"
+INCLUDE "engine/gfx/gamma.asm"
+INCLUDE "data/pokemon/mew.asm"
+INCLUDE "engine/battle/safari_zone.asm"
+INCLUDE "engine/items/subtract_paid_money.asm"
+INCLUDE "engine/events/black_out.asm"
+INCLUDE "engine/math/random.asm"

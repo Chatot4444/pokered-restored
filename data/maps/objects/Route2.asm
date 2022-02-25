@@ -6,6 +6,7 @@ Route2_Object:
 	warp  3, 11, 1, VIRIDIAN_FOREST_NORTH_GATE
 	warp 15, 19, 0, ROUTE_2_TRADE_HOUSE
 	warp 16, 35, 1, ROUTE_2_GATE
+	warp 17, 35, 1, ROUTE_2_GATE
 	warp 15, 39, 2, ROUTE_2_GATE
 	warp  3, 43, 2, VIRIDIAN_FOREST_SOUTH_GATE
 

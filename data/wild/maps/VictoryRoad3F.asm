@@ -8,7 +8,7 @@ PlateauMons3:
 	db 45, ONIX
 	db 43, GRAVELER
 	db 41, GOLBAT
-	db 42, MACHOKE
+	db 42, RHYHORN
 	db 45, MACHOKE
 	end_grass_wildmons
 

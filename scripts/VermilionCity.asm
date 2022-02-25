@@ -185,8 +185,21 @@ VermilionCityText3:
 	ld [wVermilionCityCurScript], a
 	jr .end
 .shipHasDeparted
+	CheckEvent EVENT_BATTLE_MEWTWO
+	jr nz, .getMew
+.alreadyGotMew
 	ld hl, SSAnneNotHereText
 	call PrintText
+	jr .end
+.getMew
+	CheckEvent EVENT_GOT_MEW
+	jr nz, .alreadyGotMew
+	ld hl, MewText
+	call PrintText
+	lb bc, MEW, 40
+	call GivePokemon
+	jr nc, .end
+	SetEvent EVENT_GOT_MEW
 .end
 	jp TextScriptEnd
 
@@ -254,4 +267,8 @@ VermilionCityText12:
 
 VermilionCityText13:
 	text_far _VermilionCityText13
+	text_end
+
+MewText:
+	text_far _MewText
 	text_end

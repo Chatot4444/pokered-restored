@@ -414,3 +414,20 @@ ENDM
 notetype2: MACRO
 	db $f8, \1
 ENDM
+
+pikacry_def: MACRO
+\1_id::
+	dba \1
+ENDM
+
+dpikacry: MACRO
+	db (\1_id - PikachuCriesPointerTable) / 3
+ENDM
+
+ldpikacry: MACRO
+	ld \1, (\2_id - PikachuCriesPointerTable) / 3
+ENDM
+
+pikacry: MACRO
+	ldpikacry a, \1
+ENDM

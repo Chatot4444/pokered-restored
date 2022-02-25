@@ -165,7 +165,9 @@ TryingToLearn:
 	ld a, [hl]
 	push af
 	push bc
+	push hl
 	call IsMoveHM
+	pop hl
 	pop bc
 	pop de
 	ld a, d
@@ -175,10 +177,30 @@ TryingToLearn:
 	and a
 	ret
 .hm
+	push hl
+	push af
+	ld hl, wPartyMons
+	ld bc, wPartyMon2 - wPartyMon1
+	ld a, [wWhichPokemon]
+	call AddNTimes
+	ld a, [hl]
+	ld hl, MonFieldMoves
+	add l
+	ld l, a
+	adc h
+	sub l
+	ld h, a
+	ld b, [hl]
+	pop af
+	pop hl
+	pop hl
+	cp b
+	ret z
+	push hl
 	ld hl, HMCantDeleteText
 	call PrintText
 	pop hl
-	jr .loop
+	jp .loop
 .cancel
 	scf
 	ret

@@ -42,3 +42,33 @@ _AgathaDontRunAwayText::
 	text "Someone's voice:"
 	line "Don't run away!"
 	done
+
+_AgathaBeforeRematchText::
+	text "Oh-ho! It's you"
+	line "again, <PLAYER>."
+	
+	para "I've seen many"
+	line "champions walk"
+	cont "through these"
+	cont "halls, child."
+	
+	para "Don't think that"
+	line "you've impressed"
+	cont "me yet!"
+	done
+
+_AgathaEndRematchText::
+	text "Not bad,"
+	line "Champion."
+	prompt
+	
+_AgathaAfterRematchText::
+	text "I must admit,"
+	line "I've seen worse" 
+	cont "champions. But"
+	cont "you don't have"
+	cont "time to hear"
+	cont "about that."
+	done	
+
+

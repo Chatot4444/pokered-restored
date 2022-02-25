@@ -4,12 +4,12 @@ Route17Mons:
 	db 22, SPEAROW
 	db 25, RATICATE
 	db 24, DODUO
-	db 27, RATICATE
+	db 27, PONYTA
 	db 26, DODUO
 	db 28, DODUO
-	db 29, RATICATE
+	db 29, PONYTA
 	db 25, FEAROW
-	db 27, FEAROW
+	db 25, EEVEE
 	end_grass_wildmons
 
 	def_water_wildmons 0 ; encounter rate

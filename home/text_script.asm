@@ -144,6 +144,13 @@ DisplayPokemartDialogue::
 	pop hl
 	inc hl
 	call LoadItemList
+	ld a, [wUnusedCC5B]
+	cp 1
+	jr nz, .noBadge
+	call LoadMoreItemList
+	xor a
+	ld [wUnusedCC5B], a
+.noBadge
 	ld a, PRICEDITEMLISTMENU
 	ld [wListMenuID], a
 	homecall DisplayPokemartDialogue_
@@ -169,6 +176,19 @@ LoadItemList::
 	jr nz, .loop
 	ret
 
+LoadMoreItemList::
+	dec de
+.loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	cp $ff
+	jr nz, .loop
+	ld a, [wItemList]
+	dec a
+	ld [wItemList], a
+	ret
+	
 DisplayPokemonCenterDialogue::
 ; zeroing these doesn't appear to serve any purpose
 	xor a

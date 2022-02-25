@@ -57,7 +57,7 @@ MapHSPointers:
 	dw ViridianForestHS
 	dw Museum1FHS
 	dw NoHS
-	dw NoHS
+	dw PewterGymHS
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -68,7 +68,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw NoHS
-	dw NoHS
+	dw CeruleanGymHS
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -95,7 +95,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw NoHS
-	dw NoHS
+	dw VermilionGymHS
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -116,7 +116,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw NoHS
-	dw NoHS
+	dw LancesRoomHS
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -137,7 +137,7 @@ MapHSPointers:
 	dw NoHS
 	dw CeladonMansionRoofHouseHS
 	dw NoHS
-	dw NoHS
+	dw CeladonGymHS
 	dw GameCornerHS
 	dw NoHS
 	dw NoHS
@@ -160,7 +160,7 @@ MapHSPointers:
 	dw NoHS
 	dw WardensHouseHS
 	dw NoHS
-	dw NoHS
+	dw FuchsiaGymHS
 	dw NoHS
 	dw SeafoamIslandsB1FHS
 	dw SeafoamIslandsB2FHS
@@ -169,7 +169,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw PokemonMansion1FHS
-	dw NoHS
+	dw CinnabarGymHS
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -181,7 +181,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw FightingDojoHS
-	dw NoHS
+	dw SaffronGymHS
 	dw NoHS
 	dw NoHS
 	dw SilphCo1FHS
@@ -244,13 +244,13 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw NoHS
-	dw NoHS
-	dw NoHS
-	dw NoHS
+	dw ViridianWildsHS
+	dw MtMoonSummitHS
+	dw TowerGroundsHS
 	dw UnusedMapF4HS
-	dw NoHS
-	dw NoHS
-	dw NoHS
+	dw LoreleisRoomHS
+	dw BrunosRoomHS
+	dw AgathasRoomHS
 	assert_table_length NUM_MAPS
 	dw -1 ; end
 
@@ -330,9 +330,12 @@ OaksLabHS:
 	db OAKS_LAB, $08, HIDE
 ViridianGymHS:
 	db VIRIDIAN_GYM, $01, SHOW
-	db VIRIDIAN_GYM, $0B, SHOW
+	db VIRIDIAN_GYM, $0B, HIDE
 Museum1FHS:
 	db MUSEUM_1F, $05, SHOW
+PewterGymHS:
+	db PEWTER_GYM, $01, SHOW
+	db PEWTER_GYM, $04, HIDE
 CeruleanCaveHS:
 	db CERULEAN_CAVE_1F, $01, SHOW
 	db CERULEAN_CAVE_1F, $02, SHOW
@@ -359,18 +362,31 @@ MrFujisHouseHS:
 	db MR_FUJIS_HOUSE, $05, HIDE
 CeladonMansionRoofHouseHS:
 	db CELADON_MANSION_ROOF_HOUSE, $02, SHOW
+CeladonGymHS:
+	db CELADON_GYM, $01, SHOW
+	db CELADON_GYM, $09, HIDE
 GameCornerHS:
 	db GAME_CORNER, $0B, SHOW
 WardensHouseHS:
 	db WARDENS_HOUSE, $02, SHOW
+FuchsiaGymHS:
+	db FUCHSIA_GYM, $01, SHOW
+	db FUCHSIA_GYM, $09, HIDE
 PokemonMansion1FHS:
 	db POKEMON_MANSION_1F, $02, SHOW
 	db POKEMON_MANSION_1F, $03, SHOW
+CinnabarGymHS:
+	db CINNABAR_GYM, $01, SHOW
+	db CINNABAR_GYM, $0A, HIDE
 FightingDojoHS:
 	db FIGHTING_DOJO, $06, SHOW
 	db FIGHTING_DOJO, $07, SHOW
+SaffronGymHS:
+	db SAFFRON_GYM, $01, SHOW
+	db SAFFRON_GYM, $0A, HIDE
 SilphCo1FHS:
 	db SILPH_CO_1F, $01, HIDE
+	db SILPH_CO_1F, $02, HIDE
 PowerPlantHS:
 	db POWER_PLANT, $01, SHOW
 	db POWER_PLANT, $02, SHOW
@@ -413,6 +429,12 @@ MtMoonB2FHS:
 	db MT_MOON_B2F, $07, SHOW
 	db MT_MOON_B2F, $08, SHOW
 	db MT_MOON_B2F, $09, SHOW
+CeruleanGymHS:
+	db CERULEAN_GYM, $01, SHOW
+	db CERULEAN_GYM, $05, HIDE
+VermilionGymHS:
+	db VERMILION_GYM, $01, SHOW
+	db VERMILION_GYM, $06, HIDE
 SSAnne2FHS:
 	db SS_ANNE_2F, $02, HIDE
 SSAnne1FRoomsHS:
@@ -446,6 +468,7 @@ RocketHideoutB4FHS:
 	db ROCKET_HIDEOUT_B4F, $07, SHOW
 	db ROCKET_HIDEOUT_B4F, $08, HIDE
 	db ROCKET_HIDEOUT_B4F, $09, HIDE
+	db ROCKET_HIDEOUT_B4F, $0A, HIDE
 SilphCo2FHS:
 	db SILPH_CO_2F, $01, SHOW
 	db SILPH_CO_2F, $02, SHOW
@@ -544,6 +567,9 @@ CeruleanCaveB1FHS:
 VictoryRoad1FHS:
 	db VICTORY_ROAD_1F, $03, SHOW
 	db VICTORY_ROAD_1F, $04, SHOW
+LancesRoomHS:
+	db LANCES_ROOM, $01, SHOW
+	db LANCES_ROOM, $02, HIDE
 ChampionsRoomHS:
 	db CHAMPIONS_ROOM, $02, HIDE
 SeafoamIslands1FHS:
@@ -564,5 +590,20 @@ SeafoamIslandsB4FHS:
 	db SEAFOAM_ISLANDS_B4F, $01, HIDE
 	db SEAFOAM_ISLANDS_B4F, $02, HIDE
 	db SEAFOAM_ISLANDS_B4F, $03, SHOW
+LoreleisRoomHS:
+	db LORELEIS_ROOM, $01, SHOW
+	db LORELEIS_ROOM, $02, HIDE
+BrunosRoomHS:
+	db BRUNOS_ROOM, $01, SHOW
+	db BRUNOS_ROOM, $02, HIDE
+AgathasRoomHS:
+	db AGATHAS_ROOM, $01, SHOW
+	db AGATHAS_ROOM, $02, HIDE
+ViridianWildsHS:
+	db VIRIDIAN_WILDS, $01, SHOW
+MtMoonSummitHS:
+	db MT_MOON_SUMMIT, $01, SHOW
+TowerGroundsHS:
+	db TOWER_GROUNDS, $01, SHOW
 	db $FF, $01, SHOW ; end
 	assert_table_length NUM_HS_OBJECTS + 1

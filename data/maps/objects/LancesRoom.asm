@@ -10,5 +10,5 @@ LancesRoom_Object:
 
 	def_objects
 	object SPRITE_LANCE, 6, 1, STAY, DOWN, 1, OPP_LANCE, 1
-
+	object SPRITE_LANCE, 6, 1, STAY, DOWN, 2, OPP_LANCE, 2
 	def_warps_to LANCES_ROOM

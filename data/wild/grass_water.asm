@@ -241,9 +241,9 @@ WildDataPointers:
 	dw NoMons
 	dw NoMons
 	dw NoMons
-	dw NoMons
-	dw NoMons
-	dw NoMons
+	dw ViridianWildsMons
+	dw MtMoonSummitMons
+	dw TowerGroundsMons
 	dw NoMons
 	dw NoMons
 	dw NoMons
@@ -321,3 +321,6 @@ INCLUDE "data/wild/maps/VictoryRoad2F.asm"
 INCLUDE "data/wild/maps/VictoryRoad3F.asm"
 INCLUDE "data/wild/maps/VictoryRoad1F.asm"
 INCLUDE "data/wild/maps/DiglettsCave.asm"
+INCLUDE "data/wild/maps/ViridianWilds.asm"
+INCLUDE "data/wild/maps/MtMoonSummit.asm"
+INCLUDE "data/wild/maps/TowerGrounds.asm"

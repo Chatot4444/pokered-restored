@@ -82,10 +82,31 @@ _ViridianCityText_191ca::
 	cont "have this TM."
 	prompt
 
+_DreamEaterText1::
+	text "This is still"
+	line "spooky, but I"
+	cont "need some money."
+	
+	para "Do you want"
+	line "another TM28"
+	cont "for just ¥2000?"
+	done
+
 _ReceivedTM42Text::
 	text "<PLAYER> received"
 	line "TM42!@"
 	text_end
+
+_DreamEaterNoText::
+	text "But I need money"
+	line "to hire a spirit"
+	cont "medium!"
+	done
+
+_DreamEaterNoMoneyText::
+	text "You don't have"
+	line "enough money."
+	done
 
 _TM42Explanation::
 	text "TM42 contains"

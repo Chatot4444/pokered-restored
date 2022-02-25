@@ -81,9 +81,9 @@ BattleTransitions:
 	dw BattleTransition_Split             ; %111
 
 GetBattleTransitionID_WildOrTrainer:
-	ld a, [wCurOpponent]
-	cp OPP_ID_OFFSET
-	jr nc, .trainer
+	ld a, [wIsTrainerBattle]
+	and a
+	jr nz, .trainer
 	res 0, c
 	ret
 .trainer
@@ -163,6 +163,9 @@ BattleTransition_BlackScreen:
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
+	call UpdateGBCPal_BGP
+	call UpdateGBCPal_OBP0
+	call UpdateGBCPal_OBP1
 	ret
 
 ; for non-dungeon trainer battles
@@ -326,6 +329,7 @@ BattleTransition_FlashScreen_:
 	cp 1
 	jr z, .done
 	ldh [rBGP], a
+	call UpdateGBCPal_BGP
 	ld c, 2
 	call DelayFrames
 	jr .loop

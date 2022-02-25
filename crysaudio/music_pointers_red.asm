@@ -48,3 +48,5 @@ Music:
 	dba Music_MeetEvilTrainer
 	dba Music_MeetFemaleTrainer
 	dba Music_MeetMaleTrainer
+	dba Music_GalarBirdBattle
+	dba Music_KantoBirdBattle

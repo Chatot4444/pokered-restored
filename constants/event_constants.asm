@@ -39,6 +39,7 @@
 	const EVENT_BEAT_VIRIDIAN_GYM_TRAINER_5
 	const EVENT_BEAT_VIRIDIAN_GYM_TRAINER_6
 	const EVENT_BEAT_VIRIDIAN_GYM_TRAINER_7
+	const EVENT_BEAT_VIRIDIAN_GYM_RIVAL
 
 ; Pewter City events
 	const_next $68
@@ -49,6 +50,7 @@
 	const_skip 3
 	const EVENT_GOT_TM34
 	const EVENT_BEAT_BROCK
+	const EVENT_BEAT_BROCK2
 
 ; Cerulean City events
 	const_next $98
@@ -62,6 +64,7 @@
 	const EVENT_GOT_TM11
 	const EVENT_BEAT_MISTY
 	const EVENT_GOT_BICYCLE
+	const EVENT_BEAT_MISTY2
 
 ; Lavender Town events
 	const_next $F0 - 2
@@ -94,7 +97,9 @@
 	const EVENT_BEAT_POKEMONTOWER_7_TRAINER_2
 	const_skip 3
 	const EVENT_RESCUED_MR_FUJI_2
-	const_skip 16
+	const_skip 14
+	const EVENT_BEAT_MOLTRESG
+	const_skip
 	const EVENT_GOT_POKE_FLUTE
 
 ; Vermilion City events
@@ -104,7 +109,8 @@
 	const_skip 4
 	const EVENT_SEEL_FAN_BOAST
 	const EVENT_PIKACHU_FAN_BOAST
-	const_skip 8
+	const_skip 7
+	const EVENT_GOT_MEW
 	const EVENT_2ND_LOCK_OPENED
 	const EVENT_1ST_LOCK_OPENED
 	const EVENT_BEAT_VERMILION_GYM_TRAINER_0
@@ -113,6 +119,7 @@
 	const_skip
 	const EVENT_GOT_TM24
 	const EVENT_BEAT_LT_SURGE
+	const EVENT_BEAT_LT_SURGE2
 
 ; Celadon City events
 	const_next $180
@@ -122,7 +129,8 @@
 	const EVENT_GOT_TM48
 	const EVENT_GOT_TM49
 	const EVENT_GOT_TM18
-	const_skip 24
+	const_skip 23
+	const EVENT_GOT_DIPLOMA
 	const EVENT_GOT_TM21
 	const EVENT_BEAT_ERIKA
 	const EVENT_BEAT_CELADON_GYM_TRAINER_0
@@ -142,7 +150,8 @@
 	const EVENT_1BF ; ???
 	const_skip 32
 	const EVENT_GOT_COIN_CASE
-
+	const EVENT_BEAT_ERIKA2
+	
 ; Fuchsia City events
 	const_next $238
 	const EVENT_GOT_HM04
@@ -159,6 +168,7 @@
 	const EVENT_BEAT_FUCHSIA_GYM_TRAINER_3
 	const EVENT_BEAT_FUCHSIA_GYM_TRAINER_4
 	const EVENT_BEAT_FUCHSIA_GYM_TRAINER_5
+	const EVENT_BEAT_KOGA2
 
 ; Cinnabar Island events
 	const_next $278
@@ -190,6 +200,7 @@
 	const EVENT_GAVE_FOSSIL_TO_LAB
 	const EVENT_LAB_STILL_REVIVING_FOSSIL
 	const EVENT_LAB_HANDING_OVER_FOSSIL_MON
+	const EVENT_BEAT_BLAINE2
 
 ; Saffron City events
 	const_next $340
@@ -217,6 +228,7 @@
 	const EVENT_SILPH_CO_RECEPTIONIST_AT_DESK
 	const_skip 24
 	const EVENT_GOT_TM29
+	const EVENT_BEAT_SABRINA2
 
 ; Route 1 events
 	const_next $3C0
@@ -525,13 +537,15 @@
 
 ; Viridian Forest events
 	const_next $560
-	const_skip 2
+	const EVENT_BEAT_ZAPDOSG
+	const_skip
 	const EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_0
 	const EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_1
 	const EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_2
 
 ; Mt. Moon events
-	const_next $570
+	const_next $56F
+	const EVENT_BEAT_ARTICUNOG
 	const_skip
 	const EVENT_BEAT_MT_MOON_1_TRAINER_0
 	const EVENT_BEAT_MT_MOON_1_TRAINER_1
@@ -613,6 +627,7 @@
 	const EVENT_ROCKET_HIDEOUT_4_DOOR_UNLOCKED
 	const EVENT_ROCKET_DROPPED_LIFT_KEY
 	const EVENT_BEAT_ROCKET_HIDEOUT_GIOVANNI
+	const EVENT_BEAT_GIOVANNI2
 
 ; Silph Co. events
 	const_next $6F0
@@ -709,7 +724,8 @@
 	const EVENT_GOT_HM03
 
 ; Cerulean Cave events
-	const_next $8C0
+	const_next $8BF
+	const EVENT_BATTLE_MEWTWO
 	const_skip
 	const EVENT_BEAT_MEWTWO
 
@@ -734,8 +750,10 @@
 	const EVENT_LANCES_ROOM_LOCK_DOOR
 	const_skip
 	const EVENT_BEAT_CHAMPION_RIVAL
-	const_skip 5
+	const_skip 4
 	const ELITE4_CHAMPION_EVENTS_END
+	const EVENT_BECOME_CHAMPION
+	const EVENT_BEAT_CHAMPION_REMATCH
 
 ; Victory Road 1F events
 	const_next $910

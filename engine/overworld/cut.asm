@@ -37,6 +37,7 @@ UsedCut:
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	call RestoreScreenTilesAndReloadTilePatterns
+	call ReloadMapData
 	ld a, SCREEN_HEIGHT_PX
 	ldh [hWY], a
 	call Delay3
@@ -46,6 +47,9 @@ UsedCut:
 	call Delay3
 	xor a
 	ldh [hWY], a
+; fall through
+
+Cut2::
 	ld hl, UsedCutText
 	call PrintText
 	call LoadScreenTilesFromBuffer2
@@ -76,6 +80,7 @@ InitCutAnimOAM:
 	ld [wWhichAnimationOffsets], a
 	ld a, %11100100
 	ldh [rOBP1], a
+	call UpdateGBCPal_OBP1
 	ld a, [wCutTile]
 	cp $52
 	jr z, .grass

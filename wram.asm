@@ -222,7 +222,7 @@ wSerialEnemyMonsPatchList::
 	ds 200
 ENDU
 
-	ds 80
+	ds 80	
 
 UNION
 wOverworldMap::
@@ -232,6 +232,15 @@ wOverworldMapEnd::
 NEXTU
 wTempPic::
 	ds 7 * 7 tiles
+	
+; NEXTU
+	; ds 16
+	
+; wLYOverrides:: ds $100
+; wLYOverridesEnd::
+; wLYOverridesBuffer:: ds $100
+; wLYOverridesBufferEnd::
+
 ENDU
 
 wRedrawRowOrColumnSrcTiles::
@@ -422,7 +431,7 @@ wNPCMovementScriptBank::
 
 	ds 2
 
-wUnusedCC5B::
+wUnusedCC5B:: ;mart badge check
 
 wVermilionDockTileMapBuffer::
 ; 180 bytes
@@ -463,6 +472,8 @@ wNPCMovementDirections::
 wDexRatingNumMonsOwned::
 	ds 1
 
+wTrainerCardBadgeAttributes::
+
 wDexRatingText::
 	ds 1
 
@@ -489,6 +500,8 @@ wSwitchPartyMonTempBuffer::
 NEXTU
 	ds 10
 
+wRelearnableMoves::
+wDeletableMoves::
 wNumStepsToTake::
 ; used in Pallet Town scripted movement
 	ds 1
@@ -523,6 +536,9 @@ wForceEvolution::
 ; if [wAILayer2Encouragement] != 1, the second AI layer is not applied
 wAILayer2Encouragement::
 	ds 1
+	
+;joenote - store the power of the enemy move used last turn for AI layer 3 use
+wAILastMovePower::
 	ds 1
 
 ; current HP of player and enemy substitutes
@@ -536,6 +552,16 @@ wTestBattlePlayerSelectedMove::
 ; InitBattleVariables sets it to the move Pound.
 	ds 1
 
+wUnusedC000:: ; not actually at C000
+;joenote - use this for battle ai bit settings and handling other battle flags
+;bit 0 - if set, ai should switch pokemon
+;bit 1 - if set, ai already acted by switching or using an item this turn
+;bit 2 - if set, ai can swith or use item but not use a move (only run ai routine 4)
+;bit 3 - used for AIGetTypeEffectiveness (0 = enemy move effectiveness | 1 = player move effectiveness)
+;bit 4 - if set, current move being handled is a static damaging move 
+;bit 5 - if set, current ai trainer has ai routine 4 assigned
+;bit 6 - if set, poison/burn damage algorithm is being called to handle leech seed
+;bit 7 - if set, force Counter to miss (for an opponent hurting itself or its jump kick missing)
 	ds 1
 
 wMoveMenuType::
@@ -554,8 +580,12 @@ wAICount::
 ; number of times remaining that AI action can occur
 	ds 1
 
-	ds 2
+wPlayerLastMove::
+	ds 1
 
+wEnemyLastMove::
+	ds 1
+	
 wEnemyMoveListIndex::
 	ds 1
 
@@ -730,7 +760,7 @@ wSimulatedJoypadStatesIndex::
 ; 0 if the joypad state is not being simulated
 	ds 1
 
-wWastedByteCD39::
+wWastedByteCD39:: ;this is used for experience now
 ; written to but nothing ever reads it
 	ds 1
 
@@ -813,7 +843,7 @@ wSwappedMenuItem::
 wHoFMonSpecies::
 
 wFieldMoves::
-; 4 bytes
+; 5 bytes
 ; the current mon's field moves
 
 wBadgeNumberTile::
@@ -963,7 +993,7 @@ wHiddenObjectX::
 wSlotMachineWinningSymbol::
 ; the OAM tile number of the upper left corner of the winning symbol minus 2
 
-wNumFieldMoves::
+
 
 wSlotMachineWheel1BottomTile::
 
@@ -975,14 +1005,18 @@ wHoFTeamNo::
 
 wSlotMachineWheel1MiddleTile::
 
-wFieldMovesLeftmostXCoord::
+wNumFieldMoves::
+
 	ds 1
 
-wLastFieldMoveID::
-; unused
+
+wFieldMovesLeftmostXCoord::
 
 wSlotMachineWheel1TopTile::
 	ds 1
+
+wLastFieldMoveID::
+; used to check for HM in HasHM
 
 wSlotMachineWheel2BottomTile::
 	ds 1
@@ -1065,6 +1099,8 @@ wSlotMachineBet::
 ; how many coins the player bet on the slot machine (1 to 3)
 
 wSavedPlayerFacingDirection::
+
+wAIPartyMonScores::
 
 wWhichAnimationOffsets::
 ; 0 = cut animation, 1 = boulder dust animation
@@ -1327,7 +1363,11 @@ wPalPacket::
 
 wPartyMenuBlkPacket::
 ; $30 bytes
-	ds 29
+	ds 9
+
+wPartyHPBarAttributes:: ds PARTY_LENGTH
+
+	ds 14
 
 wExpAmountGained::
 ; 2-byte big-endian number
@@ -1340,7 +1380,6 @@ wcf4b::
 wGainBoostedExp::
 	ds 1
 
-	ds 17
 
 wGymCityName::
 	ds 17
@@ -1504,6 +1543,8 @@ wTrainerClass::
 
 wTrainerPicPointer::
 	ds 2
+
+wTempLevel::
 	ds 1
 
 wTempMoveNameBuffer::
@@ -2179,7 +2220,11 @@ wPseudoItemID::
 wUnusedD153::
 	ds 1
 
-	ds 2
+wIsTrainerBattle::
+	ds 1
+	
+wWasTrainerBattle::
+	ds 1
 
 wEvoStoneItemID::
 	ds 1
@@ -2298,8 +2343,8 @@ wXBlockCoord::
 
 wLastMap::
 	ds 1
-
-wUnusedD366::
+ 
+wUnusedD366:: ;used for switching
 	ds 1
 
 wCurMapTileset::
@@ -2557,7 +2602,9 @@ wNumHoFTeams::
 ; number of HOF teams
 	ds 1
 
-wUnusedD5A3::
+wPlayerGender::
+; $00 = male
+; $01 = female
 	ds 1
 
 wPlayerCoins::
@@ -2698,7 +2745,9 @@ wRocketHideoutB2FCurScript::
 wRocketHideoutB3FCurScript::
 	ds 1
 wRocketHideoutB4FCurScript::
-	ds 2
+	ds 1
+wCeladonMansion3FCurScript::
+	ds 1
 wRoute6GateCurScript::
 	ds 1
 wRoute8GateCurScript::
@@ -2789,12 +2838,19 @@ wSeafoamIslandsB4FCurScript::
 	ds 1
 wRoute18Gate1FCurScript::
 	ds 1
+wViridianWildsCurScript::
+	ds 1
+wMtMoonSummitCurScript::
+	ds 1
+wTowerGroundsCurScript::
+	ds 1
 
-	ds 6
+	ds 3
 wGameProgressFlagsEnd::
 
 UNION
 	ds 128
+	
 NEXTU
 wChannel7:: channel_struct wChannel7
 wChannel8:: channel_struct wChannel8
@@ -3119,6 +3175,17 @@ wBoxMonNicksEnd::
 
 wBoxDataEnd::
 
+SECTION "GBC Palette Data", WRAM0
+
+wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
+wGBCPal:: ds PALETTE_SIZE
+wLastBGP:: db
+wLastOBP0:: db
+wLastOBP1:: db
+wdef5:: db
+wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
+
+wBattleOAMVariable:: db
 
 SECTION "Stack", WRAM0
 

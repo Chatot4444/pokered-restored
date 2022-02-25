@@ -8,7 +8,7 @@ DungeonMons2:
 	db 52, ELECTRODE
 	db 56, CHANSEY
 	db 54, WIGGLYTUFF
-	db 55, DITTO
+	db 55, SNORLAX
 	db 60, DITTO
 	end_grass_wildmons
 

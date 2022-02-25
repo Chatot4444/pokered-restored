@@ -53,6 +53,7 @@ VermilionGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw VermilionGymLTSurgePostBattle
+	dw VermilionGymScript5
 
 VermilionGymLTSurgePostBattle:
 	ld a, [wIsInBattle]
@@ -62,20 +63,20 @@ VermilionGymLTSurgePostBattle:
 	ld [wJoyIgnore], a
 
 VermilionGymReceiveTM24:
-	ld a, $6
+	ld a, $8
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_LT_SURGE
 	lb bc, TM_THUNDERBOLT, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $7
+	ld a, $9
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM24
 	jr .gymVictory
 .BagFull
-	ld a, $8
+	ld a, $A
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -95,9 +96,12 @@ VermilionGym_TextPointers:
 	dw VermilionGymTrainerText2
 	dw VermilionGymTrainerText3
 	dw VermilionGymFanText
+	dw VermilionGymText6
+	dw VermilionGymText7
 	dw LTSurgeThunderbadgeInfoText
 	dw ReceivedTM24Text
 	dw TM24NoRoomText
+
 
 VermilionGymTrainerHeader0:
 	trainer EVENT_BEAT_VERMILION_GYM_TRAINER_0, 3, VermilionGymBattleText1, VermilionGymEndBattleText1, VermilionGymAfterBattleText1
@@ -243,4 +247,72 @@ VermilionGymFanPreBattleText:
 
 VermilionGymFanPostBattleText:
 	text_far _VermilionGymFanPostBattleText
+	text_end
+
+VermilionGymText6:
+	text_asm
+	ld hl, VermilionGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, VermilionGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, VermilionGymText_RematchWin
+	ld de, VermilionGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $3
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wVermilionGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, VermilionGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+	
+VermilionGymScript5:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, VermilionGymResetScripts
+	ld a, $f0
+	ld [wJoyIgnore], a
+VermilionGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_LT_SURGE2
+	ld a, $7
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp VermilionGymResetScripts
+	
+VermilionGymText_Rematch:
+	text_far _VermilionGymText_Rematch
+	text_end
+
+VermilionGymText_RematchConfirm:
+	text_far _VermilionGymText_RematchConfirm
+	text_end
+
+VermilionGymText_RematchCancel:
+	text_far _VermilionGymText_RematchCancel
+	text_end
+	
+VermilionGymText_RematchWin:
+	text_far _VermilionGymText_RematchWin
+	text_end
+	
+VermilionGymText7:
+	text_far _VermilionGymText7
 	text_end

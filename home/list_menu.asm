@@ -132,6 +132,11 @@ DisplayListMenuIDLoop::
 	call GetItemPrice
 	pop hl
 	ld a, [wListMenuID]
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;needed to make Mateo's move deleter/relearner work
+	cp a, MOVESLISTMENU
+	jr z, .skipStoringItemName
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	cp ITEMLISTMENU
 	jr nz, .skipGettingQuantity
 ; if it's an item menu
@@ -143,6 +148,8 @@ DisplayListMenuIDLoop::
 	ld [wd0b5], a
 	ld a, BANK(ItemNames)
 	ld [wPredefBank], a
+	ld a, ITEM_NAME
+	ld [wNameListType], a
 	call GetName
 	jr .storeChosenEntry
 .pokemonList
@@ -158,6 +165,7 @@ DisplayListMenuIDLoop::
 .storeChosenEntry ; store the menu entry that the player chose and return
 	ld de, wcd6d
 	call CopyStringToCF4B ; copy name to wcf4b
+.skipStoringItemName
 	ld a, CHOSE_MENU_ITEM
 	ld [wMenuExitMethod], a
 	ld a, [wCurrentMenuItem]
@@ -224,11 +232,45 @@ DisplayChooseQuantityMenu::
 	jp nz, .buttonAPressed
 	bit 1, a ; was the B button pressed?
 	jp nz, .buttonBPressed
+	bit 4, a ; was Right pressed?
+	jr nz, .incrementByTen
+	bit 5, a ; was Left pressed?
+	jr nz, .decrementByTen
 	bit 6, a ; was Up pressed?
 	jr nz, .incrementQuantity
 	bit 7, a ; was Down pressed?
 	jr nz, .decrementQuantity
 	jr .waitForKeyPressLoop
+.incrementByTen
+	ld a, [wMaxItemQuantity]
+	inc a
+	ld b, a
+	ld hl, wItemQuantity ; current quantity
+	ld a, 10
+	add [hl]
+	ld [hl], a
+	cp b
+	jr z, .overMax
+	jr c, .handleNewQuantity 
+; set to max if the player goes above the max quantity
+.overMax	
+	ld a, b
+	ld [hl], a
+	jr .handleNewQuantity
+.decrementByTen
+	ld a, 10
+	ld b, a
+	ld hl, wItemQuantity ; current quantity
+	ld a, [hl]
+	sub b
+	ld [hl], a
+	jr z, .underOne
+	jr nc, .handleNewQuantity
+; set to 1 if the player goes below 1
+.underOne
+	ld a, 1
+	ld [hl], a
+	jr .handleNewQuantity
 .incrementQuantity
 	ld a, [wMaxItemQuantity]
 	inc a

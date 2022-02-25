@@ -21,17 +21,17 @@ SetIshiharaTeam:
 	jr .loop
 
 IshiharaTeam:
-	db EXEGGUTOR, 90
+	db EXEGGUTORA, 90
 IF DEF(_DEBUG)
-	db MEW, 5
+	db CROBAT, 58
 ELSE
 	db MEW, 20
 ENDC
-	db JOLTEON, 56
-	db DUGTRIO, 56
+	db GLACEON, 56
+	db DUGTRIOA, 56
 	db ARTICUNO, 57
 IF DEF(_DEBUG)
-	db PIKACHU, 5
+	db RAICHUA, 56
 ENDC
 	db -1 ; end
 
@@ -126,6 +126,8 @@ IF DEF(_DEBUG)
 	ld a, STARTER1
 	ld [hl], a
 
+	ld a, $1
+	ld [wPlayerGender], a
 	ret
 
 DebugSetPokedexEntries:
@@ -135,7 +137,7 @@ DebugSetPokedexEntries:
 	ld [hli], a
 	dec b
 	jr nz, .loop
-	ld [hl], %01111111
+	ld [hl], %11111111
 	ret
 
 DebugItemsList:
@@ -150,6 +152,7 @@ DebugItemsList:
 	db CARD_KEY, 1
 	db S_S_TICKET, 1
 	db LIFT_KEY, 1
+	
 	db -1 ; end
 
 DebugUnusedList:

@@ -12,6 +12,7 @@ AnimateHealingMachine:
 	push af
 	ld a, $e0
 	ldh [rOBP1], a
+	call UpdateGBCPal_OBP1
 	ld hl, wOAMBuffer + $84
 	ld de, PokeCenterOAMData
 	call CopyHealingMachineOAM
@@ -62,6 +63,7 @@ AnimateHealingMachine:
 	call DelayFrames
 	pop af
 	ldh [rOBP1], a
+	call UpdateGBCPal_OBP1
 	pop hl
 	pop af
 	ld [hl], a
@@ -88,6 +90,7 @@ FlashSprite8Times:
 	ldh a, [rOBP1]
 	xor d
 	ldh [rOBP1], a
+	call UpdateGBCPal_OBP1
 	ld c, 10
 	call DelayFrames
 	dec b

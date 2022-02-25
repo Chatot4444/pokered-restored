@@ -10,13 +10,13 @@
 	INCBIN "gfx/pokemon/front/venusaur.pic", 0, 1 ; sprite dimensions
 	dw VenusaurPicFront, VenusaurPicBack
 
-	db TACKLE, GROWL, LEECH_SEED, VINE_WHIP ; level 1 learnset
+	db TACKLE, GROWL, LEECH_SEED, DRAGONBREATH ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   SOLARBEAM,    MIMIC,        \
-	     DOUBLE_TEAM,  REFLECT,      BIDE,         REST,         SUBSTITUTE,   \
+	     HYPER_BEAM,                    MEGA_DRAIN,   SOLARBEAM, EARTHQUAKE,    MIMIC,        \
+	     DOUBLE_TEAM,  REFLECT,   SLUDGE_BOMB,      REST,         SUBSTITUTE,   \
 	     CUT
 	; end
 

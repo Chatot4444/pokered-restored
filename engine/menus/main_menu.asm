@@ -127,8 +127,11 @@ MainMenu:
 InitOptions:
 	ld a, 1 ; no delay
 	ld [wLetterPrintingDelayFlags], a
-	ld a, 3 ; medium speed
+	ld a, 1 ; Fast speed
 	ld [wOptions], a
+	ld hl, wOptions
+	set 7, [hl] ; Animations: Off
+	set 6, [hl] ; Battle Style: Set
 	ret
 
 LinkMenu:
@@ -390,7 +393,7 @@ PrintSaveScreenText:
 	call PrintPlayTime
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
-	ld c, 30
+	ld c, 10    ; shortened from 30
 	jp DelayFrames
 
 PrintNumBadges:

@@ -29,9 +29,28 @@ _TM35NoRoomText::
 	line "crammed full!"
 	done
 
+_CinnabarLabMetronomeRoomText1::
+	text "I can't invent"
+	line "things for free."
+
+	para "It'll cost you"
+	line "just ¥4000 for"
+	cont "another TM35."
+	done
+
+_CinnabarLabMetronomeRoomNoText::
+	text "The grant office"
+	line "said that too."
+	done
+
+_CinnabarLabMetronomeRoomNoMoneyText::
+	text "You don't have"
+	line "enough money."
+	done
+	
 _Lab3Text2::
 	text "EEVEE can evolve"
-	line "into 1 of 3 kinds"
+	line "into 1 of 8 kinds"
 	cont "of #MON."
 	done
 

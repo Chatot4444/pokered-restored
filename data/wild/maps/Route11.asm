@@ -18,9 +18,9 @@ IF DEF(_BLUE)
 	db 13, DROWZEE
 	db 15, SANDSHREW
 ENDC
-	db 17, SPEAROW
-	db 11, DROWZEE
-	db 15, DROWZEE
+	db 17, MR_MIME
+	db 15, MR_MIME
+	db 11, MIME_JR
 	end_grass_wildmons
 
 	def_water_wildmons 0 ; encounter rate

@@ -13,7 +13,7 @@ MoveSoundTable:
 	db SFX_DAMAGE,             $00, $80 ; SCRATCH
 	db SFX_BATTLE_0F,          $20, $40 ; VICEGRIP
 	db SFX_BATTLE_0F,          $00, $80 ; GUILLOTINE
-	db SFX_BATTLE_0E,          $00, $a0 ; RAZOR_WIND
+	db SFX_BATTLE_0E,          $00, $a0 ; AERIAL_ACE
 	db SFX_NOT_VERY_EFFECTIVE, $10, $c0 ; SWORDS_DANCE
 	db SFX_NOT_VERY_EFFECTIVE, $00, $a0 ; CUT
 	db SFX_BATTLE_12,          $00, $c0 ; GUST
@@ -117,7 +117,7 @@ MoveSoundTable:
 	db SFX_BATTLE_0F,          $f8, $10 ; HAZE
 	db SFX_NOT_VERY_EFFECTIVE, $f0, $10 ; REFLECT
 	db SFX_BATTLE_25,          $00, $80 ; FOCUS_ENERGY
-	db SFX_BATTLE_18,          $00, $c0 ; BIDE
+	db SFX_BATTLE_12,          $c0, $c0 ; GUST
 	db SFX_BATTLE_32,          $c0, $ff ; METRONOME
 	db SFX_BATTLE_09,          $f2, $20 ; MIRROR_MOVE
 	db SFX_BATTLE_34,          $00, $80 ; SELFDESTRUCT
@@ -165,6 +165,29 @@ MoveSoundTable:
 	db SFX_BATTLE_26,          $f0, $ff ; SUPER_FANG
 	db SFX_NOT_VERY_EFFECTIVE, $01, $ff ; SLASH
 	db SFX_BATTLE_2C,          $d8, $04 ; SUBSTITUTE
+	db SFX_BATTLE_34,          $00, $40 ; MAGNET_BOMB	
+	db SFX_BATTLE_09,          $98, $10 ; DRAININGKISS
+	db SFX_BATTLE_0B,          $01, $80 ; PLAY_ROUGH
+	db SFX_NOT_VERY_EFFECTIVE, $00, $ff ; SHADOW_BALL
+	db SFX_BATTLE_0F,          $40, $40 ; X_SCISSOR
+	db SFX_BATTLE_19,          $01, $e0 ; DRAGONBREATH
+	db SFX_BATTLE_18,          $20, $80 ; IRON_HEAD
+	db SFX_BATTLE_0F,          $30, $c0 ; SLUDGE_BOMB
+	db SFX_BATTLE_36,          $ed, $20 ; ROCK_TOMB
+	db SFX_BATTLE_1E,          $00, $ff ; CRUNCH
+	db SFX_BATTLE_1B,          $00, $a0 ; MUD_SHOT
+	db SFX_BATTLE_13,          $f0, $20 ; DRILL_RUN
+	db SFX_BATTLE_18,          $00, $80 ; BOUNCE
+	db SFX_BATTLE_19,          $01, $e0 ; HEAT_WAVE
+	db SFX_BATTLE_13,          $00, $e0 ; HURRICANE
+	db SFX_BATTLE_32,          $08, $e0 ; ANCIENTPOWER
+	db SFX_BATTLE_25,          $00, $10 ; FEINT_ATTACK
+	db SFX_BATTLE_28,          $40, $80 ; ICY_GLARE
+	db SFX_BATTLE_2F,          $20, $80 ; THUNDER_KICK
+	db SFX_BATTLE_19,          $01, $e0 ; FIERY_WRATH
+	db SFX_PSYBEAM,            $20, $80 ; SIGNAL_BEAM	
+	db SFX_BATTLE_2A,          $80, $c0 ; ACID_SPRAY
 	db SFX_BATTLE_0B,          $00, $80 ; STRUGGLE
 	assert_table_length NUM_ATTACKS
 	db SFX_BATTLE_0B,          $00, $80
+

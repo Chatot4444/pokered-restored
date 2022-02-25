@@ -10,15 +10,15 @@
 	INCBIN "gfx/pokemon/front/blastoise.pic", 0, 1 ; sprite dimensions
 	dw BlastoisePicFront, BlastoisePicBack
 
-	db TACKLE, TAIL_WHIP, BUBBLE, WATER_GUN ; level 1 learnset
+	db TACKLE, TAIL_WHIP, BUBBLE, SIGNAL_BEAM ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
 	     DOUBLE_EDGE,  BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     BLIZZARD,     \
-	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
+	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS,                  \
 	     EARTHQUAKE,   FISSURE,      DIG,          MIMIC,        DOUBLE_TEAM,  \
-	     REFLECT,      BIDE,         SKULL_BASH,   REST,         SUBSTITUTE,   \
+	     REFLECT,      ROCK_TOMB,                SKULL_BASH,   REST,         SUBSTITUTE,   \
 	     SURF,         STRENGTH
 	; end
 

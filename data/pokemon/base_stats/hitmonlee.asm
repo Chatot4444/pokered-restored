@@ -1,6 +1,6 @@
 	db DEX_HITMONLEE ; pokedex id
 
-	db  50, 120,  53,  87,  35
+	db  50, 120,  53,  87,  110
 	;   hp  atk  def  spd  spc
 
 	db FIGHTING, FIGHTING ; type
@@ -10,14 +10,14 @@
 	INCBIN "gfx/pokemon/front/hitmonlee.pic", 0, 1 ; sprite dimensions
 	dw HitmonleePicFront, HitmonleePicBack
 
-	db DOUBLE_KICK, MEDITATE, NO_MOVE, NO_MOVE ; level 1 learnset
+	db DOUBLE_KICK, MEDITATE, ICE_PUNCH, IRON_HEAD ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
-	     DOUBLE_EDGE,  SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
-	     MIMIC,        DOUBLE_TEAM,  BIDE,         METRONOME,    SWIFT,        \
-	     SKULL_BASH,   REST,         SUBSTITUTE,   STRENGTH
+	     DOUBLE_EDGE,  SUBMISSION,   COUNTER,      SEISMIC_TOSS,                  \
+	     MIMIC,        DOUBLE_TEAM,  ROCK_TOMB,                METRONOME,    SWIFT,        \
+	     SKULL_BASH,   REST,     ROCK_SLIDE,    SUBSTITUTE,   STRENGTH
 	; end
 
 	db 0 ; padding

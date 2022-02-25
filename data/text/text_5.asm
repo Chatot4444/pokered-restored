@@ -62,6 +62,13 @@ _NewBadgeRequiredText::
 	line "is required."
 	prompt
 
+_NewHMRequiredText::
+	text "No! @"
+	text_ram wcd6d
+	text " is"
+	line "required."
+	prompt
+
 _CannotUseItemsHereText::
 	text "You can't use items"
 	line "here."

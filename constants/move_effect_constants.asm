@@ -39,7 +39,7 @@
 	const SLEEP_EFFECT               ; $20
 	const POISON_SIDE_EFFECT2        ; $21
 	const BURN_SIDE_EFFECT2          ; $22
-	const_skip                       ; $23
+	const FREEZE_SIDE_EFFECT2        ; $23
 	const PARALYZE_SIDE_EFFECT2      ; $24
 	const FLINCH_SIDE_EFFECT2        ; $25
 	const OHKO_EFFECT                ; $26 moves like Horn Drill
@@ -76,7 +76,7 @@
 	const DEFENSE_DOWN_SIDE_EFFECT   ; $45
 	const SPEED_DOWN_SIDE_EFFECT     ; $46
 	const SPECIAL_DOWN_SIDE_EFFECT   ; $47
-	const_skip                       ; $48
+	const ACCURACY_DOWN_SIDE_EFFECT  ; $48
 	const_skip                       ; $49
 	const_skip                       ; $4A
 	const_skip                       ; $4B
@@ -91,4 +91,10 @@
 	const LEECH_SEED_EFFECT          ; $54
 	const SPLASH_EFFECT              ; $55
 	const DISABLE_EFFECT             ; $56
+	const ANCIENTPOWER_EFFECT        ; $57
+	const TRI_ATTACK_EFFECT          ; $58
+	const GROWTH_EFFECT				 ; $59
+	const PHYS_BURN_SIDE_EFFECT1          ; $5A
+	const PHYS_FREEZE_SIDE_EFFECT         ; $5B
+	const PHYS_PARALYZE_SIDE_EFFECT1      ; $5C
 NUM_MOVE_EFFECTS EQU const_value - 1

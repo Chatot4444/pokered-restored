@@ -8,6 +8,7 @@ ViridianForest_Object:
 	warp 16, 47, 1, VIRIDIAN_FOREST_SOUTH_GATE
 	warp 17, 47, 1, VIRIDIAN_FOREST_SOUTH_GATE
 	warp 18, 47, 1, VIRIDIAN_FOREST_SOUTH_GATE
+	warp 0, 29, 0, VIRIDIAN_WILDS
 
 	def_signs
 	sign 24, 40,  9 ; ViridianForestText9
@@ -26,5 +27,6 @@ ViridianForest_Object:
 	object SPRITE_POKE_BALL, 12, 29, STAY, NONE, 6, POTION
 	object SPRITE_POKE_BALL, 1, 31, STAY, NONE, 7, POKE_BALL
 	object SPRITE_YOUNGSTER, 27, 40, STAY, NONE, 8 ; person
+	object SPRITE_BOULDER, 1, 29, STAY, BOULDER_MOVEMENT_BYTE_2, 9 ; person
 
 	def_warps_to VIRIDIAN_FOREST

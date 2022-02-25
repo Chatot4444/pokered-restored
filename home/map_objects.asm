@@ -70,6 +70,16 @@ IsItemInBag::
 	and a
 	ret
 
+IsItemInPC::
+; given an item_id in b
+; set zero flag if item isn't in player's PC
+; else reset zero flag
+; related to Keys
+	predef GetQuantityOfItemInPC
+	ld a, b
+	and a
+	ret
+	
 DisplayPokedex::
 	ld [wd11e], a
 	farjp _DisplayPokedex

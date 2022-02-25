@@ -30,7 +30,11 @@ PrintBeginningBattleText:
 	jr .done
 .pokemonTower
 	ld b, SILPH_SCOPE
+	call IsItemInPC
+	jr nz, .scopeInPC
+	ld b, SILPH_SCOPE
 	call IsItemInBag
+.scopeInPC	
 	ld a, [wEnemyMonSpecies2]
 	ld [wcf91], a
 	cp RESTLESS_SOUL

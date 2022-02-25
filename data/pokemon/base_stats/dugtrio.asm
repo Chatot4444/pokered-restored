@@ -1,6 +1,6 @@
 	db DEX_DUGTRIO ; pokedex id
 
-	db  35,  80,  50, 120,  70
+	db  35,  100,  50, 120,  70
 	;   hp  atk  def  spd  spc
 
 	db GROUND, GROUND ; type
@@ -10,13 +10,13 @@
 	INCBIN "gfx/pokemon/front/dugtrio.pic", 0, 1 ; sprite dimensions
 	dw DugtrioPicFront, DugtrioPicBack
 
-	db SCRATCH, GROWL, DIG, NO_MOVE ; level 1 learnset
+	db SCRATCH, ANCIENTPOWER, TRI_ATTACK, FEINT_ATTACK ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
-	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
-	     RAGE,         EARTHQUAKE,   FISSURE,      DIG,          MIMIC,        \
-	     DOUBLE_TEAM,  BIDE,         REST,         ROCK_SLIDE,   SUBSTITUTE
+	tmhm AERIAL_ACE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
+	                      EARTHQUAKE,   FISSURE,      DIG,          MIMIC,        \
+	     DOUBLE_TEAM,    ROCK_TOMB,  SLUDGE_BOMB,            REST,         ROCK_SLIDE,   SUBSTITUTE
 	; end
 
 	db 0 ; padding

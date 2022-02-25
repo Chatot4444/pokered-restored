@@ -27,6 +27,8 @@ SetupOwnPartyPokeballs:
 	ld [hl], a
 	ld a, 8
 	ld [wHUDPokeballGfxOffsetX], a
+	xor a
+	ld [wBattleOAMVariable], a
 	ld hl, wOAMBuffer
 	jp WritePokeballOAMData
 
@@ -41,6 +43,8 @@ SetupEnemyPartyPokeballs:
 	ld [hl], $20
 	ld a, -8
 	ld [wHUDPokeballGfxOffsetX], a
+	ld a, $1
+	ld [wBattleOAMVariable], a
 	ld hl, wOAMBuffer + PARTY_LENGTH * 4
 	jp WritePokeballOAMData
 
@@ -104,7 +108,7 @@ WritePokeballOAMData:
 	ld [hli], a
 	ld a, [de]
 	ld [hli], a
-	xor a
+	ld a, [wBattleOAMVariable]
 	ld [hli], a
 	ld a, [wBaseCoordX]
 	ld b, a
@@ -136,6 +140,26 @@ PlaceEnemyHUDTiles:
 	ld de, wHUDGraphicsTiles
 	ld bc, $3
 	call CopyData
+	
+	ld a, [wEnemyMonSpecies2]
+	and a
+	jr z, .pokeballHUD
+	ld a, [wEnemyMon]
+	ld [wd11e], a
+	predef IndexToPokedex
+	ld hl, wPokedexOwned
+	ld a, [wd11e]
+	dec a
+	ld c, a
+	ld b, FLAG_TEST
+	predef FlagActionPredef
+	ld a, c
+	and a
+	jr z, .notOwned
+	coord hl, 1, 1
+	ld [hl], $df   ;pokeball tile
+.notOwned
+.pokeballHUD	
 	hlcoord 1, 2
 	ld de, $1
 	jr PlaceHUDTiles
@@ -174,6 +198,8 @@ SetupPlayerAndEnemyPokeballs:
 	ld [hl], $40
 	ld a, 8
 	ld [wHUDPokeballGfxOffsetX], a
+	xor a
+	ld [wBattleOAMVariable], a
 	ld hl, wOAMBuffer
 	call WritePokeballOAMData
 	ld hl, wEnemyMons
@@ -183,6 +209,8 @@ SetupPlayerAndEnemyPokeballs:
 	ld a, $50
 	ld [hli], a
 	ld [hl], $68
+	ld a, $1
+	ld [wBattleOAMVariable], a
 	ld hl, wOAMBuffer + $18
 	jp WritePokeballOAMData
 

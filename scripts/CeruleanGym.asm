@@ -34,6 +34,7 @@ CeruleanGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw CeruleanGymScript3
+	dw CeruleanGymScript4
 
 CeruleanGymScript3:
 	ld a, [wIsInBattle]
@@ -43,20 +44,20 @@ CeruleanGymScript3:
 	ld [wJoyIgnore], a
 
 CeruleanGymScript_5c70d:
-	ld a, $5
+	ld a, $7
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_MISTY
 	lb bc, TM_BUBBLEBEAM, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $6
+	ld a, $8
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM11
 	jr .gymVictory
 .BagFull
-	ld a, $7
+	ld a, $9
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -78,6 +79,8 @@ CeruleanGym_TextPointers:
 	dw CeruleanGymText5
 	dw CeruleanGymText6
 	dw CeruleanGymText7
+	dw CeruleanGymText8
+	dw CeruleanGymText9
 
 CeruleanGymTrainerHeader0:
 	trainer EVENT_BEAT_CERULEAN_GYM_TRAINER_0, 3, CeruleanGymBattleText1, CeruleanGymEndBattleText1, CeruleanGymAfterBattleText1
@@ -128,16 +131,16 @@ CeruleanGymText_5c7c3:
 	text_far _CeruleanGymText_5c7c3
 	text_end
 
-CeruleanGymText5:
+CeruleanGymText7:
 	text_far _CeruleanGymText_5c7c8
 	text_end
 
-CeruleanGymText6:
+CeruleanGymText8:
 	text_far _ReceivedTM11Text
 	sound_get_item_1
 	text_end
 
-CeruleanGymText7:
+CeruleanGymText9:
 	text_far _CeruleanGymText_5c7d3
 	text_end
 
@@ -202,4 +205,72 @@ CeruleanGymText_5c82a:
 
 CeruleanGymText_5c82f:
 	text_far _CeruleanGymText_5c82f
+	text_end
+
+CeruleanGymText5:
+	text_asm
+	ld hl, CeruleanGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, CeruleanGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, CeruleanGymText_RematchWin
+	ld de, CeruleanGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $2
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wCeruleanGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, CeruleanGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+	
+CeruleanGymScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, CeruleanGymScript_5c6ed
+	ld a, $f0
+	ld [wJoyIgnore], a
+CeruleanGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_MISTY2
+	ld a, $6
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp CeruleanGymScript_5c6ed
+	
+CeruleanGymText_Rematch:
+	text_far _CeruleanGymText_Rematch
+	text_end
+
+CeruleanGymText_RematchConfirm:
+	text_far _CeruleanGymText_RematchConfirm
+	text_end
+
+CeruleanGymText_RematchCancel:
+	text_far _CeruleanGymText_RematchCancel
+	text_end
+	
+CeruleanGymText_RematchWin:
+	text_far _CeruleanGymText_RematchWin
+	text_end
+	
+CeruleanGymText6:
+	text_far _CeruleanGymText6
 	text_end

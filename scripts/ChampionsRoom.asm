@@ -54,6 +54,19 @@ GaryScript2:
 	ld [wJoyIgnore], a
 	ld hl, wOptions
 	res 7, [hl]  ; Turn on battle animations to make the battle feel more epic.
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .firstBattle
+	ld a, $6
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	call Delay3
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, GaryRematchDefeatedText
+	ld de, GaryRematchVictoryText
+	jr .rematch
+.firstBattle
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -63,10 +76,12 @@ GaryScript2:
 	set 7, [hl]
 	ld hl, GaryDefeatedText
 	ld de, GaryVictoryText
+.rematch
 	call SaveEndBattleTextPointers
 	ld a, OPP_RIVAL3
 	ld [wCurOpponent], a
-
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr nz, .isRematch
 	; select which team to use during the encounter
 	ld a, [wRivalStarter]
 	cp STARTER2
@@ -80,8 +95,24 @@ GaryScript2:
 	jr .saveTrainerId
 .NotStarter3
 	ld a, $3
+	jr .saveTrainerId
+.isRematch
+	ld a, [wRivalStarter]
+	cp STARTER2
+	jr nz, .NotStarter2Rematch
+	ld a, $4
+	jr .saveTrainerId
+.NotStarter2Rematch
+	cp STARTER3
+	jr nz, .NotStarter3Rematch
+	ld a, $5
+	jr .saveTrainerId
+.NotStarter3Rematch
+	ld a, $6
 .saveTrainerId
 	ld [wTrainerNo], a
+	ld a, 1
+	ld [wIsTrainerBattle], a
 
 	xor a
 	ldh [hJoyHeld], a
@@ -93,12 +124,20 @@ GaryScript3:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, ResetGaryScript
+	xor a
+	ld [wIsTrainerBattle], a
 	call UpdateSprites
 	SetEvent EVENT_BEAT_CHAMPION_RIVAL
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .firstTime
+	SetEvent EVENT_BEAT_CHAMPION_REMATCH
+	ld a, $6
+	ldh [hSpriteIndexOrTextID], a
+.firstTime
 	call GaryScript_760c8
 	ld a, $1
 	ldh [hSpriteIndex], a
@@ -245,6 +284,7 @@ ChampionsRoom_TextPointers:
 	dw GaryText3
 	dw GaryText4
 	dw GaryText5
+	dw GaryText6
 
 GaryText1:
 	text_asm
@@ -282,6 +322,10 @@ GaryText3:
 	ld [wd11e], a
 	call GetMonName
 	ld hl, GaryText_76120
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .printText
+	ld hl, OakAfterWinToPlayerText
+.printText
 	call PrintText
 	jp TextScriptEnd
 
@@ -290,9 +334,67 @@ GaryText_76120:
 	text_end
 
 GaryText4:
+	text_asm
+	CheckEvent EVENT_BECOME_CHAMPION
+	ld hl, ThisWasGaryText4
+	jr z, .printText
+	ld hl, OakAfterWinToGaryText
+.printText
+	call PrintText
+	jp TextScriptEnd
+	
+ThisWasGaryText4:
 	text_far _GaryText_76125
 	text_end
 
 GaryText5:
+	text_asm
+	CheckEvent EVENT_BECOME_CHAMPION
+	ld hl, ThisWasGaryText5
+	jr z, .printText
+	ld hl, OakAfterWinVictoryText
+.printText
+	call PrintText
+	jp TextScriptEnd
+	
+ThisWasGaryText5:
 	text_far _GaryText_7612a
+	text_end
+
+GaryText6:
+	text_asm
+	CheckEvent EVENT_BEAT_CHAMPION_RIVAL
+	ld hl, GaryChampionRematchIntroText
+	jr z, .printText
+	ld hl, GaryAfterLossText
+.printText
+	call PrintText
+	jp TextScriptEnd
+	
+GaryChampionRematchIntroText:
+	text_far _GaryChampionRematchIntroText
+	text_end
+	
+GaryAfterLossText:
+	text_far _GaryAfterLossText
+	text_end
+	
+OakAfterWinToPlayerText:
+	text_far _OakAfterWinToPlayerText
+	text_end
+	
+OakAfterWinToGaryText:
+	text_far _OakAfterWinToGaryText
+	text_end
+	
+OakAfterWinVictoryText:
+	text_far _OakAfterWinVictoryText
+	text_end
+	
+GaryRematchDefeatedText:
+	text_far _GaryRematchDefeatedText
+	text_end
+	
+GaryRematchVictoryText:
+	text_far _GaryRematchVictoryText
 	text_end

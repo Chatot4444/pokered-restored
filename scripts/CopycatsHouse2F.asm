@@ -12,8 +12,8 @@ CopycatsHouse2F_TextPointers:
 
 CopycatsHouse2FText1:
 	text_asm
-	CheckEvent EVENT_GOT_TM31
-	jr nz, .got_item
+	; CheckEvent EVENT_GOT_TM31
+	; jr nz, .got_item
 	ld a, TRUE
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, CopycatsHouse2FText_5ccd4

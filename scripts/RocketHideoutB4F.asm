@@ -42,6 +42,7 @@ RocketHideoutB4F_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw RocketHideout4Script3
+	dw GiovanniScript4
 
 RocketHideout4Script3:
 	ld a, [wIsInBattle]
@@ -51,7 +52,7 @@ RocketHideout4Script3:
 	ld a, $f0
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_ROCKET_HIDEOUT_GIOVANNI
-	ld a, $a
+	ld a, $c
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call GBFadeOutToBlack
@@ -82,6 +83,8 @@ RocketHideoutB4F_TextPointers:
 	dw PickUpItemText
 	dw PickUpItemText
 	dw PickUpItemText
+	dw GiovanniRematchText
+	dw GiovanniTextB
 	dw RocketHideout4Text10
 
 RocketHideout4TrainerHeader0:
@@ -196,4 +199,71 @@ RocketHideout4AfterBattleText4:
 
 RocketHideout4Text_455ec:
 	text_far _RocketHideout4Text_455ec
+	text_end
+
+GiovanniRematchText:
+	text_asm
+	ld hl, GiovanniText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, GiovanniText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, GiovanniText_RematchWin
+	ld de, GiovanniText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $8
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wRocketHideoutB4FCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, GiovanniText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+GiovanniScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, GiovanniScript_AfterRematch
+	call UpdateSprites
+	ld a, $f0
+	ld [wJoyIgnore], a
+GiovanniScript_AfterRematch:
+	ld a, $B
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp RocketHideout4Script_454a3
+	
+GiovanniText_Rematch:
+	text_far _GiovanniText_Rematch
+	text_end
+
+GiovanniText_RematchConfirm:
+	text_far _GiovanniText_RematchConfirm
+	text_end
+
+GiovanniText_RematchCancel:
+	text_far _GiovanniText_RematchCancel
+	text_end
+	
+GiovanniText_RematchWin:
+	text_far _GiovanniText_RematchWin
+	text_end
+	
+GiovanniTextB:
+	text_far _GiovanniText_AfterWin
 	text_end

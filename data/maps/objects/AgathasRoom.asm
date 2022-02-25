@@ -11,5 +11,6 @@ AgathasRoom_Object:
 
 	def_objects
 	object SPRITE_AGATHA, 5, 2, STAY, DOWN, 1, OPP_AGATHA, 1
+	object SPRITE_AGATHA, 5, 2, STAY, DOWN, 2, OPP_AGATHA, 2
 
 	def_warps_to AGATHAS_ROOM

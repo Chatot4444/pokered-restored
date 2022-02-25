@@ -11,13 +11,21 @@ ViridianMartScript_1d47d:
 	ld hl, ViridianMart_TextPointers
 	jr .done
 .delivered_parcel
+	ld a, [wObtainedBadges]
+	bit BIT_EARTHBADGE, a
+	jr nz, .got_badge
 	ld hl, ViridianMart_TextPointers2
+
 .done
 	ld a, l
 	ld [wMapTextPtr], a
 	ld a, h
 	ld [wMapTextPtr+1], a
 	ret
+	
+.got_badge
+	ld hl, ViridianMart_TextPointers3
+	jr .done
 
 ViridianMart_ScriptPointers:
 	dw ViridianMartScript0
@@ -70,6 +78,11 @@ ViridianMart_TextPointers:
 
 ViridianMart_TextPointers2:
 	dw ViridianCashierText
+	dw ViridianMartText2
+	dw ViridianMartText3
+	
+ViridianMart_TextPointers3:
+	dw ViridianCashierText2
 	dw ViridianMartText2
 	dw ViridianMartText3
 

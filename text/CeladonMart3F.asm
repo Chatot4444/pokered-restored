@@ -25,6 +25,21 @@ _TM18NoRoomText::
 	text "Your pack is full"
 	line "of items!"
 	done
+	
+_CeladonMart3Text1::
+	text "Would you like"
+	line "another TM18"
+	cont "for just ¥2000?"
+	done
+
+_CeladonMart3NoText::
+	text "Have a nice day!"
+	done
+
+_CeladonMart3NoMoneyText::
+	text "You don't have"
+	line "enough money."
+	done
 
 _CeladonMart3Text2::
 	text "Captured #MON"

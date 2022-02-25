@@ -18,9 +18,9 @@ IF DEF(_BLUE)
 	db 27, EXEGGCUTE
 	db 30, NIDORINO
 ENDC
-	db 32, VENOMOTH
-	db 26, CHANSEY
-	db 28, TAUROS
+	db 32, TAUROS
+	db 28, CHANSEY
+	db 26, HAPPINY
 	end_grass_wildmons
 
 	def_water_wildmons 0 ; encounter rate

@@ -9,7 +9,7 @@ SHOW EQU $15
 ; and are detected in wMissableObjectList)
 
 	const_def
-	const HS_PALLET_TOWN_OAK               ; 00
+	const HS_PALLET_TOWN_OAK               ; 00 these counts are messed up right now, dont believe them
 	const HS_LYING_OLD_MAN                 ; 01
 	const HS_OLD_MAN                       ; 02
 	const HS_MUSEUM_GUY                    ; 03
@@ -60,8 +60,10 @@ SHOW EQU $15
 	const HS_POKEDEX_2                     ; 30
 	const HS_OAKS_LAB_OAK_2                ; 31
 	const HS_VIRIDIAN_GYM_GIOVANNI         ; 32
-	const HS_VIRIDIAN_GYM_ITEM             ; 33 X
+	const HS_LEADER_BLUE            ; 33 X
 	const HS_OLD_AMBER                     ; 34
+	const HS_BROCK
+	const HS_BROCK2
 	const HS_CERULEAN_CAVE_1F_ITEM_1       ; 35 X
 	const HS_CERULEAN_CAVE_1F_ITEM_2       ; 36 X
 	const HS_CERULEAN_CAVE_1F_ITEM_3       ; 37 X
@@ -79,13 +81,22 @@ SHOW EQU $15
 	const HS_POKEMON_TOWER_7F_MR_FUJI      ; 43
 	const HS_MR_FUJIS_HOUSE_MR_FUJI        ; 44
 	const HS_CELADON_MANSION_EEVEE_GIFT    ; 45
+	const HS_ERIKA
+	const HS_ERIKA2
 	const HS_GAME_CORNER_ROCKET            ; 46
 	const HS_WARDENS_HOUSE_ITEM            ; 47 X
+	const HS_KOGA
+	const HS_KOGA2
 	const HS_POKEMON_MANSION_1F_ITEM_1     ; 48 X
 	const HS_POKEMON_MANSION_1F_ITEM_2     ; 49 X
+	const HS_BLAINE
+	const HS_BLAINE2
 	const HS_FIGHTING_DOJO_GIFT_1          ; 4A
 	const HS_FIGHTING_DOJO_GIFT_2          ; 4B
+	const HS_SABRINA
+	const HS_SABRINA2
 	const HS_SILPH_CO_1F_RECEPTIONIST      ; 4C
+	const HS_SILPH_CO_1F_CASHIER
 	const HS_VOLTORB_1                     ; 4D X
 	const HS_VOLTORB_2                     ; 4E X
 	const HS_VOLTORB_3                     ; 4F X
@@ -122,6 +133,10 @@ SHOW EQU $15
 	const HS_MT_MOON_B2F_FOSSIL_2          ; 6E
 	const HS_MT_MOON_B2F_ITEM_1            ; 6F X
 	const HS_MT_MOON_B2F_ITEM_2            ; 70 X
+	const HS_MISTY
+	const HS_MISTY2
+	const HS_LT_SURGE
+	const HS_LT_SURGE2
 	const HS_SS_ANNE_2F_RIVAL              ; 71
 	const HS_SS_ANNE_1F_ROOMS_ITEM         ; 72 X
 	const HS_SS_ANNE_2F_ROOMS_ITEM_1       ; 73 X
@@ -141,6 +156,7 @@ SHOW EQU $15
 	const HS_ROCKET_HIDEOUT_B3F_ITEM_1     ; 81 X
 	const HS_ROCKET_HIDEOUT_B3F_ITEM_2     ; 82 X
 	const HS_ROCKET_HIDEOUT_B4F_GIOVANNI   ; 83
+	const HS_ROCKET_HIDEOUT_B4F_GIOVANNI2
 	const HS_ROCKET_HIDEOUT_B4F_ITEM_1     ; 84 X
 	const HS_ROCKET_HIDEOUT_B4F_ITEM_2     ; 85 X
 	const HS_ROCKET_HIDEOUT_B4F_ITEM_3     ; 86 X
@@ -223,6 +239,8 @@ SHOW EQU $15
 	const HS_CERULEAN_CAVE_B1F_ITEM_2      ; D3 X
 	const HS_VICTORY_ROAD_1F_ITEM_1        ; D4 X
 	const HS_VICTORY_ROAD_1F_ITEM_2        ; D5 X
+	const HS_LANCE
+	const HS_LANCE2
 	const HS_CHAMPIONS_ROOM_OAK            ; D6
 	const HS_SEAFOAM_ISLANDS_1F_BOULDER_1  ; D7
 	const HS_SEAFOAM_ISLANDS_1F_BOULDER_2  ; D8
@@ -237,4 +255,13 @@ SHOW EQU $15
 	const HS_SEAFOAM_ISLANDS_B4F_BOULDER_1 ; E1
 	const HS_SEAFOAM_ISLANDS_B4F_BOULDER_2 ; E2
 	const HS_ARTICUNO                      ; E3 X
+	const HS_LORELEI
+	const HS_LORELEI2
+	const HS_BRUNO
+	const HS_BRUNO2
+	const HS_AGATHA
+	const HS_AGATHA2
+	const HS_ZAPDOSG
+	const HS_ARTICUNOG
+	const HS_MOLTRESG
 NUM_HS_OBJECTS EQU const_value

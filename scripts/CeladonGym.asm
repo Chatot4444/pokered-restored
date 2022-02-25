@@ -34,6 +34,7 @@ CeladonGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw CeladonGymScript3
+	dw CeladonGymScript4
 
 CeladonGymScript3:
 	ld a, [wIsInBattle]
@@ -43,20 +44,20 @@ CeladonGymScript3:
 	ld [wJoyIgnore], a
 
 CeladonGymText_48963:
-	ld a, $9
+	ld a, $b
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_ERIKA
 	lb bc, TM_MEGA_DRAIN, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $a
+	ld a, $c
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM21
 	jr .gymVictory
 .BagFull
-	ld a, $b
+	ld a, $d
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -80,6 +81,8 @@ CeladonGym_TextPointers:
 	dw CeladonGymText7
 	dw CeladonGymText8
 	dw CeladonGymText9
+	dw CeladonGymTextA
+	dw CeladonGymTextB
 	dw TM21Text
 	dw TM21NoRoomText
 
@@ -145,8 +148,8 @@ CeladonGymText_48a68:
 	text_far _CeladonGymText_48a68
 	text_end
 
-CeladonGymText9:
-	text_far _CeladonGymText9
+CeladonGymTextB:
+	text_far _CeladonGymTextB
 	text_end
 
 TM21Text:
@@ -283,4 +286,71 @@ CeladonGymEndBattleText8:
 
 CeladonGymAfterBattleText8:
 	text_far _CeladonGymAfterBattleText8
+	text_end
+
+CeladonGymText9:
+	text_asm
+	ld hl, CeladonGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, CeladonGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, CeladonGymText_RematchWin
+	ld de, CeladonGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $4
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wCeladonGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, CeladonGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+CeladonGymScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, CeladonGymText_48943
+	ld a, $f0
+	ld [wJoyIgnore], a
+CeladonGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_ERIKA2
+	ld a, $A
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp CeladonGymText_48943
+	
+CeladonGymText_Rematch:
+	text_far _CeladonGymText_Rematch
+	text_end
+
+CeladonGymText_RematchConfirm:
+	text_far _CeladonGymText_RematchConfirm
+	text_end
+
+CeladonGymText_RematchCancel:
+	text_far _CeladonGymText_RematchCancel
+	text_end
+	
+CeladonGymText_RematchWin:
+	text_far _CeladonGymText_RematchWin
+	text_end
+	
+CeladonGymTextA:
+	text_far _CeladonGymText_AfterWin
 	text_end

@@ -13,9 +13,10 @@ PlayBattleMusic::
 	ld a, MUSIC_GYM_LEADER_BATTLE
 	jr .playSong
 .notGymLeaderBattle
+	ld a, [wIsTrainerBattle]
+	and a
+	jr z, .wildBattle
 	ld a, [wCurOpponent]
-	cp OPP_ID_OFFSET
-	jr c, .wildBattle
 	cp OPP_RIVAL3
 	jr z, .finalBattle
 	cp OPP_LANCE
@@ -29,6 +30,20 @@ PlayBattleMusic::
 	ld a, MUSIC_FINAL_BATTLE
 	jr .playSong
 .wildBattle
+	ld a, [wCurOpponent]
+	cp ARTICUNO
+	jr z, .bird
+	cp ZAPDOS
+	jr z, .bird
+	cp MOLTRES
+	jr z, .bird
+	cp ARTICUNOG
 	ld a, MUSIC_WILD_BATTLE
+	jr c, .playSong
+	ld a, MUSIC_GALAR_BIRD_BATTLE
 .playSong
 	jp PlayMusic
+
+.bird ;bird
+	ld a, MUSIC_KANTO_BIRD_BATTLE
+	jr .playSong

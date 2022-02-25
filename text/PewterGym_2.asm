@@ -38,12 +38,17 @@ _TM34ExplanationText::
 	cont "carefully!"
 
 	para "TM34 contains"
-	line "BIDE!"
+	line "ROCK TOMB!"
 
-	para "Your #MON will"
-	line "absorb damage in"
-	cont "battle then pay"
-	cont "it back double!"
+	para "It hurls rocks"
+	line "at the foe"
+	cont "and lowers its"
+	cont "speed!"
+	
+	para "If you need more,"
+	line "you can now"
+	cont "buy it at the"
+	cont "#MON MART."
 	done
 
 _TM34NoRoomText::
@@ -53,7 +58,7 @@ _TM34NoRoomText::
 
 _PewterGymText_5c4bc::
 	text "I took"
-	line "you for granted."
+	line "you for granite."
 
 	para "As proof of your"
 	line "victory, here's"
@@ -143,4 +148,31 @@ _PewterGymText_5c529::
 	text "Just as I thought!"
 	line "You're #MON"
 	cont "champ material!"
+	done
+
+_PewterGymText_Rematch::
+	text "Welcome, Champion."
+	line "Are you here for"
+	cont "a rematch?"
+	done
+	
+_PewterGymText_RematchConfirm::
+	text "Alright! I won't"
+	line "be holding back" 
+	cont "this time."
+	done
+	
+_PewterGymText_RematchCancel::
+	text "Maybe next time."
+	done
+	
+_PewterGymText_RematchWin::
+	text "Wow! That's"
+	line "our new Champion!"
+	prompt
+	
+_PewterGymText8::
+	text "You've grown a lot"
+	line "stronger since"
+	cont "our first battle."
 	done

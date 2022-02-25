@@ -36,6 +36,7 @@ FuchsiaGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw FuchsiaGymScript3
+	dw FuchsiaGymScript4
 
 FuchsiaGymScript3:
 	ld a, [wIsInBattle]
@@ -44,20 +45,20 @@ FuchsiaGymScript3:
 	ld a, $f0
 	ld [wJoyIgnore], a
 FuchsiaGymScript3_75497:
-	ld a, $9
+	ld a, $B
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_KOGA
 	lb bc, TM_TOXIC, 1
 	call GiveItem
 	jr nc, .BagFull
-	ld a, $a
+	ld a, $C
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_GOT_TM06
 	jr .gymVictory
 .BagFull
-	ld a, $b
+	ld a, $D
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 .gymVictory
@@ -81,8 +82,10 @@ FuchsiaGym_TextPointers:
 	dw FuchsiaGymText7
 	dw FuchsiaGymText8
 	dw FuchsiaGymText9
-	dw FuchsiaGymText10
-	dw FuchsiaGymText11
+	dw FuchsiaGymTextA
+	dw FuchsiaGymTextB
+	dw FuchsiaGymTextC
+	dw FuchsiaGymTextD
 
 FuchsiaGymTrainerHeader0:
 	trainer EVENT_BEAT_FUCHSIA_GYM_TRAINER_0, 2, FuchsiaGymBattleText1, FuchsiaGymEndBattleText1, FuchsiaGymAfterBattleText1
@@ -145,11 +148,11 @@ KogaExplainToxicText:
 	text_far _KogaExplainToxicText
 	text_end
 
-FuchsiaGymText9:
-	text_far _FuchsiaGymText9
+FuchsiaGymTextB:
+	text_far _FuchsiaGymTextB
 	text_end
 
-FuchsiaGymText10:
+FuchsiaGymTextC:
 	text_far _ReceivedTM06Text
 	sound_get_key_item
 
@@ -157,7 +160,7 @@ TM06ExplanationText:
 	text_far _TM06ExplanationText
 	text_end
 
-FuchsiaGymText11:
+FuchsiaGymTextD:
 	text_far _TM06NoRoomText
 	text_end
 
@@ -285,4 +288,71 @@ FuchsiaGymText_7564e:
 
 FuchsiaGymText_75653:
 	text_far _FuchsiaGymText_75653
+	text_end
+
+FuchsiaGymText9:
+	text_asm
+	ld hl, FuchsiaGymText_Rematch
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .cancel
+	ld hl, FuchsiaGymText_RematchConfirm
+	call PrintText
+	ld hl, wd72d
+	set 6, [hl]
+	set 7, [hl]
+	ld hl, FuchsiaGymText_RematchWin
+	ld de, FuchsiaGymText_RematchWin
+	call SaveEndBattleTextPointers
+	ldh a, [hSpriteIndex]
+	ld [wSpriteIndex], a
+	call EngageMapTrainer
+	call InitBattleEnemyParameters
+	ld a, $5
+	ld [wGymLeaderNo], a
+	xor a
+	ldh [hJoyHeld], a
+	ld a, $4
+	ld [wFuchsiaGymCurScript], a
+	ld [wCurMapScript], a
+	jr .done
+.cancel
+	ld hl, FuchsiaGymText_RematchCancel
+	call PrintText
+.done
+	jp TextScriptEnd
+	
+FuchsiaGymScript4:
+	ld a, [wIsInBattle]
+	cp $ff
+	jp z, FuchsiaGymScript_75477
+	ld a, $f0
+	ld [wJoyIgnore], a
+FuchsiaGymScript_AfterRematch:
+	SetEvent EVENT_BEAT_KOGA2
+	ld a, $A
+	ldh [hSpriteIndexOrTextID], a
+	call DisplayTextID
+	jp FuchsiaGymScript_75477
+	
+FuchsiaGymText_Rematch:
+	text_far _FuchsiaGymText_Rematch
+	text_end
+
+FuchsiaGymText_RematchConfirm:
+	text_far _FuchsiaGymText_RematchConfirm
+	text_end
+
+FuchsiaGymText_RematchCancel:
+	text_far _FuchsiaGymText_RematchCancel
+	text_end
+	
+FuchsiaGymText_RematchWin:
+	text_far _FuchsiaGymText_RematchWin
+	text_end
+	
+FuchsiaGymTextA:
+	text_far _FuchsiaGymText_AfterWin
 	text_end

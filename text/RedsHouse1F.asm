@@ -1,12 +1,19 @@
 _MomWakeUpText::
 	text "MOM: Right."
-	line "All boys leave"
+	line "All kids leave"
 	cont "home some day."
 	cont "It said so on TV."
 
 	para "PROF.OAK, next"
 	line "door, is looking"
 	cont "for you."
+	
+	para "You're wearing"
+	line "your new running"
+	cont "shoes, right?"
+	
+	para "Then you should"
+	line "be ready to go."
 	done
 
 _MomHealText1::

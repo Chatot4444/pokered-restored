@@ -166,138 +166,138 @@ INCLUDE "crysaudio/sfx_pointers_red.asm"
 ;INCLUDE "crysaudio/sfx_pointers.asm"
 
 
-SECTION "Songs 1", ROMX
+; SECTION "Songs 1", ROMX
 
-	inc_section "crysaudio/music/route36.asm"
-	inc_section "crysaudio/music/rivalbattle.asm"
-	inc_section "crysaudio/music/rocketbattle.asm"
-	inc_section "crysaudio/music/elmslab.asm"
-	inc_section "crysaudio/music/darkcave.asm"
-	inc_section "crysaudio/music/johtogymbattle.asm"
-	inc_section "crysaudio/music/championbattle.asm"
-	inc_section "crysaudio/music/ssaqua.asm"
-	inc_section "crysaudio/music/newbarktown.asm"
-	inc_section "crysaudio/music/goldenrodcity.asm"
-	inc_section "crysaudio/music/vermilioncity.asm"
-	inc_section "crysaudio/music/titlescreen.asm"
-	inc_section "crysaudio/music/ruinsofalphinterior.asm"
-	inc_section "crysaudio/music/lookpokemaniac.asm"
-	inc_section "crysaudio/music/trainervictory.asm"
-
-
-SECTION "Songs 2", ROMX
-
-	inc_section "crysaudio/music/route1.asm"
-	inc_section "crysaudio/music/route3.asm"
-	inc_section "crysaudio/music/route12.asm"
-	inc_section "crysaudio/music/kantogymbattle.asm"
-	inc_section "crysaudio/music/kantotrainerbattle.asm"
-	inc_section "crysaudio/music/kantowildbattle.asm"
-	inc_section "crysaudio/music/pokemoncenter.asm"
-	inc_section "crysaudio/music/looklass.asm"
-	inc_section "crysaudio/music/lookofficer.asm"
-	inc_section "crysaudio/music/route2.asm"
-	inc_section "crysaudio/music/mtmoon.asm"
-	inc_section "crysaudio/music/showmearound.asm"
-	inc_section "crysaudio/music/gamecorner.asm"
-	inc_section "crysaudio/music/bicycle.asm"
-	inc_section "crysaudio/music/looksage.asm"
-	inc_section "crysaudio/music/pokemonchannel.asm"
-	inc_section "crysaudio/music/lighthouse.asm"
-	inc_section "crysaudio/music/lakeofrage.asm"
-	inc_section "crysaudio/music/indigoplateau.asm"
-	inc_section "crysaudio/music/route37.asm"
-	inc_section "crysaudio/music/rockethideout.asm"
-	inc_section "crysaudio/music/dragonsden.asm"
-	inc_section "crysaudio/music/ruinsofalphradio.asm"
-	inc_section "crysaudio/music/lookbeauty.asm"
-	inc_section "crysaudio/music/route26.asm"
-	inc_section "crysaudio/music/ecruteakcity.asm"
-	inc_section "crysaudio/music/lakeofragerocketradio.asm"
-	inc_section "crysaudio/music/magnettrain.asm"
-	inc_section "crysaudio/music/lavendertown.asm"
-	inc_section "crysaudio/music/dancinghall.asm"
-	inc_section "crysaudio/music/contestresults.asm"
-	inc_section "crysaudio/music/route30.asm"
+	; inc_section "crysaudio/music/route36.asm"
+	; inc_section "crysaudio/music/rivalbattle.asm"
+	; inc_section "crysaudio/music/rocketbattle.asm"
+	; inc_section "crysaudio/music/elmslab.asm"
+	; inc_section "crysaudio/music/darkcave.asm"
+	; inc_section "crysaudio/music/johtogymbattle.asm"
+	; inc_section "crysaudio/music/championbattle.asm"
+	; inc_section "crysaudio/music/ssaqua.asm"
+	; inc_section "crysaudio/music/newbarktown.asm"
+	; inc_section "crysaudio/music/goldenrodcity.asm"
+	; inc_section "crysaudio/music/vermilioncity.asm"
+	; inc_section "crysaudio/music/titlescreen.asm"
+	; inc_section "crysaudio/music/ruinsofalphinterior.asm"
+	; inc_section "crysaudio/music/lookpokemaniac.asm"
+	; inc_section "crysaudio/music/trainervictory.asm"
 
 
-SECTION "Songs 3", ROMX
+; SECTION "Songs 2", ROMX
 
-	inc_section "crysaudio/music/violetcity.asm"
-	inc_section "crysaudio/music/route29.asm"
-	inc_section "crysaudio/music/halloffame.asm"
-	inc_section "crysaudio/music/healpokemon.asm"
-	inc_section "crysaudio/music/evolution.asm"
-	inc_section "crysaudio/music/printer.asm"
-
-
-SECTION "Songs 4", ROMX
-
-	inc_section "crysaudio/music/viridiancity.asm"
-	inc_section "crysaudio/music/celadoncity.asm"
-SECTION "Wild Pokemon Victory and Successful Capture", ROMX
-	INCLUDE "crysaudio/music/wildpokemonvictory.asm"
-	INCLUDE "crysaudio/music/successfulcapture.asm"
-	inc_section "crysaudio/music/gymleadervictory.asm"
-	inc_section "crysaudio/music/mtmoonsquare.asm"
-	inc_section "crysaudio/music/gym.asm"
-	inc_section "crysaudio/music/pallettown.asm"
-	inc_section "crysaudio/music/profoakspokemontalk.asm"
-	inc_section "crysaudio/music/profoak.asm"
-SECTION "Johto Rival", ROMX
-	INCLUDE "crysaudio/music/lookrival.asm"
-	INCLUDE "crysaudio/music/aftertherivalfight.asm"
-	inc_section "crysaudio/music/surf.asm"
-	inc_section "crysaudio/music/nationalpark.asm"
-	inc_section "crysaudio/music/azaleatown.asm"
-	inc_section "crysaudio/music/cherrygrovecity.asm"
-	inc_section "crysaudio/music/unioncave.asm"
-SECTION "Johto Wild Battle", ROMX
-	INCLUDE "crysaudio/music/johtowildbattle.asm"
-	INCLUDE "crysaudio/music/johtowildbattlenight.asm"
-	inc_section "crysaudio/music/johtotrainerbattle.asm"
-	inc_section "crysaudio/music/lookyoungster.asm"
-	inc_section "crysaudio/music/tintower.asm"
-	inc_section "crysaudio/music/sprouttower.asm"
-	inc_section "crysaudio/music/burnedtower.asm"
-	inc_section "crysaudio/music/mom.asm"
-	inc_section "crysaudio/music/victoryroad.asm"
-	inc_section "crysaudio/music/pokemonlullaby.asm"
-	inc_section "crysaudio/music/pokemonmarch.asm"
-	inc_section "crysaudio/music/goldsilveropening.asm"
-	inc_section "crysaudio/music/goldsilveropening2.asm"
-	inc_section "crysaudio/music/lookhiker.asm"
-SECTION "Johto Rocket Themes", ROMX
-	INCLUDE "crysaudio/music/lookrocket.asm"
-	INCLUDE "crysaudio/music/rockettheme.asm"
-	inc_section "crysaudio/music/mainmenu.asm"
-	inc_section "crysaudio/music/lookkimonogirl.asm"
-	inc_section "crysaudio/music/pokeflutechannel.asm"
-	inc_section "crysaudio/music/bugcatchingcontest.asm"
+	; inc_section "crysaudio/music/route1.asm"
+	; inc_section "crysaudio/music/route3.asm"
+	; inc_section "crysaudio/music/route12.asm"
+	; inc_section "crysaudio/music/kantogymbattle.asm"
+	; inc_section "crysaudio/music/kantotrainerbattle.asm"
+	; inc_section "crysaudio/music/kantowildbattle.asm"
+	; inc_section "crysaudio/music/pokemoncenter.asm"
+	; inc_section "crysaudio/music/looklass.asm"
+	; inc_section "crysaudio/music/lookofficer.asm"
+	; inc_section "crysaudio/music/route2.asm"
+	; inc_section "crysaudio/music/mtmoon.asm"
+	; inc_section "crysaudio/music/showmearound.asm"
+	; inc_section "crysaudio/music/gamecorner.asm"
+	; inc_section "crysaudio/music/bicycle.asm"
+	; inc_section "crysaudio/music/looksage.asm"
+	; inc_section "crysaudio/music/pokemonchannel.asm"
+	; inc_section "crysaudio/music/lighthouse.asm"
+	; inc_section "crysaudio/music/lakeofrage.asm"
+	; inc_section "crysaudio/music/indigoplateau.asm"
+	; inc_section "crysaudio/music/route37.asm"
+	; inc_section "crysaudio/music/rockethideout.asm"
+	; inc_section "crysaudio/music/dragonsden.asm"
+	; inc_section "crysaudio/music/ruinsofalphradio.asm"
+	; inc_section "crysaudio/music/lookbeauty.asm"
+	; inc_section "crysaudio/music/route26.asm"
+	; inc_section "crysaudio/music/ecruteakcity.asm"
+	; inc_section "crysaudio/music/lakeofragerocketradio.asm"
+	; inc_section "crysaudio/music/magnettrain.asm"
+	; inc_section "crysaudio/music/lavendertown.asm"
+	; inc_section "crysaudio/music/dancinghall.asm"
+	; inc_section "crysaudio/music/contestresults.asm"
+	; inc_section "crysaudio/music/route30.asm"
 
 
-SECTION "Songs 5", ROMX
+; SECTION "Songs 3", ROMX
 
-	inc_section "crysaudio/music/mobileadaptermenu.asm"
-	inc_section "crysaudio/music/buenaspassword.asm"
-	inc_section "crysaudio/music/lookmysticalman.asm"
-	inc_section "crysaudio/music/crystalopening.asm"
-	inc_section "crysaudio/music/battletowertheme.asm"
-	inc_section "crysaudio/music/suicunebattle.asm"
-	inc_section "crysaudio/music/battletowerlobby.asm"
-	inc_section "crysaudio/music/mobilecenter.asm"
+	; inc_section "crysaudio/music/violetcity.asm"
+	; inc_section "crysaudio/music/route29.asm"
+	; inc_section "crysaudio/music/halloffame.asm"
+	; inc_section "crysaudio/music/healpokemon.asm"
+	; inc_section "crysaudio/music/evolution.asm"
+	; inc_section "crysaudio/music/printer.asm"
 
 
-SECTION "Extra Songs 1", ROMX
+; SECTION "Songs 4", ROMX
 
-	inc_section "crysaudio/music/credits.asm"
-	inc_section "crysaudio/music/clair.asm"
-	inc_section "crysaudio/music/mobileadapter.asm"
+	; inc_section "crysaudio/music/viridiancity.asm"
+	; inc_section "crysaudio/music/celadoncity.asm"
+; SECTION "Wild Pokemon Victory and Successful Capture", ROMX
+	; INCLUDE "crysaudio/music/wildpokemonvictory.asm"
+	; INCLUDE "crysaudio/music/successfulcapture.asm"
+	; inc_section "crysaudio/music/gymleadervictory.asm"
+	; inc_section "crysaudio/music/mtmoonsquare.asm"
+	; inc_section "crysaudio/music/gym.asm"
+	; inc_section "crysaudio/music/pallettown.asm"
+	; inc_section "crysaudio/music/profoakspokemontalk.asm"
+	; inc_section "crysaudio/music/profoak.asm"
+; SECTION "Johto Rival", ROMX
+	; INCLUDE "crysaudio/music/lookrival.asm"
+	; INCLUDE "crysaudio/music/aftertherivalfight.asm"
+	; inc_section "crysaudio/music/surf.asm"
+	; inc_section "crysaudio/music/nationalpark.asm"
+	; inc_section "crysaudio/music/azaleatown.asm"
+	; inc_section "crysaudio/music/cherrygrovecity.asm"
+	; inc_section "crysaudio/music/unioncave.asm"
+; SECTION "Johto Wild Battle", ROMX
+	; INCLUDE "crysaudio/music/johtowildbattle.asm"
+	; INCLUDE "crysaudio/music/johtowildbattlenight.asm"
+	; inc_section "crysaudio/music/johtotrainerbattle.asm"
+	; inc_section "crysaudio/music/lookyoungster.asm"
+	; inc_section "crysaudio/music/tintower.asm"
+	; inc_section "crysaudio/music/sprouttower.asm"
+	; inc_section "crysaudio/music/burnedtower.asm"
+	; inc_section "crysaudio/music/mom.asm"
+	; inc_section "crysaudio/music/victoryroad.asm"
+	; inc_section "crysaudio/music/pokemonlullaby.asm"
+	; inc_section "crysaudio/music/pokemonmarch.asm"
+	; inc_section "crysaudio/music/goldsilveropening.asm"
+	; inc_section "crysaudio/music/goldsilveropening2.asm"
+	; inc_section "crysaudio/music/lookhiker.asm"
+; SECTION "Johto Rocket Themes", ROMX
+	; INCLUDE "crysaudio/music/lookrocket.asm"
+	; INCLUDE "crysaudio/music/rockettheme.asm"
+	; inc_section "crysaudio/music/mainmenu.asm"
+	; inc_section "crysaudio/music/lookkimonogirl.asm"
+	; inc_section "crysaudio/music/pokeflutechannel.asm"
+	; inc_section "crysaudio/music/bugcatchingcontest.asm"
 
 
-SECTION "Extra Songs 2", ROMX
+; SECTION "Songs 5", ROMX
 
-	inc_section "crysaudio/music/postcredits.asm"
+	; inc_section "crysaudio/music/mobileadaptermenu.asm"
+	; inc_section "crysaudio/music/buenaspassword.asm"
+	; inc_section "crysaudio/music/lookmysticalman.asm"
+	; inc_section "crysaudio/music/crystalopening.asm"
+	; inc_section "crysaudio/music/battletowertheme.asm"
+	; inc_section "crysaudio/music/suicunebattle.asm"
+	; inc_section "crysaudio/music/battletowerlobby.asm"
+	; inc_section "crysaudio/music/mobilecenter.asm"
+
+
+; SECTION "Extra Songs 1", ROMX
+
+	; inc_section "crysaudio/music/credits.asm"
+	; inc_section "crysaudio/music/clair.asm"
+	; inc_section "crysaudio/music/mobileadapter.asm"
+
+
+; SECTION "Extra Songs 2", ROMX
+
+	; inc_section "crysaudio/music/postcredits.asm"
 
 
 SECTION "RBY Songs 1", ROMX
@@ -309,7 +309,7 @@ SECTION "RBY Songs 1", ROMX
 	inc_section "crysaudio/music/RBY/routes4.asm"
 	inc_section "crysaudio/music/RBY/indigoplateau.asm"
 	inc_section "crysaudio/music/RBY/pallettown.asm"
-	inc_section "crysaudio/music/RBY/unusedsong.asm"
+;	inc_section "crysaudio/music/RBY/unusedsong.asm"
 	inc_section "crysaudio/music/RBY/cities1.asm"
 	inc_section "crysaudio/music/RBY/museumguy.asm"
 	inc_section "crysaudio/music/RBY/meetprofoak.asm"
@@ -363,119 +363,123 @@ SECTION "RBY Songs 4", ROMX
 	inc_section "crysaudio/music/RBY/yellowintro.asm"
 	inc_section "crysaudio/music/RBY/surfingpikachu.asm"
 	inc_section "crysaudio/music/RBY/yellowunusedsong.asm"
-	inc_section "crysaudio/music/RBY/meetjessiejames.asm"
+;	inc_section "crysaudio/music/RBY/meetjessiejames.asm"
 
 
-SECTION "TCG Songs 1", ROMX
+SECTION "New Songs", ROMX
+	inc_section "crysaudio/music/RBY/galarbirdbattle.asm"
+	inc_section "crysaudio/music/RBY/kantobirdbattle.asm"
 
-	inc_section "crysaudio/music/TCG/titlescreen.asm"
-	inc_section "crysaudio/music/TCG/dueltheme1.asm"
-	inc_section "crysaudio/music/TCG/dueltheme2.asm"
-	inc_section "crysaudio/music/TCG/dueltheme3.asm"
-	inc_section "crysaudio/music/TCG/pausemenu.asm"
-	inc_section "crysaudio/music/TCG/pcmainmenu.asm"
-	inc_section "crysaudio/music/TCG/deckmachine.asm"
-	inc_section "crysaudio/music/TCG/cardpop.asm"
-	inc_section "crysaudio/music/TCG/overworld.asm"
-	inc_section "crysaudio/music/TCG/pokemondome.asm"
-	inc_section "crysaudio/music/TCG/challengehall.asm"
-	inc_section "crysaudio/music/TCG/club1.asm"
-	inc_section "crysaudio/music/TCG/club2.asm"
-	inc_section "crysaudio/music/TCG/club3.asm"
+; SECTION "TCG Songs 1", ROMX
 
-
-SECTION "TCG Songs 2", ROMX
-
-	inc_section "crysaudio/music/TCG/ronald.asm"
-	inc_section "crysaudio/music/TCG/imakuni.asm"
-	inc_section "crysaudio/music/TCG/hallofhonor.asm"
-	inc_section "crysaudio/music/TCG/credits.asm"
-	inc_section "crysaudio/music/TCG/matchstart1.asm"
-	inc_section "crysaudio/music/TCG/matchstart2.asm"
-	inc_section "crysaudio/music/TCG/matchstart3.asm"
-	inc_section "crysaudio/music/TCG/matchvictory.asm"
-	inc_section "crysaudio/music/TCG/matchloss.asm"
-	inc_section "crysaudio/music/TCG/matchdraw.asm"
-	inc_section "crysaudio/music/TCG/boosterpack.asm"
-	inc_section "crysaudio/music/TCG/medal.asm"
+	; inc_section "crysaudio/music/TCG/titlescreen.asm"
+	; inc_section "crysaudio/music/TCG/dueltheme1.asm"
+	; inc_section "crysaudio/music/TCG/dueltheme2.asm"
+	; inc_section "crysaudio/music/TCG/dueltheme3.asm"
+	; inc_section "crysaudio/music/TCG/pausemenu.asm"
+	; inc_section "crysaudio/music/TCG/pcmainmenu.asm"
+	; inc_section "crysaudio/music/TCG/deckmachine.asm"
+	; inc_section "crysaudio/music/TCG/cardpop.asm"
+	; inc_section "crysaudio/music/TCG/overworld.asm"
+	; inc_section "crysaudio/music/TCG/pokemondome.asm"
+	; inc_section "crysaudio/music/TCG/challengehall.asm"
+	; inc_section "crysaudio/music/TCG/club1.asm"
+	; inc_section "crysaudio/music/TCG/club2.asm"
+	; inc_section "crysaudio/music/TCG/club3.asm"
 
 
-SECTION "TCG2 Songs 1", ROMX
+; SECTION "TCG Songs 2", ROMX
 
-	inc_section "crysaudio/music/TCG2/titlescreen.asm"
-	inc_section "crysaudio/music/TCG2/herecomesgr.asm"
-	inc_section "crysaudio/music/TCG2/groverworld.asm"
-	inc_section "crysaudio/music/TCG2/fort1.asm"
-	inc_section "crysaudio/music/TCG2/fort2.asm"
-	inc_section "crysaudio/music/TCG2/fort3.asm"
-	inc_section "crysaudio/music/TCG2/fort4.asm"
-	inc_section "crysaudio/music/TCG2/grcastle.asm"
-	inc_section "crysaudio/music/TCG2/grchallengecup.asm"
-
-
-SECTION "TCG2 Songs 2", ROMX
-
-	inc_section "crysaudio/music/TCG2/gamecorner.asm"
-	inc_section "crysaudio/music/TCG2/grblimp.asm"
-	inc_section "crysaudio/music/TCG2/grdueltheme1.asm"
-	inc_section "crysaudio/music/TCG2/grdueltheme2.asm"
-	inc_section "crysaudio/music/TCG2/grdueltheme3.asm"
-	inc_section "crysaudio/music/TCG2/ishihara.asm"
+	; inc_section "crysaudio/music/TCG/ronald.asm"
+	; inc_section "crysaudio/music/TCG/imakuni.asm"
+	; inc_section "crysaudio/music/TCG/hallofhonor.asm"
+	; inc_section "crysaudio/music/TCG/credits.asm"
+	; inc_section "crysaudio/music/TCG/matchstart1.asm"
+	; inc_section "crysaudio/music/TCG/matchstart2.asm"
+	; inc_section "crysaudio/music/TCG/matchstart3.asm"
+	; inc_section "crysaudio/music/TCG/matchvictory.asm"
+	; inc_section "crysaudio/music/TCG/matchloss.asm"
+	; inc_section "crysaudio/music/TCG/matchdraw.asm"
+	; inc_section "crysaudio/music/TCG/boosterpack.asm"
+	; inc_section "crysaudio/music/TCG/medal.asm"
 
 
-SECTION "TCG2 Songs 3", ROMX
+; SECTION "TCG2 Songs 1", ROMX
 
-	inc_section "crysaudio/music/TCG2/imakuni2.asm"
-	inc_section "crysaudio/music/TCG2/credits.asm"
-	inc_section "crysaudio/music/TCG2/diddly1.asm"
-	inc_section "crysaudio/music/TCG2/diddly2.asm"
-	inc_section "crysaudio/music/TCG2/diddly3.asm"
-	inc_section "crysaudio/music/TCG2/diddly4.asm"
-	inc_section "crysaudio/music/TCG2/diddly5.asm"
-	inc_section "crysaudio/music/TCG2/diddly6.asm"
-
-
-SECTION "Pinball Songs 1", ROMX
-
-	inc_section "crysaudio/music/pinball/redfield.asm"
-	inc_section "crysaudio/music/pinball/catchemred.asm"
-	inc_section "crysaudio/music/pinball/hurryupred.asm"
-	inc_section "crysaudio/music/pinball/pokedex.asm"
-SECTION "Gastly and Haunter Graveyard", ROMX
-	INCLUDE "crysaudio/music/pinball/gastlyinthegraveyard.asm"
-	INCLUDE "crysaudio/music/pinball/haunterinthegraveyard.asm"
-	inc_section "crysaudio/music/pinball/gengarinthegraveyard.asm"
+	; inc_section "crysaudio/music/TCG2/titlescreen.asm"
+	; inc_section "crysaudio/music/TCG2/herecomesgr.asm"
+	; inc_section "crysaudio/music/TCG2/groverworld.asm"
+	; inc_section "crysaudio/music/TCG2/fort1.asm"
+	; inc_section "crysaudio/music/TCG2/fort2.asm"
+	; inc_section "crysaudio/music/TCG2/fort3.asm"
+	; inc_section "crysaudio/music/TCG2/fort4.asm"
+	; inc_section "crysaudio/music/TCG2/grcastle.asm"
+	; inc_section "crysaudio/music/TCG2/grchallengecup.asm"
 
 
-SECTION "Pinball Songs 2", ROMX
+; SECTION "TCG2 Songs 2", ROMX
 
-	inc_section "crysaudio/music/pinball/bluefield.asm"
-	inc_section "crysaudio/music/pinball/catchemblue.asm"
-	inc_section "crysaudio/music/pinball/hurryupblue.asm"
-	inc_section "crysaudio/music/pinball/hiscore.asm"
-	inc_section "crysaudio/music/pinball/gameover.asm"
-
-
-SECTION "Pinball Songs 3", ROMX
-
-	inc_section "crysaudio/music/pinball/whackthediglett.asm"
-	inc_section "crysaudio/music/pinball/whackthedugtrio.asm"
-	inc_section "crysaudio/music/pinball/seelstage.asm"
-	inc_section "crysaudio/music/pinball/title.asm"
+	; inc_section "crysaudio/music/TCG2/gamecorner.asm"
+	; inc_section "crysaudio/music/TCG2/grblimp.asm"
+	; inc_section "crysaudio/music/TCG2/grdueltheme1.asm"
+	; inc_section "crysaudio/music/TCG2/grdueltheme2.asm"
+	; inc_section "crysaudio/music/TCG2/grdueltheme3.asm"
+	; inc_section "crysaudio/music/TCG2/ishihara.asm"
 
 
-SECTION "Pinball Songs 4", ROMX
+; SECTION "TCG2 Songs 3", ROMX
 
-	inc_section "crysaudio/music/pinball/mewtwostage.asm"
-	inc_section "crysaudio/music/pinball/options.asm"
-	inc_section "crysaudio/music/pinball/fieldselect.asm"
-	inc_section "crysaudio/music/pinball/meowthstage.asm"
+	; inc_section "crysaudio/music/TCG2/imakuni2.asm"
+	; inc_section "crysaudio/music/TCG2/credits.asm"
+	; inc_section "crysaudio/music/TCG2/diddly1.asm"
+	; inc_section "crysaudio/music/TCG2/diddly2.asm"
+	; inc_section "crysaudio/music/TCG2/diddly3.asm"
+	; inc_section "crysaudio/music/TCG2/diddly4.asm"
+	; inc_section "crysaudio/music/TCG2/diddly5.asm"
+	; inc_section "crysaudio/music/TCG2/diddly6.asm"
 
 
-SECTION "Pinball Songs 5", ROMX
+; SECTION "Pinball Songs 1", ROMX
 
-	inc_section "crysaudio/music/pinball/endcredits.asm"
-	inc_section "crysaudio/music/pinball/nameentry.asm"
+	; inc_section "crysaudio/music/pinball/redfield.asm"
+	; inc_section "crysaudio/music/pinball/catchemred.asm"
+	; inc_section "crysaudio/music/pinball/hurryupred.asm"
+	; inc_section "crysaudio/music/pinball/pokedex.asm"
+; SECTION "Gastly and Haunter Graveyard", ROMX
+	; INCLUDE "crysaudio/music/pinball/gastlyinthegraveyard.asm"
+	; INCLUDE "crysaudio/music/pinball/haunterinthegraveyard.asm"
+	; inc_section "crysaudio/music/pinball/gengarinthegraveyard.asm"
+
+
+; SECTION "Pinball Songs 2", ROMX
+
+	; inc_section "crysaudio/music/pinball/bluefield.asm"
+	; inc_section "crysaudio/music/pinball/catchemblue.asm"
+	; inc_section "crysaudio/music/pinball/hurryupblue.asm"
+	; inc_section "crysaudio/music/pinball/hiscore.asm"
+	; inc_section "crysaudio/music/pinball/gameover.asm"
+
+
+; SECTION "Pinball Songs 3", ROMX
+
+	; inc_section "crysaudio/music/pinball/whackthediglett.asm"
+	; inc_section "crysaudio/music/pinball/whackthedugtrio.asm"
+	; inc_section "crysaudio/music/pinball/seelstage.asm"
+	; inc_section "crysaudio/music/pinball/title.asm"
+
+
+; SECTION "Pinball Songs 4", ROMX
+
+	; inc_section "crysaudio/music/pinball/mewtwostage.asm"
+	; inc_section "crysaudio/music/pinball/options.asm"
+	; inc_section "crysaudio/music/pinball/fieldselect.asm"
+	; inc_section "crysaudio/music/pinball/meowthstage.asm"
+
+
+; SECTION "Pinball Songs 5", ROMX
+
+	; inc_section "crysaudio/music/pinball/endcredits.asm"
+	; inc_section "crysaudio/music/pinball/nameentry.asm"
 
 
 SECTION "Sound Effects", ROMX
@@ -493,3 +497,5 @@ SECTION "Cries", ROMX
 INCLUDE "crysaudio/cry_headers.asm"
 
 INCLUDE "crysaudio/cries.asm"
+
+INCLUDE "crysaudio/pikachu_cries.asm"

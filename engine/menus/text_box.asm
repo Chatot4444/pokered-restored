@@ -386,6 +386,7 @@ DisplayFieldMoveMonMenu:
 	ld [hli], a ; wFieldMoves + 1
 	ld [hli], a ; wFieldMoves + 2
 	ld [hli], a ; wFieldMoves + 3
+	ld [hli], a ; wFieldMOves + 4
 	ld [hli], a ; wNumFieldMoves
 	ld [hl], 12 ; wFieldMovesLeftmostXCoord
 	call GetMonFieldMoves
@@ -536,8 +537,6 @@ GetMonFieldMoves:
 	inc hl
 	jr .fieldMoveLoop
 .foundFieldMove
-	ld a, b
-	ld [wLastFieldMoveID], a
 	ld a, [hli] ; field move name index
 	ld b, [hl] ; field move leftmost X coordinate
 	pop hl
@@ -551,11 +550,69 @@ GetMonFieldMoves:
 	ld a, b
 	ld [wFieldMovesLeftmostXCoord], a
 .skipUpdatingLeftmostXCoord
-	ld a, [wLastFieldMoveID]
-	ld b, a
 	jr .loop
 .done
 	pop hl
+	ld a, c
+.loop2
+	inc a
+	cp NUM_MOVES + 1
+	jr z, .startOfMoves
+	dec de
+	jr .loop2
+.startOfMoves
+	push hl
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1Species
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld a, [hl]
+	ld c, a 
+	;ld b, 0  ;this is unnecessary since b will already be 0 unless the party struct is larger than 255, which its not
+	ld hl, MonFieldMoves
+	add hl, bc
+	ld a, [hl]
+	pop hl
+	and a
+	ret z
+	ld b, a
+	ld c, NUM_MOVES + 1
+.loop3
+	dec c
+	jr z, .noDuplicate
+	ld a, [de]
+	and a
+	jr z, .noDuplicate
+	cp b
+	ret z
+	inc de
+	jr .loop3
+.noDuplicate
+	ld d, h
+	ld e, l
+	ld hl, FieldMoveDisplayData
+.fieldMoveLoop2
+	ld a, [hli]
+	cp $ff
+	ret z ; if this happens something has gone wrong
+	cp b
+	jr z, .gotFieldMoveData
+	inc hl
+	inc hl
+	jr .fieldMoveLoop2
+.gotFieldMoveData
+	ld a, [hli] ; field move name index
+	ld b, [hl] ; field move leftmost X coordinate
+	ld [de], a
+	ld a, [wNumFieldMoves]
+	inc a
+	ld [wNumFieldMoves], a
+	ld a, [wFieldMovesLeftmostXCoord]
+	cp b
+	ret c
+	ld a, b
+	ld [wFieldMovesLeftmostXCoord], a
 	ret
 
 INCLUDE "data/moves/field_moves.asm"
+INCLUDE "data/pokemon/field_moves.asm"

@@ -42,6 +42,7 @@ OakSpeech:
 	call LoadTextBoxTilePatterns
 	call SetDefaultNames
 	predef InitPlayerData2
+	call RunDefaultPaletteCommand
 	ld hl, wNumBoxItems
 	ld a, POTION
 	ld [wcf91], a
@@ -56,6 +57,12 @@ OakSpeech:
 	ld a, [wd732]
 	bit 1, a ; possibly a debug mode bit
 	jp nz, .skipChoosingNames
+	ld hl,BoyGirlText  ; added to the same file as the other oak text
+  	call PrintText     ; show this text
+  	call BoyGirlChoice ; added routine at the end of this file
+   	ld a, [wCurrentMenuItem]
+   	ld [wPlayerGender], a ; store player's gender. 00 for boy, 01 for girl
+   	call ClearScreen ; clear the screen before resuming normal intro
 	ld de, ProfOakPic
 	lb bc, BANK(ProfOakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight
@@ -70,13 +77,39 @@ OakSpeech:
 	call GetMonHeader
 	hlcoord 6, 4
 	call LoadFlippedFrontSpriteByMonIndex
-	call MovePicLeft
+	;call MovePicLeft
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;gbcnote - Nidorino needs its pal
+	ld a, %11100100
+	ld [rBGP], a
+	call UpdateGBCPal_BGP
+	
+	push af
+	push bc
+	push hl
+	push de
+	ld d, CONVERT_BGP
+	ld e, 0
+	callfar TransferMonPal 
+	pop de
+	pop hl
+	pop bc
+	pop af
+	
+	call MovePicLeft_NoPalUpdate
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	ld hl, OakSpeechText2
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
+	ld a, [wPlayerGender] ; check gender
+	and a      ; check gender
+	jr z, .NotGreen1
+	ld de,GreenPicFront
+	lb bc, Bank(GreenPicFront), $00
+.NotGreen1:
 	call IntroDisplayPicCenteredOrUpperRight
 	call MovePicLeft
 	ld hl, IntroducePlayerText
@@ -96,6 +129,12 @@ OakSpeech:
 	call ClearScreen
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
+	ld a, [wPlayerGender] ; check gender
+	and a      ; check gender
+	jr z, .NotGreen2
+	ld de,GreenPicFront
+	lb bc, Bank(GreenPicFront), $00
+.NotGreen2:
 	call IntroDisplayPicCenteredOrUpperRight
 	call GBFadeInFromWhite
 	ld a, [wd72d]
@@ -116,6 +155,12 @@ OakSpeech:
 	ld de, RedSprite
 	ld hl, vSprites
 	lb bc, BANK(RedSprite), $0C
+	ld a, [wPlayerGender] ; check gender
+	and a      ; check gender
+	jr z, .NotGreen3
+	ld de,GreenSprite
+	lb bc, Bank(GreenSprite), $0C
+.NotGreen3:
 	call CopyVideoData
 	ld de, ShrinkPic1
 	lb bc, BANK(ShrinkPic1), $00
@@ -170,6 +215,9 @@ IntroduceRivalText:
 OakSpeechText3:
 	text_far _OakSpeechText3
 	text_end
+BoyGirlText: ; This is new so we had to add a reference to get it to compile
+    text_far _BoyGirlText
+    text_end
 
 FadeInIntroPic:
 	ld hl, IntroFadePalettes
@@ -177,6 +225,7 @@ FadeInIntroPic:
 .next
 	ld a, [hli]
 	ldh [rBGP], a
+	call UpdateGBCPal_BGP
 	ld c, 10
 	call DelayFrames
 	dec b
@@ -192,12 +241,13 @@ IntroFadePalettes:
 	db %11100100
 
 MovePicLeft:
-	ld a, 119
-	ldh [rWX], a
-	call DelayFrame
-
 	ld a, %11100100
 	ldh [rBGP], a
+	call UpdateGBCPal_BGP
+MovePicLeft_NoPalUpdate: ;gbcnote - need the option to skip updating if needed
+	ld a, 119
+	ld [rWX], a
+	call DelayFrame
 .next
 	call DelayFrame
 	ldh a, [rWX]
@@ -232,3 +282,22 @@ IntroDisplayPicCenteredOrUpperRight:
 	xor a
 	ldh [hStartTileID], a
 	predef_jump CopyUncompressedPicToTilemap
+
+; displays boy/girl choice
+BoyGirlChoice::
+   call SaveScreenTilesToBuffer1
+   call InitBoyGirlTextBoxParameters
+   jr DisplayBoyGirlChoice
+    
+InitBoyGirlTextBoxParameters::
+   ld a, $1 ; loads the value for the unused North/West choice, that was changed to say Boy/Girl
+   ld [wTwoOptionMenuID], a
+   coord hl, 13, 7 
+   ld bc, $80e
+   ret
+ 	   
+DisplayBoyGirlChoice::
+   ld a, $14
+   ld [wTextBoxID], a
+   call DisplayTextBoxID
+   jp LoadScreenTilesFromBuffer1

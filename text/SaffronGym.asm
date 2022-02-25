@@ -237,3 +237,34 @@ _SaffronGymAfterBattleText7::
 	line "used telepathy to"
 	cont "read your mind!"
 	done
+
+_SaffronGymText_Rematch::
+	text "I knew you"
+	line "would return."
+	
+	para "Are you ready"
+	line "for our battle?"
+	done
+	
+_SaffronGymText_RematchConfirm::
+	text "Very well,"
+	line "champion." 
+	done
+	
+_SaffronGymText_RematchCancel::
+	text "No matter."
+	line "You will be back."
+	done
+	
+_SaffronGymText_RematchWin::
+	text "You've"
+	line "shown your power"
+	cont "again."
+	prompt
+	
+_SaffronGymText_AfterWin::
+	text "With training"
+	line "I'm sure you could"
+	cont "grasp your latent"
+	cont "psychic abilities."
+	done

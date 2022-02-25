@@ -1,5 +1,8 @@
 ChoosePlayerName:
 	call OakSpeechSlidePicRight
+	ld a, [wPlayerGender]
+	and a
+	jr nz, .AreGirl ; skip to girl names if playing as girl
 	ld de, DefaultNamesPlayer
 	call DisplayIntroNameTextBox
 	ld a, [wCurrentMenuItem]
@@ -10,6 +13,17 @@ ChoosePlayerName:
 	ld de, wPlayerName
 	call OakSpeechSlidePicLeft
 	jr .done
+.AreGirl ; copy of naming routine with girl names
+	ld de, DefaultNamesGirl
+	call DisplayIntroNameTextBox
+	ld a, [wCurrentMenuItem]
+	and a
+	jr z, .customName
+	ld hl, DefaultNamesGirlList
+	call GetDefaultName
+	ld de, wPlayerName
+	call OakSpeechSlidePicLeft
+	jr .done  ;end of girl name routine
 .customName
 	ld hl, wPlayerName
 	xor a ; NAME_PLAYER_SCREEN
@@ -22,6 +36,12 @@ ChoosePlayerName:
 	call Delay3
 	ld de, RedPicFront
 	ld b, BANK(RedPicFront)
+	ld a, [wPlayerGender] ; Added gender check
+	and a      ; Added gender check
+	jr z, .AreBoy3
+	ld de, GreenPicFront
+	ld b, BANK(GreenPicFront)
+.AreBoy3
 	call IntroDisplayPicCenteredOrUpperRight
 .done
 	ld hl, YourNameIsText

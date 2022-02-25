@@ -10,7 +10,7 @@ IF DEF(_RED)
 	db 17, VOLTORB
 	db 17, SPEAROW
 	db 13, EKANS
-	db 17, EKANS
+	db 17, TYROGUE
 ENDC
 IF DEF(_BLUE)
 	db 11, SANDSHREW
@@ -19,7 +19,7 @@ IF DEF(_BLUE)
 	db 17, VOLTORB
 	db 17, SPEAROW
 	db 13, SANDSHREW
-	db 17, SANDSHREW
+	db 17, TYROGUE
 ENDC
 	end_grass_wildmons
 

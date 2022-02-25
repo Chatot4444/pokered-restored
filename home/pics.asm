@@ -30,18 +30,30 @@ UncompressMonSprite::
 	ld a, BANK(TangelaPicFront)
 	jr c, .GotBank
 	ld a, b
-	cp MOLTRES + 1
-	ld a, BANK(MoltresPicFront)
+	cp TAUROS + 1
+	ld a, BANK(TaurosPicFront)
 	jr c, .GotBank
 	ld a, b
-	cp BEEDRILL + 2
-	ld a, BANK(BeedrillPicFront)
+	cp DRATINI+ 1
+	ld a, BANK(DratiniPicFront)
 	jr c, .GotBank
 	ld a, b
-	cp STARMIE + 1
-	ld a, BANK(StarmiePicFront)
+	cp PORYGONZ + 1
+	ld a, BANK(PorygonZPicFront)
 	jr c, .GotBank
-	ld a, BANK(VictreebelPicFront)
+	ld a, b
+	cp PIDGEOTTO + 1
+	ld a, BANK(PidgeottoPicFront)
+	jr c, .GotBank
+	ld a, b
+	cp SMOOCHUM + 1
+	ld a, BANK(SmoochumPicFront)
+	jr c, .GotBank
+	ld a, b
+	cp SLOWPOKEG + 1
+	ld a, BANK(SlowpokegPicFront)
+	jr c, .GotBank
+	ld a, BANK(MoltresgPicFront)
 .GotBank
 	jp UncompressSpriteData
 

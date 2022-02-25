@@ -13,7 +13,8 @@ _LTSurgePostBattleAdviceText::
 _LTSurgeThunderbadgeInfoText::
 	text "The THUNDERBADGE"
 	line "cranks up your"
-	cont "#MON's SPEED!"
+	cont "#MON's"
+	cont "DEFENSE!"
 
 	para "It also lets your"
 	line "#MON FLY any"
@@ -142,4 +143,36 @@ _VermilionGymFanPreBattleText::
 _VermilionGymFanPostBattleText::
 	text "Whew! That match"
 	line "was electric!"
+	done
+
+_VermilionGymText_Rematch::
+	text "Hey, Champ!"
+	line "Back for another"
+	cont "round?"
+	done
+	
+_VermilionGymText_RematchConfirm::
+	text "Now that you're"
+	line "not a two-badge" 
+	cont "pipsqueak I can"
+	cont "really let loose!"
+	done
+	
+_VermilionGymText_RematchCancel::
+	text "Heh, scared to"
+	line "lose your title?"
+	done
+	
+_VermilionGymText_RematchWin::
+	text "Whoa!"
+
+	para "You sure are"
+	line "the champ, kid!"
+	prompt
+	
+_VermilionGymText7::
+	text "Yeah! Now"
+	line "that's a battle!"
+	cont "I knew you were"
+	cont "something special."
 	done

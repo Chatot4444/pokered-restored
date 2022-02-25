@@ -8,8 +8,8 @@ FuchsiaBillsGrandpasHouse_Object:
 	def_signs
 
 	def_objects
-	object SPRITE_MIDDLE_AGED_WOMAN, 2, 3, STAY, RIGHT, 1 ; person
-	object SPRITE_GAMBLER, 7, 2, STAY, UP, 2 ; person
-	object SPRITE_YOUNGSTER, 5, 5, STAY, NONE, 3 ; person
+	object SPRITE_MIDDLE_AGED_WOMAN,  2,  4, STAY, DOWN, 1 ; person
+	object SPRITE_GAMBLER,  5,  4, STAY, DOWN, 2 ; person
+	object SPRITE_YOUNGSTER,  7,  2, STAY, UP, 3 ; person
 
 	def_warps_to FUCHSIA_BILLS_GRANDPAS_HOUSE

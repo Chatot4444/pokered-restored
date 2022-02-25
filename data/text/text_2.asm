@@ -1,3 +1,8 @@
+_BoyGirlText::
+	text "Play as a boy, or"
+	line "as a girl?"
+	done
+
 _AIBattleWithdrawText::
 	text_ram wTrainerName
 	text " with-"
@@ -339,7 +344,7 @@ _CinnabarGymQuizIntroText::
 
 _CinnabarQuizQuestionsText1::
 	text "CATERPIE evolves"
-	line "into BUTTERFREE?"
+	line "into METAPOD?"
 	done
 
 _CinnabarQuizQuestionsText2::
@@ -349,7 +354,7 @@ _CinnabarQuizQuestionsText2::
 	done
 
 _CinnabarQuizQuestionsText3::
-	text "POLIWAG evolves 3"
+	text "GOLDEEN evolves 3"
 	line "times?"
 	done
 
@@ -521,9 +526,9 @@ _ViridianSchoolNotebookText2::
 	cont "catch, so weaken"
 	cont "it first!"
 
-	para "Poison, burns and"
-	line "other damage are"
-	cont "effective!"
+	para "Paralysis, sleep"
+	line "and other status"
+	cont "are effective!"
 	prompt
 
 _ViridianSchoolNotebookText3::
@@ -678,6 +683,9 @@ _ViridianBlackboardPrlzText::
 	line "make #MON"
 	cont "moves misfire!"
 
+	para "It also makes"
+	line "#MON slower."
+
 	para "Paralysis remains"
 	line "after battles."
 
@@ -687,7 +695,7 @@ _ViridianBlackboardPrlzText::
 
 _ViridianBlackboardBurnText::
 	text "A burn reduces"
-	line "power and speed."
+	line "attack power."
 	cont "It also causes"
 	cont "ongoing damage."
 
@@ -1205,13 +1213,13 @@ _HitXTimesText::
 	prompt
 
 _GainedText::
-	text_ram wcd6d
-	text " gained"
-	line "@"
+	text "<PLAYER>'s #MON"
+	line "each gained"
+	cont "@"
 	text_end
 
 _WithExpAllText::
-	text "with EXP.ALL,"
+	text "with LUCKY EGG,"
 	cont "@"
 	text_end
 

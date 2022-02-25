@@ -18,7 +18,7 @@
 	const SCRATCH      ; 0a
 	const VICEGRIP     ; 0b
 	const GUILLOTINE   ; 0c
-	const RAZOR_WIND   ; 0d
+	const AERIAL_ACE   ; 0d
 	const SWORDS_DANCE ; 0e
 	const CUT          ; 0f
 	const GUST         ; 10
@@ -104,7 +104,7 @@
 	const MEDITATE     ; 60
 	const AGILITY      ; 61
 	const QUICK_ATTACK ; 62
-	const RAGE         ; 63
+	const ICY_WIND     ; 63
 	const TELEPORT     ; 64
 	const NIGHT_SHADE  ; 65
 	const MIMIC        ; 66
@@ -122,7 +122,7 @@
 	const HAZE         ; 72
 	const REFLECT      ; 73
 	const FOCUS_ENERGY ; 74
-	const BIDE         ; 75
+	const OMINOUS_WIND ; 75
 	const METRONOME    ; 76
 	const MIRROR_MOVE  ; 77
 	const SELFDESTRUCT ; 78
@@ -169,9 +169,32 @@
 	const TRI_ATTACK   ; a1
 	const SUPER_FANG   ; a2
 	const SLASH        ; a3
-	const SUBSTITUTE   ; a4
-	const STRUGGLE     ; a5
-NUM_ATTACKS EQU const_value - 1
+	const SUBSTITUTE     ; a4
+	const MAGNET_BOMB  ; a5
+	const DRAININGKISS ; a6
+	const PLAY_ROUGH   ; a7
+	const SHADOW_BALL  ; a8
+	const X_SCISSOR    ; a9
+	const DRAGONBREATH ; aa
+	const IRON_HEAD    ; ab
+	const SLUDGE_BOMB  ; ac
+	const ROCK_TOMB    ; ad
+	const CRUNCH       ; ae
+	const MUD_SHOT 		; af
+	const DRILL_RUN		; b0
+	const BOUNCE		; b1
+	const HEAT_WAVE     ; b2
+	const HURRICANE     ; b3
+	const ANCIENTPOWER  ; b4
+	const FEINT_ATTACK  ; b5
+	const ICY_GLARE     ; b6
+	const THUNDER_KICK  ; b7
+	const FIERY_WRATH   ; b8
+	const SIGNAL_BEAM   ; b9
+	const ACID_SPRAY    ; ba
+	const STRUGGLE      ; bb
+	
+NUM_ATTACKS EQU const_value - 1 
 
 	; Moves do double duty as animation identifiers.
 

@@ -62,3 +62,61 @@ _LanceAfterBattleText::
 	line "#MON LEAGUE"
 	cont "champion!@"
 	text_end
+
+_LanceBeforeRematchText::
+	text "So you've battled"
+	line "back here again,"
+	cont "champion <PLAYER>."
+	
+	para "I hope the other"
+	line "three weren't too"
+	cont "unkind."
+	
+	para "They can be a"
+	line "bit rude to new"
+	cont "members."
+	
+	para "This is the life"
+	line "of a champion,"
+	cont "however."
+	
+	para "You must always"
+	line "be prepared to"
+	cont "fight and prove"
+	cont "yourself as a"
+	cont "#MON trainer."
+	
+	para "Champion <PLAYER>!"
+	
+	para "Are you prepared"
+	line "to fight with the"
+	cont "strength of a"
+	cont "champion?"
+	done
+
+_LanceEndRematchText::
+	text "Excellent!"
+	
+	para "A truly worthy"
+	line "champion!"
+	prompt
+	
+_LanceAfterRematchText::
+	text "With the trust"
+	line "your #MON have"
+	cont "have in you,"
+	cont "you have become a"
+	cont "truly formidible"
+	cont "trainer."
+	
+	para "You have a new"
+	line "challenger"
+	cont "awaiting."
+	
+	para "Champion <PLAYER>!"
+		
+	para "Show them what it"
+	line "means to be the"
+	cont "#MON LEAGUE"
+	cont "champion!"
+	done

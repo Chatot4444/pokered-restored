@@ -20,6 +20,7 @@ HallOfFamePC:
 	call FillFourRowsWithBlack
 	ld a, %11000000
 	ldh [rBGP], a
+	call UpdateGBCPal_BGP
 	call EnableLCD
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySoundWaitForCurrent
@@ -39,6 +40,7 @@ FadeInCreditsText:
 .loop
 	ld a, [hli]
 	ldh [rBGP], a
+	call UpdateGBCPal_BGP
 	ld c, 5
 	call DelayFrames
 	dec b
@@ -50,7 +52,7 @@ DisplayCreditsMon:
 	ldh [hAutoBGTransferEnabled], a
 	call SaveScreenTilesToBuffer1
 	call FillMiddleOfScreenWithWhite
-
+	
 	; display the next monster from CreditsMons
 	ld hl, wNumCreditsMonsDisplayed
 	ld c, [hl] ; how many monsters have we displayed so far?
@@ -78,7 +80,7 @@ DisplayCreditsMon:
 	call FillMiddleOfScreenWithWhite
 	ld a, %11111100 ; make the mon a black silhouette
 	ldh [rBGP], a
-
+	call UpdateGBCPal_BGP
 ; scroll the mon left by one tile 7 times
 	ld bc, 7
 .scrollLoop1
@@ -102,6 +104,7 @@ DisplayCreditsMon:
 	ldh [hWY], a
 	ld a, %11000000
 	ldh [rBGP], a
+	call UpdateGBCPal_BGP
 	ret
 
 INCLUDE "data/credits/credits_mons.asm"
@@ -124,6 +127,7 @@ ScrollCreditsMonLeft_SetSCX:
 	jr nz, ScrollCreditsMonLeft_SetSCX
 	ld a, h
 	ldh [rSCX], a
+	ldh [hSCX], a
 .loop
 	ldh a, [rLY]
 	cp h

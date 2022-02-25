@@ -94,7 +94,9 @@ OverworldLoopLessDelay::
 	call IsSpriteOrSignInFrontOfPlayer
 	ldh a, [hSpriteIndexOrTextID]
 	and a
-	jp z, OverworldLoop
+	jr nz, .displayDialogue
+	predef TryFieldMove
+	jp OverworldLoop
 .displayDialogue
 	predef GetTileAndCoordsInFrontOfPlayer
 	call UpdateSprites
@@ -197,36 +199,34 @@ OverworldLoopLessDelay::
 ; ever be visible because DelayFrame is called at the start of OverworldLoop and
 ; normally not enough cycles would be executed between then and the time the
 ; direction is set for V-blank to occur while the direction is still set.
-	swap a ; put old direction in upper half
-	or b ; put new direction in lower half
-	cp (PLAYER_DIR_DOWN << 4) | PLAYER_DIR_UP ; change dir from down to up
-	jr nz, .notDownToUp
-	ld a, PLAYER_DIR_LEFT
-	ld [wPlayerMovingDirection], a
-	jr .holdIntermediateDirectionLoop
-.notDownToUp
-	cp (PLAYER_DIR_UP << 4) | PLAYER_DIR_DOWN ; change dir from up to down
-	jr nz, .notUpToDown
-	ld a, PLAYER_DIR_RIGHT
-	ld [wPlayerMovingDirection], a
-	jr .holdIntermediateDirectionLoop
-.notUpToDown
-	cp (PLAYER_DIR_RIGHT << 4) | PLAYER_DIR_LEFT ; change dir from right to left
-	jr nz, .notRightToLeft
-	ld a, PLAYER_DIR_DOWN
-	ld [wPlayerMovingDirection], a
-	jr .holdIntermediateDirectionLoop
-.notRightToLeft
-	cp (PLAYER_DIR_LEFT << 4) | PLAYER_DIR_RIGHT ; change dir from left to right
-	jr nz, .holdIntermediateDirectionLoop
-	ld a, PLAYER_DIR_UP
-	ld [wPlayerMovingDirection], a
-.holdIntermediateDirectionLoop
+	;swap a ; put old direction in upper half
+	;or b ; put new direction in lower half
+	;cp (PLAYER_DIR_DOWN << 4) | PLAYER_DIR_UP ; change dir from down to up
+	;jr nz, .notDownToUp
+	;ld a, PLAYER_DIR_LEFT
+	;ld [wPlayerMovingDirection], a
+	;jr .holdIntermediateDirectionLoop
+;.notDownToUp
+;	cp (PLAYER_DIR_UP << 4) | PLAYER_DIR_DOWN ; change dir from up to down
+;	jr nz, .notUpToDown
+	;ld a, PLAYER_DIR_RIGHT
+	;ld [wPlayerMovingDirection], a
+;	jr .holdIntermediateDirectionLoop
+;.notUpToDown
+;	cp (PLAYER_DIR_RIGHT << 4) | PLAYER_DIR_LEFT ; change dir from right to left
+;	jr nz, .notRightToLeft
+	;ld a, PLAYER_DIR_DOWN
+	;ld [wPlayerMovingDirection], a
+;	jr .holdIntermediateDirectionLoop
+;.notRightToLeft
+;	cp (PLAYER_DIR_LEFT << 4) | PLAYER_DIR_RIGHT ; change dir from left to right
+;	jr nz, .holdIntermediateDirectionLoop
+	;ld a, PLAYER_DIR_UP
+	;ld [wPlayerMovingDirection], a
 	ld hl, wFlags_0xcd60
 	set 2, [hl]
-	ld hl, wCheckFor180DegreeTurn
-	dec [hl]
-	jr nz, .holdIntermediateDirectionLoop
+	xor a
+	ld [wCheckFor180DegreeTurn], a
 	ld a, [wPlayerDirection]
 	ld [wPlayerMovingDirection], a
 	call NewBattle
@@ -282,8 +282,29 @@ OverworldLoopLessDelay::
 	ld a, [wd736]
 	bit 6, a ; jumping a ledge?
 	jr nz, .normalPlayerSpriteAdvancement
+	; Bike is normally 2x walking speed
+	; Holding B makes the bike even faster
+	ld a, [hJoyHeld]
+	and B_BUTTON
+	jr z, .notMachBike
 	call DoBikeSpeedup
+	call DoBikeSpeedup
+.notMachBike
+	call DoBikeSpeedup
+	jr .notRunning
 .normalPlayerSpriteAdvancement
+	; surf at 2x walking speed
+	ld a, [wWalkBikeSurfState]
+	cp $02
+	jr z, .surfFaster
+	; Holding B makes you run at 2x walking speed
+	ld a, [hJoyHeld]
+	and B_BUTTON
+	jr z, .notRunning
+.surfFaster
+	call DoBikeSpeedup
+.notRunning
+	;original .normalPlayerSpriteAdvancement continues here
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
 	and a
@@ -1445,249 +1466,13 @@ LoadCurrentMapView::
 	ret
 
 AdvancePlayerSprite::
-	ld a, [wSpritePlayerStateData1YStepVector]
-	ld b, a
-	ld a, [wSpritePlayerStateData1XStepVector]
-	ld c, a
-	ld hl, wWalkCounter ; walking animation counter
-	dec [hl]
-	jr nz, .afterUpdateMapCoords
-; if it's the end of the animation, update the player's map coordinates
-	ld a, [wYCoord]
-	add b
-	ld [wYCoord], a
-	ld a, [wXCoord]
-	add c
-	ld [wXCoord], a
-.afterUpdateMapCoords
-	ld a, [wWalkCounter] ; walking animation counter
-	cp $07
-	jp nz, .scrollBackgroundAndSprites
-; if this is the first iteration of the animation
-	ld a, c
-	cp $01
-	jr nz, .checkIfMovingWest
-; moving east
-	ld a, [wMapViewVRAMPointer]
-	ld e, a
-	and $e0
-	ld d, a
-	ld a, e
-	add $02
-	and $1f
-	or d
-	ld [wMapViewVRAMPointer], a
-	jr .adjustXCoordWithinBlock
-.checkIfMovingWest
-	cp $ff
-	jr nz, .checkIfMovingSouth
-; moving west
-	ld a, [wMapViewVRAMPointer]
-	ld e, a
-	and $e0
-	ld d, a
-	ld a, e
-	sub $02
-	and $1f
-	or d
-	ld [wMapViewVRAMPointer], a
-	jr .adjustXCoordWithinBlock
-.checkIfMovingSouth
-	ld a, b
-	cp $01
-	jr nz, .checkIfMovingNorth
-; moving south
-	ld a, [wMapViewVRAMPointer]
-	add $40
-	ld [wMapViewVRAMPointer], a
-	jr nc, .adjustXCoordWithinBlock
-	ld a, [wMapViewVRAMPointer + 1]
-	inc a
-	and $03
-	or $98
-	ld [wMapViewVRAMPointer + 1], a
-	jr .adjustXCoordWithinBlock
-.checkIfMovingNorth
-	cp $ff
-	jr nz, .adjustXCoordWithinBlock
-; moving north
-	ld a, [wMapViewVRAMPointer]
-	sub $40
-	ld [wMapViewVRAMPointer], a
-	jr nc, .adjustXCoordWithinBlock
-	ld a, [wMapViewVRAMPointer + 1]
-	dec a
-	and $03
-	or $98
-	ld [wMapViewVRAMPointer + 1], a
-.adjustXCoordWithinBlock
-	ld a, c
-	and a
-	jr z, .pointlessJump ; mistake?
-.pointlessJump
-	ld hl, wXBlockCoord
-	ld a, [hl]
-	add c
-	ld [hl], a
-	cp $02
-	jr nz, .checkForMoveToWestBlock
-; moved into the tile block to the east
-	xor a
-	ld [hl], a
-	ld hl, wXOffsetSinceLastSpecialWarp
-	inc [hl]
-	ld de, wCurrentTileBlockMapViewPointer
-	call MoveTileBlockMapPointerEast
-	jr .updateMapView
-.checkForMoveToWestBlock
-	cp $ff
-	jr nz, .adjustYCoordWithinBlock
-; moved into the tile block to the west
-	ld a, $01
-	ld [hl], a
-	ld hl, wXOffsetSinceLastSpecialWarp
-	dec [hl]
-	ld de, wCurrentTileBlockMapViewPointer
-	call MoveTileBlockMapPointerWest
-	jr .updateMapView
-.adjustYCoordWithinBlock
-	ld hl, wYBlockCoord
-	ld a, [hl]
-	add b
-	ld [hl], a
-	cp $02
-	jr nz, .checkForMoveToNorthBlock
-; moved into the tile block to the south
-	xor a
-	ld [hl], a
-	ld hl, wYOffsetSinceLastSpecialWarp
-	inc [hl]
-	ld de, wCurrentTileBlockMapViewPointer
-	ld a, [wCurMapWidth]
-	call MoveTileBlockMapPointerSouth
-	jr .updateMapView
-.checkForMoveToNorthBlock
-	cp $ff
-	jr nz, .updateMapView
-; moved into the tile block to the north
-	ld a, $01
-	ld [hl], a
-	ld hl, wYOffsetSinceLastSpecialWarp
-	dec [hl]
-	ld de, wCurrentTileBlockMapViewPointer
-	ld a, [wCurMapWidth]
-	call MoveTileBlockMapPointerNorth
-.updateMapView
-	call LoadCurrentMapView
-	ld a, [wSpritePlayerStateData1YStepVector]
-	cp $01
-	jr nz, .checkIfMovingNorth2
-; if moving south
-	call ScheduleSouthRowRedraw
-	jr .scrollBackgroundAndSprites
-.checkIfMovingNorth2
-	cp $ff
-	jr nz, .checkIfMovingEast2
-; if moving north
-	call ScheduleNorthRowRedraw
-	jr .scrollBackgroundAndSprites
-.checkIfMovingEast2
-	ld a, [wSpritePlayerStateData1XStepVector]
-	cp $01
-	jr nz, .checkIfMovingWest2
-; if moving east
-	call ScheduleEastColumnRedraw
-	jr .scrollBackgroundAndSprites
-.checkIfMovingWest2
-	cp $ff
-	jr nz, .scrollBackgroundAndSprites
-; if moving west
-	call ScheduleWestColumnRedraw
-.scrollBackgroundAndSprites
-	ld a, [wSpritePlayerStateData1YStepVector]
-	ld b, a
-	ld a, [wSpritePlayerStateData1XStepVector]
-	ld c, a
-	sla b
-	sla c
-	ldh a, [hSCY]
-	add b
-	ldh [hSCY], a ; update background scroll Y
-	ldh a, [hSCX]
-	add c
-	ldh [hSCX], a ; update background scroll X
-; shift all the sprites in the direction opposite of the player's motion
-; so that the player appears to move relative to them
-	ld hl, wSprite01StateData1YPixels
-	ld a, [wNumSprites] ; number of sprites
-	and a ; are there any sprites?
-	jr z, .done
-	ld e, a
-.spriteShiftLoop
-	ld a, [hl]
-	sub b
-	ld [hli], a
-	inc l
-	ld a, [hl]
-	sub c
-	ld [hl], a
-	ld a, $0e
-	add l
-	ld l, a
-	dec e
-	jr nz, .spriteShiftLoop
-.done
-	ret
-
-; the following four functions are used to move the pointer to the upper left
-; corner of the tile block map in the direction of motion
-
-MoveTileBlockMapPointerEast::
-	ld a, [de]
-	add $01
-	ld [de], a
-	ret nc
-	inc de
-	ld a, [de]
-	inc a
-	ld [de], a
-	ret
-
-MoveTileBlockMapPointerWest::
-	ld a, [de]
-	sub $01
-	ld [de], a
-	ret nc
-	inc de
-	ld a, [de]
-	dec a
-	ld [de], a
-	ret
-
-MoveTileBlockMapPointerSouth::
-	add MAP_BORDER * 2
-	ld b, a
-	ld a, [de]
-	add b
-	ld [de], a
-	ret nc
-	inc de
-	ld a, [de]
-	inc a
-	ld [de], a
-	ret
-
-MoveTileBlockMapPointerNorth::
-	add MAP_BORDER * 2
-	ld b, a
-	ld a, [de]
-	sub b
-	ld [de], a
-	ret nc
-	inc de
-	ld a, [de]
-	dec a
-	ld [de], a
+	ld a, [wUpdateSpritesEnabled]
+	push af
+	ld a, $FF
+	ld [wUpdateSpritesEnabled], a
+	callfar _AdvancePlayerSprite
+	pop af
+	ld [wUpdateSpritesEnabled], a
 	ret
 
 ; the following 6 functions are used to tell the V-blank handler to redraw
@@ -1991,6 +1776,11 @@ RunMapScript::
 
 LoadWalkingPlayerSpriteGraphics::
 	ld de, RedSprite
+	ld a, [wPlayerGender]
+	and a
+	jr z, .AreGuy1
+	ld de, GreenSprite
+.AreGuy1
 	ld hl, vNPCSprites
 	jr LoadPlayerSpriteGraphicsCommon
 
@@ -2001,6 +1791,11 @@ LoadSurfingPlayerSpriteGraphics::
 
 LoadBikePlayerSpriteGraphics::
 	ld de, RedBikeSprite
+	ld a, [wPlayerGender]
+	and a
+	jr z, .AreGuy2
+	ld de, GreenBikeSprite
+.AreGuy2
 	ld hl, vNPCSprites
 
 LoadPlayerSpriteGraphicsCommon::

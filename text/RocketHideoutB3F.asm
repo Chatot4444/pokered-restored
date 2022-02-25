@@ -16,6 +16,11 @@ _RocketHideout3AfterBattleTxt2::
 	cont "here somewhere."
 	done
 
+_RocketHideout3AfterBattleTxt2After::
+	text "Haven't you done"
+	line "enough already?"
+	done
+
 _RocketHideout3BattleTxt::
 	text "We got word from"
 	line "upstairs that you"
@@ -27,9 +32,16 @@ _RocketHideout3EndBattleText3::
 	line "I lost? No!"
 	prompt
 
-_RocketHide3AfterBattleText3::
+_RocketHideout3AfterBattleTxt3::
 	text "Go ahead and go!"
 	line "But, you need the"
 	cont "LIFT KEY to run"
 	cont "the elevator!"
+	done
+
+_RocketHideout3AfterBattleTxt3After::
+	text "BOSS says TEAM"
+	line "ROCKET is done,"
+	cont "but I don't"
+	cont "believe it!"
 	done

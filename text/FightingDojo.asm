@@ -32,6 +32,13 @@ _FightingDojoText_5ce98::
 
 	para "Choose whichever"
 	line "one you like!"
+	
+	para "As long as its"
+	line "not HITMONTOP."
+	
+	para "Someone else"
+	line "already took"
+	cont "HITMONTOP..."
 	done
 
 _FightingDojoText_5ce9d::

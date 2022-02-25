@@ -28,4 +28,9 @@ WorldMapTileGraphics: INCBIN "gfx/town_map/town_map.2bpp"
 WorldMapTileGraphicsEnd:
 
 PlayerCharacterTitleGraphics: INCBIN "gfx/title/player.2bpp"
+BoyBallTitleGraphics: INCBIN "gfx/title/boyball.2bpp"
 PlayerCharacterTitleGraphicsEnd:
+
+GirlPlayerCharacterTitleGraphics: INCBIN "gfx/title/playergirl.2bpp"
+GirlBallTitleGraphics: INCBIN "gfx/title/ball.2bpp"
+GirlPlayerCharacterTitleGraphicsEnd:

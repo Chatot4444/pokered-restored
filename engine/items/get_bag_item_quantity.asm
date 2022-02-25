@@ -16,3 +16,22 @@ GetQuantityOfItemInBag:
 .notInBag
 	ld b, 0
 	ret
+
+GetQuantityOfItemInPC:
+; In: b = item ID
+; Out: b = how many of that item are in the bag
+	call GetPredefRegisters
+	ld hl, wNumBoxItems
+.loop
+	inc hl
+	ld a, [hli]
+	cp $ff
+	jr z, .notInPC
+	cp b
+	jr nz, .loop
+	ld a, [hl]
+	ld b, a
+	ret
+.notInPC
+	ld b, 0
+	ret

@@ -10,6 +10,10 @@ ParalyzeEffect_:
 	ld a, [hl]
 	and a ; does the target already have a status ailment?
 	jr nz, .didntAffect
+	push hl
+	farcall CheckTargetSubstitute ; test bit 4 of d063/d068 flags [target has substitute flag]
+	pop hl
+	jr nz, .didntAffect ; return if they have a substitute, can't effect them
 ; check if the target is immune due to types
 	ld a, [de]
 	cp ELECTRIC

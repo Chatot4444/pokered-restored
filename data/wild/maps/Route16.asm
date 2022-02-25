@@ -6,10 +6,10 @@ Route16Mons:
 	db 20, DODUO
 	db 20, RATTATA
 	db 18, DODUO
-	db 22, DODUO
-	db 22, RATTATA
+	db 22, EEVEE
+	db 22, EEVEE
 	db 23, RATICATE
-	db 25, RATICATE
+	db 21, MUNCHLAX
 	end_grass_wildmons
 
 	def_water_wildmons 0 ; encounter rate

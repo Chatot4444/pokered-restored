@@ -91,9 +91,9 @@ TestBattle:
 
 	; Give the player a
 	; level 20 Rhydon.
-	ld a, RHYDON
+	ld a, PORYGON
 	ld [wcf91], a
-	ld a, 20
+	ld a, 53
 	ld [wCurEnemyLVL], a
 	xor a
 	ld [wMonDataLocation], a
@@ -102,7 +102,7 @@ TestBattle:
 
 	; Fight against a
 	; level 20 Rhydon.
-	ld a, RHYDON
+	ld a, PORYGON
 	ld [wCurOpponent], a
 
 	predef InitOpponent

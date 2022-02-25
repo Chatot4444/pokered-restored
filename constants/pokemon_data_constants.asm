@@ -51,8 +51,12 @@ HOF_TEAM_CAPACITY EQU 50
 	const EV_LEVEL ; 1
 	const EV_ITEM  ; 2
 	const EV_TRADE ; 3
+	const EV_TOP	;4
+	const EV_LEE	;5
+	const EV_CHAN	;6
+	const EV_BABY   ;7
 
-MAX_EVOLUTIONS EQU 3
+MAX_EVOLUTIONS EQU 8
 EVOLUTION_SIZE EQU 4
 
 

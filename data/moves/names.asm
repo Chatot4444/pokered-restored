@@ -12,7 +12,7 @@ MoveNames::
 	li "SCRATCH"
 	li "VICEGRIP"
 	li "GUILLOTINE"
-	li "RAZOR WIND"
+	li "AERIAL ACE"
 	li "SWORDS DANCE"
 	li "CUT"
 	li "GUST"
@@ -98,7 +98,7 @@ MoveNames::
 	li "MEDITATE"
 	li "AGILITY"
 	li "QUICK ATTACK"
-	li "RAGE"
+	li "ICY WIND"
 	li "TELEPORT"
 	li "NIGHT SHADE"
 	li "MIMIC"
@@ -116,7 +116,7 @@ MoveNames::
 	li "HAZE"
 	li "REFLECT"
 	li "FOCUS ENERGY"
-	li "BIDE"
+	li "OMINOUS WIND"
 	li "METRONOME"
 	li "MIRROR MOVE"
 	li "SELFDESTRUCT"
@@ -164,5 +164,27 @@ MoveNames::
 	li "SUPER FANG"
 	li "SLASH"
 	li "SUBSTITUTE"
+	li "MAGNET BOMB"
+	li "DRAININGKISS"
+	li "PLAY ROUGH"
+	li "SHADOW BALL"
+	li "X-SCISSOR"
+	li "DRAGONBREATH"
+	li "IRON HEAD"
+	li "SLUDGE BOMB"
+	li "ROCK TOMB"
+	li "CRUNCH"
+	li "MUD SHOT"
+	li "DRILL RUN"
+	li "BOUNCE"
+	li "HEAT WAVE"     ; b2
+	li "HURRICANE"     ; b3
+	li "ANCIENTPOWER"  ; b4
+	li "FEINT ATTACK"  ; b5
+	li "ICY GLARE"     ; b6
+	li "THUNDER KICK"  ; b7
+	li "FIERY WRATH"   ; b8
+	li "SIGNAL BEAM"
+	li "ACID SPRAY"
 	li "STRUGGLE"
 	assert_list_length NUM_ATTACKS

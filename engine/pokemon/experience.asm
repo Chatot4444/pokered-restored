@@ -4,6 +4,9 @@ CalcLevelFromExperience::
 	ld [wd0b5], a
 	call GetMonHeader
 	ld d, $1 ; init level to 1
+;fall through
+
+CalcLevelFromExperienceStartingAtD::
 .loop
 	inc d ; increment level
 	call CalcExperience

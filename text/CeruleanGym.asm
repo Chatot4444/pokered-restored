@@ -131,3 +131,33 @@ _CeruleanGymText_5c82f::
 	line "we make a pretty"
 	cont "darn good team!"
 	done
+
+_CeruleanGymText_Rematch::
+	text "Hey! Haven't seen"
+	line "you in a while."
+	cont "Back for another"
+	cont "battle, Champion?"
+	done
+	
+_CeruleanGymText_RematchConfirm::
+	text "Yeah! Show me how"
+	line "you became the" 
+	cont "new champion!"
+	done
+	
+_CeruleanGymText_RematchCancel::
+	text "You didn't become"
+	line "the champion by"
+	cont "running away."
+	done
+	
+_CeruleanGymText_RematchWin::
+	text "So that's"
+	line "how a champion"
+	cont "battles!"
+	prompt
+	
+_CeruleanGymText6::
+	text "You've got a great"
+	line "approach to #MON!"
+	done

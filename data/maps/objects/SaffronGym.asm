@@ -47,5 +47,6 @@ SaffronGym_Object:
 	object SPRITE_YOUNGSTER, 17, 13, STAY, DOWN, 7, OPP_PSYCHIC_TR, 3
 	object SPRITE_YOUNGSTER, 3, 1, STAY, DOWN, 8, OPP_PSYCHIC_TR, 4
 	object SPRITE_GYM_GUIDE, 10, 15, STAY, DOWN, 9 ; person
-
+	object SPRITE_GIRL, 9, 8, STAY, DOWN, 10, OPP_SABRINA, 2
+	
 	def_warps_to SAFFRON_GYM

@@ -73,7 +73,7 @@ BrunoScript0:
 	CheckAndSetEvent EVENT_AUTOWALKED_INTO_BRUNOS_ROOM
 	jr z, BrunoScriptWalkIntoRoom
 .stopPlayerFromLeaving
-	ld a, $2
+	ld a, $3
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID  ; "Don't run away!"
 	ld a, D_UP
@@ -111,19 +111,33 @@ BrunoScript2:
 	jp z, ResetBrunoScript
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr z, .firstTime
+	ld a, $2
+	ldh [hSpriteIndexOrTextID], a
+.firstTime
 	jp DisplayTextID
 
 BrunosRoom_TextPointers:
 	dw BrunoText1
+	dw BrunoText2
 	dw BrunoDontRunAwayText
 
 BrunoTrainerHeader0:
 	trainer EVENT_BEAT_BRUNOS_ROOM_TRAINER_0, 0, BrunoBeforeBattleText, BrunoEndBattleText, BrunoAfterBattleText
+BrunoTrainerHeader1:
+	trainer EVENT_BEAT_BRUNOS_ROOM_TRAINER_0, 0, BrunoBeforeRematchText, BrunoEndRematchText, BrunoAfterRematchText
 	db -1 ; end
 
 BrunoText1:
 	text_asm
 	ld hl, BrunoTrainerHeader0
+	call TalkToTrainer
+	jp TextScriptEnd
+	
+BrunoText2:
+	text_asm
+	ld hl, BrunoTrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd
 
@@ -141,4 +155,16 @@ BrunoAfterBattleText:
 
 BrunoDontRunAwayText:
 	text_far _BrunoDontRunAwayText
+	text_end
+
+BrunoBeforeRematchText:
+	text_far _BrunoBeforeRematchText
+	text_end
+
+BrunoEndRematchText:
+	text_far _BrunoEndRematchText
+	text_end
+
+BrunoAfterRematchText:
+	text_far _BrunoAfterRematchText
 	text_end
