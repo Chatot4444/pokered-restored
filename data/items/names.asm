@@ -103,3 +103,14 @@ ItemNames::
 	li "11F"
 	li "B4F"
 	assert_list_length NUM_ITEMS + NUM_FLOORS
+
+	li "Field Move"
+	li "BB1"
+	li "BB2"
+	li "BB3"
+	li "Level Cap"
+	li "Solo Mode"
+	li "Fast Text"
+	li "Red Bar"
+	li "Player DVs"
+	li "Enemy DVs"

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/electrode.pic", 0, 1 ; sprite dimensions
 	dw ElectrodePicFront, ElectrodePicBack
 
-	db TACKLE, SCREECH, SIGNAL_BEAM, FEINT_ATTACK ; level 1 learnset
+	db SIGNAL_BEAM, FEINT_ATTACK, TACKLE, SCREECH  ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

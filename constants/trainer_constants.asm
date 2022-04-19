@@ -47,7 +47,7 @@ ENDM
 	trainer_const ROCKET         ; $1E
 	trainer_const COOLTRAINER_M  ; $1F
 	trainer_const COOLTRAINER_F  ; $20
-	trainer_const BRUNO          ; $21
+	trainer_const CHANNELER          ; $21
 	trainer_const BROCK          ; $22
 	trainer_const MISTY          ; $23
 	trainer_const LT_SURGE       ; $24
@@ -59,7 +59,7 @@ ENDM
 	trainer_const RIVAL2         ; $2A
 	trainer_const RIVAL3         ; $2B
 	trainer_const LORELEI        ; $2C
-	trainer_const CHANNELER      ; $2D
+	trainer_const BRUNO      ; $2D
 	trainer_const AGATHA         ; $2E
 	trainer_const LANCE          ; $2F
 	trainer_const CHELLE

@@ -106,14 +106,8 @@ GainExperience:
 	jr nc, .noCarry
 	dec hl
 	inc [hl]
-	inc hl
 .noCarry
 ; calculate exp for the mon at max level, and cap the exp at that value
-	dec hl ;wPartyMonExp
-	ld a, [hl]
-	cp $B ;check if high byte of total experience is greater than 12 to see if we are close to max exp
-	jr c, .next2 ; if less than 12, skip checking max exp
-	inc hl
 	inc hl
 	push hl
 	ld a, [wWhichPokemon]
@@ -125,6 +119,12 @@ GainExperience:
 	ld [wd0b5], a
 	call GetMonHeader
 	ld d, MAX_LEVEL
+	ld a, [wOptions2]
+	bit 4, a
+	jr z, .haveLevelCap
+	ld a, [wLevelCap]
+	ld d, a
+.haveLevelCap
 	callfar CalcExperience ; get max exp
 ; compare max exp with current exp
 	ldh a, [hExperience]

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/mr.mimeg.pic", 0, 1 ; sprite dimensions
 	dw MrMimegPicFront, MrMimegPicBack
 
-	db CONFUSION, BARRIER, AURORA_BEAM, NO_MOVE ; level 1 learnset
+	db FEINT_ATTACK, CONFUSE_RAY, CONFUSION, BARRIER ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

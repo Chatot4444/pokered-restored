@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/golbat.pic", 0, 1 ; sprite dimensions
 	dw GolbatPicFront, GolbatPicBack
 
-	db ABSORB, SCREECH, BITE, SHADOW_BALL ; level 1 learnset
+	db SHADOW_BALL, ABSORB, SCREECH, BITE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

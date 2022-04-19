@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/dewgong.pic", 0, 1 ; sprite dimensions
 	dw DewgongPicFront, DewgongPicBack
 
-	db HEADBUTT, GROWL, SIGNAL_BEAM, WATERFALL ; level 1 learnset
+	db SIGNAL_BEAM, HEADBUTT, GROWL, WATERFALL ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

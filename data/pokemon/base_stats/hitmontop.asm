@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/hitmontop.pic", 0, 1 ; sprite dimensions
 	dw HitmontopPicFront, HitmontopPicBack
 
-	db LOW_KICK, FOCUS_ENERGY, BOUNCE, ICE_PUNCH ; level 1 learnset
+	db BOUNCE, ICE_PUNCH, LOW_KICK, FOCUS_ENERGY ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

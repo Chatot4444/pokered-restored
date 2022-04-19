@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/rhyhorn.pic", 0, 1 ; sprite dimensions
 	dw RhyhornPicFront, RhyhornPicBack
 
-	db HORN_ATTACK, MUD_SHOT, NO_MOVE, NO_MOVE ; level 1 learnset
+	db GLARE, HORN_ATTACK, MUD_SHOT, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/vileplume.pic", 0, 1 ; sprite dimensions
 	dw VileplumePicFront, VileplumePicBack
 
-	db LEECH_SEED, GROWTH, RAZOR_LEAF, LEECH_LIFE ; level 1 learnset
+	db LEECH_LIFE, LEECH_SEED, GROWTH, RAZOR_LEAF ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

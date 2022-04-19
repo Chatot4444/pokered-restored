@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/articunog.pic", 0, 1 ; sprite dimensions
 	dw ArticunogPicFront, ArticunogPicBack
 
-	db GUST, HYPNOSIS, SHADOW_BALL, NO_MOVE ; level 1 learnset
+	db SHADOW_BALL, HYPNOSIS, GUST, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

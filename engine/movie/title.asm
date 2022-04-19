@@ -19,16 +19,6 @@ SetDefaultNamesBeforeTitlescreen::
 ;	ld [wAudioSavedROMBank], a
 
 DisplayTitleScreen:
-	ld a, SRAM_ENABLE
-	ld [MBC1SRamEnable], a
-	ld a, $1
-	ld [MBC1SRamBankingMode], a
-	ld [MBC1SRamBank], a
-	ld a, [sPlayerGender]
-	ld [wPlayerGender], a
-	xor a
-	ld [MBC1SRamBankingMode], a
-	ld [MBC1SRamEnable], a
 	call GBPalWhiteOut
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a

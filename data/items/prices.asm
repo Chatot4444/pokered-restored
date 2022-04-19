@@ -103,3 +103,14 @@ ItemPrices::
 	money 0     ; FLOOR_11F
 	money 0     ; FLOOR_B4F
 	assert_table_length NUM_ITEMS + NUM_FLOORS
+
+	money 0
+	money 0
+	money 0
+	money 0
+	money 0
+	money 0
+	money 0
+	money 0
+	money 0
+	money 0

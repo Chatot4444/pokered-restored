@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/slowking.pic", 0, 1 ; sprite dimensions
 	dw SlowkingPicFront, SlowkingPicBack
 
-	db CONFUSION, DISABLE, HEADBUTT, WATER_GUN ; level 1 learnset
+	db ANCIENTPOWER, ICY_WIND, CONFUSION, WATER_GUN ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

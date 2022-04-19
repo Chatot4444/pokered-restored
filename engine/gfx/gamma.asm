@@ -6,9 +6,9 @@ GBCGamma:
 	call GetPredefRegisters
 	
 	;do not apply the gamma shader if hGBC is !=2
-	ld a, [hGBC]
-	cp 2
-	ret nz
+	ld a, [wOptions]
+	bit 5, a
+	ret z
 	
 	push hl
 	push bc

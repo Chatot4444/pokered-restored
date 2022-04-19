@@ -42,7 +42,12 @@ CeladonGymScript3:
 	jp z, CeladonGymText_48943
 	ld a, $f0
 	ld [wJoyIgnore], a
-
+	ld a, [wLevelCap]
+	cp 41
+	jr nc, .skipCap
+	ld a, 41
+	ld [wLevelCap], a
+.skipCap
 CeladonGymText_48963:
 	ld a, $b
 	ldh [hSpriteIndexOrTextID], a
@@ -329,7 +334,13 @@ CeladonGymScript4:
 	ld a, $f0
 	ld [wJoyIgnore], a
 CeladonGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_ERIKA2
+	CheckAndSetEvent EVENT_BEAT_ERIKA2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $A
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

@@ -2,6 +2,38 @@
 
 ; unused slots are filled with 0, all used slots may be chosen with equal probability
 AIEnemyTrainerChooseMoves:
+	ld a, [wActionResultOrTookBattleTurn]
+	cp 3
+	jr nz, .skipLoadingOldType
+	ld a, [wTrainerClass]
+	cp PSYCHIC_TR
+	jr c, .loadOldType
+	cp GIOVANNI
+	ld b, $7F
+	jr z, .getRandom
+	cp CHANNELER
+	jr nc, .getRandom
+	ld b, $3F
+.getRandom	
+	call Random
+	cp b
+	jr c, .skipLoadingOldType
+.loadOldType
+	ld a, [wSwitchedMonType1]
+	ld b, a
+	ld a, [wBattleMonType]
+	ld [wSwitchedMonType1], a
+	ld a, b
+	ld [wBattleMonType], a
+	ld a, [wSwitchedMonType2]
+	ld b, a
+	ld a, [wBattleMonType2]
+	ld [wSwitchedMonType2], a
+	ld a, b
+	ld [wBattleMonType2], a
+	ld hl, wUnusedC000
+	set 6, [hl]
+.skipLoadingOldType
 	ld a, $a
 	ld hl, wBuffer ; init temporary move selection array. Only the moves with the lowest numbers are chosen in the end
 	ld [hli], a   ; move 1
@@ -119,16 +151,36 @@ AIEnemyTrainerChooseMoves:
 	dec c
 	jr nz, .filterMinimalEntries
 	ld hl, wBuffer    ; use created temporary array as move set
-	ret
+	jr .switchBackType
 .useOriginalMoveSet
 	ld hl, wEnemyMonMoves    ; use original move set
+.switchBackType
+	push hl
+	ld hl, wUnusedC000
+	bit 6, [hl]
+	jr z, .notSwitched
+	res 6, [hl]
+	ld a, [wSwitchedMonType1]
+	ld b, a
+	ld a, [wBattleMonType]
+	ld [wSwitchedMonType1], a
+	ld a, b
+	ld [wBattleMonType], a
+	ld a, [wSwitchedMonType2]
+	ld b, a
+	ld a, [wBattleMonType2]
+	ld [wSwitchedMonType2], a
+	ld a, b
+	ld [wBattleMonType2], a
+.notSwitched
+	pop hl
 	ret
 
 AIMoveChoiceModificationFunctionPointers:
-	dw AIMoveChoiceModification1
-	dw AIMoveChoiceModification2
-	dw AIMoveChoiceModification3
-	dw AIMoveChoiceModification4 ; unused, does nothing
+	dw AIMoveChoiceModification1 ; status moves
+	dw AIMoveChoiceModification2 ; setup moves
+	dw AIMoveChoiceModification3 ; effectiveness
+	dw AIMoveChoiceModification4 ; used for switching now
 
 ; discourages moves that cause no damage but only a status ailment if player's mon already has one
 AIMoveChoiceModification1:
@@ -590,9 +642,19 @@ AIMoveChoiceModification2:
 	bit 2, a
 	ret nz
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	ld a, [wBattleMonStatus]
+	and SLP | (1 << FRZ) | (1 << PAR)
+	jr nz, .safeToUse
+	ld a, [wPlayerBattleStatus1]
+	and 1 << CONFUSED
+	jr nz, .safeToUse
+	ld a, [wEnemyBattleStatus2]
+	and 1 << HAS_SUBSTITUTE_UP
+	jr nz, .safeToUse
 	ld a, [wAILayer2Encouragement]
 	cp $1
 	ret nz
+.safeToUse
 	ld hl, wBuffer - 1 ; temp move selection array (-1 byte offset)
 	ld de, wEnemyMonMoves ; enemy moves
 	ld b, NUM_MOVES + 1
@@ -623,9 +685,6 @@ AIMoveChoiceModification2:
 	dec [hl] ; slightly encourage this move
 	jr .nextMove
 
-; encourages moves that are effective against the player's mon (even if non-damaging).
-; discourage damaging moves that are ineffective or not very effective against the player's mon,
-; unless there's no damaging move that deals at least neutral damage
 ; encourages moves that are effective against the player's mon (even if non-damaging).
 ; discourage damaging moves that are ineffective or not very effective against the player's mon,
 ; unless there's no damaging move that deals at least neutral damage
@@ -699,9 +758,8 @@ AIMoveChoiceModification3:
 	push bc
 	push de
 	;reset type-effectiveness bit before calling function
-	ld a, [wUnusedC000]
-	res 3, a 
-	ld [wUnusedC000], a
+	ld hl, wUnusedC000
+	res 3, [hl] 
 	callfar AIGetTypeEffectiveness
 	pop de
 	pop bc
@@ -741,9 +799,53 @@ AIMoveChoiceModification3:
 	jp c, .nextMove	;ai is fast enough so ohko move viable
 	;else ai is slower so don't bother
 	jp .heavydiscourage2
-.skipout3	
+.skipout3
+	ld a, [wEnemyMoveEffect]	;load the move effect
+	cp SPEED_DOWN_SIDE_EFFECT	;see if it is speed down move
+	jr nz, .hyperBeamCheck	
+	push hl
+	push bc
+	push de
+	call StrCmpSpeed	;do a speed compare
+	pop de
+	pop bc
+	pop hl
+	jr c, .hyperBeamCheck ; skip if already faster
+	dec [hl]  ; if slower, encourage this move
+	dec [hl]
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+.hyperBeamCheck
+	ld a, [wEnemyMoveEffect]
+	cp HYPER_BEAM_EFFECT
+	jr nz, .effectivenessCheck
+	push hl
+	push de
+	push bc
+	ld hl, wBattleMonMaxHP
+	ld de, wBattleMonHP
+	ld a, [hli]
+	ld b, a
+	ld a, [de]
+	sub b
+	jr nz, .notMaxHP
+	inc de
+	ld a, [hl]
+	ld b, a
+	ld a, [de]
+	sub b
+	jr nz, .notMaxHP
+	pop bc
+	pop de
+	pop hl
+	inc hl ;slightly discourage if player at max hp
+	inc hl
+	jr .effectivenessCheck
+.notMaxHP
+	pop bc
+	pop de
+	pop hl
+.effectivenessCheck
 	ld a, [wTypeEffectiveness]
 	cp $0A
 	jp z, .nextMove
@@ -1023,7 +1125,8 @@ ReadMove:
 	ld bc, MOVE_LENGTH
 	call AddNTimes
 	ld de, wEnemyMoveNum
-	call CopyData
+	ld a, BANK(Moves)
+	call FarCopyData2
 	pop bc
 	pop de
 	pop hl
@@ -1159,7 +1262,7 @@ LtSurgeAI:
 	ret nc
 	ld a, 2
 	call AICheckIfHPBelowFraction
-	ret nc
+	ret c
 	jp AIUseXSpecial
 
 ErikaAI:
@@ -1167,7 +1270,7 @@ ErikaAI:
 	ret nc
 	ld a, 3
 	call AICheckIfHPBelowFraction
-	ret nc
+	ret c
 	jp AIUseXSpeed
 
 KogaAI:
@@ -1175,7 +1278,7 @@ KogaAI:
 	ret nc
 	ld a, 2
 	call AICheckIfHPBelowFraction
-	jp nc, AIUseXDefend
+	jp c, AIUseXDefend
 	jp AIUseSuperPotion
 
 BlaineAI:
@@ -1223,7 +1326,7 @@ BrunoAI:
 	ret nc
 	ld a, 2
 	call AICheckIfHPBelowFraction
-	ret nc
+	ret c
 	jp AIUseXAttack
 
 AgathaAI:
@@ -1235,6 +1338,14 @@ AgathaAI:
 	jp AIUseHyperPotion
 
 LanceAI:
+	cp 50 percent + 1
+	ret nc
+	ld a, 5
+	call AICheckIfHPBelowFraction
+	ret nc
+	jp AIUseFullRestore
+	
+ChelleAI:
 	cp 50 percent + 1
 	ret nc
 	ld a, 5

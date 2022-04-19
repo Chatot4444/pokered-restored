@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/crobat.pic", 0, 1 ; sprite dimensions
 	dw CrobatPicFront, CrobatPicBack
 
-	db ABSORB, HURRICANE, SHADOW_BALL, HEAT_WAVE ; level 1 learnset
+	db HEAT_WAVE, ABSORB, HURRICANE, SHADOW_BALL ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/sirfetchd.pic", 0, 1 ; sprite dimensions
 	dw SirfetchdPicFront, SirfetchdPicBack
 
-	db PECK, FOCUS_ENERGY, IRON_HEAD, X_SCISSOR ; level 1 learnset
+	db IRON_HEAD, X_SCISSOR, PECK, FOCUS_ENERGY ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

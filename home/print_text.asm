@@ -5,6 +5,9 @@ PrintLetterDelay::
 	ld a, [wd730]
 	bit 6, a
 	ret nz
+	ld a, [wOptions2]
+	bit 6, a
+	ret nz
 	ld a, [wLetterPrintingDelayFlags]
 	bit 1, a
 	ret z

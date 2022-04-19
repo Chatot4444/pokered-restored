@@ -2605,6 +2605,12 @@ _PlayCry::
 
 PlayWavSoundClip::
 	ld a, e
+	cp 14
+	jr c, .hasNumber
+	srl a
+	sla a
+	sub 6
+.hasNumber
 	ld e, a
 	ld d, $0
 	ld hl, WavCriesPointerTable
@@ -2715,6 +2721,13 @@ WavCriesPointerTable::
 	pikacry_def PikachuCry11
 	pikacry_def PikachuCry12
 	pikacry_def PikachuCry13
+	
+; bank 24
+	pikacry_def PikachuCry14
+	pikacry_def PikachuCry15
+	db 0
+	dw 0
+	pikacry_def PikachuCry16
 
 _PlayBattleSound::
 ; clear channels if they aren't already

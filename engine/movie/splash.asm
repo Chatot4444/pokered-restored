@@ -1,4 +1,16 @@
 LoadShootingStarGraphics:
+	ld a, SRAM_ENABLE
+	ld [MBC1SRamEnable], a
+	ld a, $1
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamBank], a
+	ld a, [sPlayerGender]
+	ld [wPlayerGender], a
+	ld a, [sOptions]
+	ld [wOptions], a
+	xor a
+	ld [MBC1SRamBankingMode], a
+	ld [MBC1SRamEnable], a
 	ld a, $f9
 	ldh [rOBP0], a
 	ld a, $a4

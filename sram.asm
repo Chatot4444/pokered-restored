@@ -20,6 +20,7 @@ sCurBoxData::  ds wBoxDataEnd    - wBoxDataStart
 sTileAnimations:: ds 1
 sMainDataCheckSum:: ds 1
 sPlayerGender:: ds 1
+sOptions:: ds 1
 
 
 SECTION "Saved Boxes 1", SRAM ; BANK 2

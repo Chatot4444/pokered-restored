@@ -193,9 +193,9 @@ CloseFieldMoveTextBox:
 	jp CloseTextDisplay
 
 HasHM::       ; input: HM constant in wLastFieldMoveID output: z
-	ld a, [wOptions] ;to do: make new options
-	bit 7, a
-	ret nz
+	ld a, [wOptions2]
+	bit 0, a
+	jr z, .dontCheck
 	ld a, [wLastFieldMoveID]
 	ld b, a
 	push bc
@@ -240,6 +240,9 @@ HasHM::       ; input: HM constant in wLastFieldMoveID output: z
 .next    ; if can use, z flag will be reset
 	ret
 	
+.dontCheck
+	inc a
+	ret
 	
 
 PromptToSurfText:

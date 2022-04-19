@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/butterfree.pic", 0, 1 ; sprite dimensions
 	dw ButterfreePicFront, ButterfreePicBack
 
-	db CONFUSION, OMINOUS_WIND, AMNESIA, NO_MOVE ; level 1 learnset
+	db AMNESIA, OMINOUS_WIND, CONFUSION, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

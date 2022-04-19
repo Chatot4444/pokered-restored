@@ -42,7 +42,12 @@ CeruleanGymScript3:
 	jp z, CeruleanGymScript_5c6ed
 	ld a, $f0
 	ld [wJoyIgnore], a
-
+	ld a, [wLevelCap]
+	cp 25
+	jr nc, .skipCap
+	ld a, 25
+	ld [wLevelCap], a
+.skipCap
 CeruleanGymScript_5c70d:
 	ld a, $7
 	ldh [hSpriteIndexOrTextID], a
@@ -249,7 +254,13 @@ CeruleanGymScript4:
 	ld a, $f0
 	ld [wJoyIgnore], a
 CeruleanGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_MISTY2
+	CheckAndSetEvent EVENT_BEAT_MISTY2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $6
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/scizor.pic", 0, 1 ; sprite dimensions
 	dw ScizorPicFront, ScizorPicBack
 
-	db QUICK_ATTACK, IRON_HEAD, X_SCISSOR, FEINT_ATTACK ; level 1 learnset
+	db FEINT_ATTACK, QUICK_ATTACK, IRON_HEAD, X_SCISSOR ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

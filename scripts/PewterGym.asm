@@ -42,6 +42,12 @@ PewterGymScript3:
 	jp z, PewterGymScript_5c3bf
 	ld a, $f0
 	ld [wJoyIgnore], a
+	ld a, [wLevelCap]
+	cp 21
+	jr nc, .skipCap
+	ld a, 21
+	ld [wLevelCap], a
+.skipCap
 PewterGymScript_5c3df:
 	ld a, $5
 	ldh [hSpriteIndexOrTextID], a
@@ -264,7 +270,13 @@ PewterGymScript4:
 	ld a, $f0
 	ld [wJoyIgnore], a
 PewterGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_BROCK2
+	CheckAndSetEvent EVENT_BEAT_BROCK2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $8
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

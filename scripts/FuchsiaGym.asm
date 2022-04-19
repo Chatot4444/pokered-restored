@@ -44,6 +44,12 @@ FuchsiaGymScript3:
 	jp z, FuchsiaGymScript_75477
 	ld a, $f0
 	ld [wJoyIgnore], a
+	ld a, [wLevelCap]
+	cp 45
+	jr nc, .skipCap
+	ld a, 45
+	ld [wLevelCap], a
+.skipCap
 FuchsiaGymScript3_75497:
 	ld a, $B
 	ldh [hSpriteIndexOrTextID], a
@@ -331,7 +337,13 @@ FuchsiaGymScript4:
 	ld a, $f0
 	ld [wJoyIgnore], a
 FuchsiaGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_KOGA2
+	CheckAndSetEvent EVENT_BEAT_KOGA2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $A
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

@@ -73,13 +73,49 @@ _AddPartyMon::
 	inc de
 	pop hl
 	push hl
-	ld a, [wMonDataLocation]
-	and $f
+	ld a, [wMonDataLocation] 
+	and $f  ; check if adding mon to enemy trainer party
+	jr z, .playerMon
+	ld a, [wGymLeaderNo]
+	and a
+	jr z, .notGymLeaderRematch
+	cp $9
+	ld b, $4
+	jr z, .gotTrainerNo
+	srl b
+.gotTrainerNo
+	ld a, [wTrainerNo]
+	cp b
+	jr nz, .notGymLeaderRematch
+	ld hl, wCurEnemyLVL
+	ld a, [wRematchWinCount]
+	inc a
+.rematchLoop
+	dec a
+	jr z, .notGymLeaderRematch
+	inc [hl]
+	jr .rematchLoop
+	
+.notGymLeaderRematch
+	ld a, [wDVOptions]
+	and %00001100
+	jr nz, .notNormalEnemy
 	ld a, ATKDEFDV_TRAINER  ; set enemy trainer mon IVs to fixed average values
 	ld b, SPDSPCDV_TRAINER
-	jr nz, .next4
-
+	jr .next4
+.notNormalEnemy
+	cp $1
+	jr z, .random
+	cp $3
+	ld a, $FF
+	ld b, a
+	jr z, .next4
+	xor a
+	ld b, a
+	jr .next4
+	
 ; If the mon is being added to the player's party, update the pokedex.
+.playerMon	
 	ld a, [wcf91]
 	ld [wd11e], a
 	push de
@@ -92,7 +128,6 @@ _AddPartyMon::
 	ld hl, wPokedexOwned
 	call FlagAction
 	ld a, c ; whether the mon was already flagged as owned
-	ld [wUnusedD153], a ; not read
 	ld a, [wd11e]
 	dec a
 	ld c, a
@@ -108,12 +143,32 @@ _AddPartyMon::
 
 	ld a, [wIsInBattle]
 	and a ; is this a wild mon caught in battle?
+	jr z, .notWild
+	ld a, [wDVOptions]
+	and %00000011
+	cp $3
 	jr nz, .copyEnemyMonData
+	xor a
+	ld b, a
+	jr .next4
 
 ; Not wild.
-	call Random ; generate random IVs
+.notWild
+	ld a, [wDVOptions]
+	and %00000011
+	jr nz, .notNormal
+.random
+	call Random
 	ld b, a
 	call Random
+	jr .next4
+.notNormal
+	and %00000010
+	ld a, $FF
+	ld b, a
+	jr z, .next4
+	xor a
+	ld b, a
 
 .next4
 	push bc

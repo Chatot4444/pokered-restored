@@ -39,7 +39,7 @@ TrainerPicAndMoneyPointers::
 	pic_money RocketPic,       3000
 	pic_money CooltrainerMPic, 3500
 	pic_money CooltrainerFPic, 3500
-	pic_money BrunoPic,        9900
+	pic_money ChannelerPic,    3000
 	pic_money BrockPic,        9900
 	pic_money MistyPic,        9900
 	pic_money LtSurgePic,      9900
@@ -51,7 +51,7 @@ TrainerPicAndMoneyPointers::
 	pic_money Rival2Pic,       6500
 	pic_money Rival3Pic,       9900
 	pic_money LoreleiPic,      9900
-	pic_money ChannelerPic,    3000
+	pic_money BrunoPic,        9900
 	pic_money AgathaPic,       9900
 	pic_money LancePic,        9900
 	pic_money GreenPicFront,   9900

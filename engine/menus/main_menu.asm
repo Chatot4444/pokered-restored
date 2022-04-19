@@ -61,13 +61,15 @@ MainMenu:
 	ld [wTopMenuItemX], a
 	inc a
 	ld [wTopMenuItemY], a
-	ld a, A_BUTTON | B_BUTTON | START
+	ld a, A_BUTTON | B_BUTTON | SELECT | START
 	ld [wMenuWatchedKeys], a
 	ld a, [wSaveFileStatus]
 	ld [wMaxMenuItem], a
 	call HandleMenuInput
 	bit 1, a ; pressed B?
 	jp nz, DisplayTitleScreen ; if so, go back to the title screen
+	bit 2, a
+	jp nz, .gameGenie
 	ld c, 20
 	call DelayFrames
 	ld a, [wCurrentMenuItem]
@@ -85,8 +87,8 @@ MainMenu:
 	cp 1
 	jp z, StartNewGame
 	call DisplayOptionMenu
-	ld a, 1
-	ld [wOptionsInitialized], a
+	ld hl, wOptionsInitialized
+	set 0, [hl]
 	jp .mainMenuLoop
 .choseContinue
 	call DisplayContinueGameInfo
@@ -123,6 +125,33 @@ MainMenu:
 	set 2, [hl] ; fly warp or dungeon warp
 	call SpecialWarpIn
 	jp SpecialEnterMap
+	
+.gameGenie
+	ld a, [wOptions2]
+	push af
+	ld hl, GameGenieMenuText
+	call PrintText
+	ld a, [wOptions2]
+	ld [wOptions2Storage], a
+	pop af
+	ld [wOptions2], a
+	ld hl, wOptionsInitialized
+	set 1, [hl]
+	ld hl, StartNewGameText
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jp z, StartNewGame
+	jp .mainMenuLoop
+
+GameGenieMenuText::
+	text_far GameGenieSNESText
+	text_end
+
+StartNewGameText::
+	text_far _StartNewGameText
+	text_end
 
 InitOptions:
 	ld a, 1 ; no delay
@@ -132,6 +161,11 @@ InitOptions:
 	ld hl, wOptions
 	set 7, [hl] ; Animations: Off
 	set 6, [hl] ; Battle Style: Set
+	ld a, %00000101
+	ld [wOptions2], a
+	ld [wOptions2Storage], a
+	xor a
+	ld [wDVOptions], a
 	ret
 
 LinkMenu:
@@ -509,10 +543,7 @@ DisplayOptionMenu:
 	jr z, .cursorInBattleStyle
 	cp 16 ; cursor on Cancel?
 	jr z, .loop
-.cursorInTextSpeed
-	bit 5, b ; Left pressed?
-	jp nz, .pressedLeftInTextSpeed
-	jp .pressedRightInTextSpeed
+	jp .cursorInTextSpeed
 .downPressed
 	cp 16
 	ld b, -13
@@ -559,34 +590,16 @@ DisplayOptionMenu:
 	xor $0b ; toggle between 1 and 10
 	ld [wOptionsBattleStyleCursorX], a
 	jp .eraseOldMenuCursor
-.pressedLeftInTextSpeed
+.cursorInTextSpeed
 	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
-	cp 1
-	jr z, .updateTextSpeedXCoord
-	cp 7
-	jr nz, .fromSlowToMedium
-	sub 6
-	jr .updateTextSpeedXCoord
-.fromSlowToMedium
-	sub 7
-	jr .updateTextSpeedXCoord
-.pressedRightInTextSpeed
-	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
-	cp 14
-	jr z, .updateTextSpeedXCoord
-	cp 7
-	jr nz, .fromFastToMedium
-	add 7
-	jr .updateTextSpeedXCoord
-.fromFastToMedium
-	add 6
-.updateTextSpeedXCoord
-	ld [wOptionsTextSpeedCursorX], a ; text speed cursor X coordinate
+	xor $0b
+	ld [wOptionsTextSpeedCursorX], a
 	jp .eraseOldMenuCursor
 
+
 TextSpeedOptionText:
-	db   "TEXT SPEED"
-	next " FAST  MEDIUM SLOW@"
+	db   "GBC GAMMA SHADER"
+	next " ON       OFF@"
 
 BattleAnimationOptionText:
 	db   "BATTLE ANIMATION"
@@ -601,18 +614,18 @@ OptionMenuCancelText:
 
 ; sets the options variable according to the current placement of the menu cursors in the options menu
 SetOptionsFromCursorPositions:
-	ld hl, TextSpeedOptionData
-	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
-	ld c, a
-.loop
-	ld a, [hli]
-	cp c
-	jr z, .textSpeedMatchFound
-	inc hl
-	jr .loop
-.textSpeedMatchFound
-	ld a, [hl]
+	ld a, [wOptions]
+	and %111
 	ld d, a
+	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
+	dec a
+	jr z, .gammaOn
+.gammaOff
+	res 5, d
+	jr .checkBattleAnimation
+.gammaOn
+	set 5, d
+.checkBattleAnimation
 	ld a, [wOptionsBattleAnimCursorX] ; battle animation cursor X coordinate
 	dec a
 	jr z, .battleAnimationOn
@@ -637,16 +650,13 @@ SetOptionsFromCursorPositions:
 
 ; reads the options variable and places menu cursors in the correct positions within the options menu
 SetCursorPositionsFromOptions:
-	ld hl, TextSpeedOptionData + 1
 	ld a, [wOptions]
 	ld c, a
-	and $3f
-	push bc
-	ld de, 2
-	call IsInArray
-	pop bc
-	dec hl
-	ld a, [hl]
+	bit 5, a
+	ld a, 1
+	jr nz, .storeGammaCursorX
+	ld a, 10
+.storeGammaCursorX
 	ld [wOptionsTextSpeedCursorX], a ; text speed cursor X coordinate
 	hlcoord 0, 3
 	call .placeUnfilledRightArrow
@@ -680,12 +690,12 @@ SetCursorPositionsFromOptions:
 ; Format:
 ; 00: X coordinate of menu cursor
 ; 01: delay after printing a letter (in frames)
-TextSpeedOptionData:
-	db 14, 5 ; Slow
-	db  7, 3 ; Medium
-	db  1, 1 ; Fast
-	db 7 ; default X coordinate (Medium)
-	db -1 ; end
+; TextSpeedOptionData:
+	; db 14, 5 ; Slow
+	; db  7, 3 ; Medium
+	; db  1, 1 ; Fast
+	; db 7 ; default X coordinate (Medium)
+	; db -1 ; end
 
 CheckForPlayerNameInSRAM:
 ; Check if the player name data in SRAM has a string terminator character

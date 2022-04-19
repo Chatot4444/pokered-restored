@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/rapidash.pic", 0, 1 ; sprite dimensions
 	dw RapidashPicFront, RapidashPicBack
 
-	db EMBER, DRILL_RUN, IRON_HEAD, HORN_DRILL ; level 1 learnset
+	db DRILL_RUN, IRON_HEAD, HORN_DRILL, EMBER ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

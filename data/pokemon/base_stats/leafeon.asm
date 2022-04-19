@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/Leafeon.pic", 0, 1 ; sprite dimensions
 	dw LeafeonPicFront, LeafeonPicBack
 
-	db TACKLE, SAND_ATTACK, RAZOR_LEAF, IRON_HEAD ; level 1 learnset
+	db IRON_HEAD, TACKLE, SAND_ATTACK, RAZOR_LEAF ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

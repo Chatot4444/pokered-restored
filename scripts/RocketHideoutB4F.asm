@@ -221,7 +221,7 @@ GiovanniRematchText:
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $8
+	ld a, $9
 	ld [wGymLeaderNo], a
 	xor a
 	ldh [hJoyHeld], a
@@ -243,6 +243,13 @@ GiovanniScript4:
 	ld a, $f0
 	ld [wJoyIgnore], a
 GiovanniScript_AfterRematch:
+	CheckAndSetEvent EVENT_BEAT_GIOVANNI2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $B
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

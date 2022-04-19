@@ -482,13 +482,15 @@ ItemUseBall:
 
 	push hl
 
-; If the Pokémon is transformed, the Pokémon is assumed to be a Ditto.
-; This is a bug because a wild Pokémon could have used Transform via
-; Mirror Move even though the only wild Pokémon that knows Transform is Ditto.
+; If the Pokémon is transformed, reload original species. If no original species is saved, load ditto
 	ld hl, wEnemyBattleStatus3
 	bit TRANSFORMED, [hl]
 	jr z, .notTransformed
+	ld a, [wTransformedEnemyMonSpecies]
+	and a
+	jr nz, .speciesExists
 	ld a, DITTO
+.speciesExists
 	ld [wEnemyMonSpecies2], a
 	jr .skip6
 
@@ -578,6 +580,11 @@ ItemUseBall:
 	ld hl, ItemUseBallText08
 .printTransferredToPCText
 	call PrintText
+	ld a, [wNumInBox]
+	cp MONS_PER_BOX
+	jr nz, .done
+	ld hl, BoxFilledText
+	call PrintText
 	jr .done
 
 .oldManCaughtMon
@@ -597,6 +604,10 @@ ItemUseBall:
 	inc a
 	ld [wItemQuantity], a
 	jp RemoveItemFromInventory
+
+BoxFilledText:
+	text_far _BoxFilledText
+	text_end
 
 ItemUseBallText00:
 ;"It dodged the thrown ball!"
@@ -923,7 +934,7 @@ ItemUseMedicine:
 	ld de, wBattleMonStats
 	ld bc, NUM_STATS * 2
 	call CopyData ; copy party stats to in-battle stat data
-	predef DoubleOrHalveSelectedStats
+	; predef DoubleOrHalveSelectedStats
 	jp .doneHealing
 .healHP
 	inc hl ; hl = address of current HP
@@ -1347,8 +1358,15 @@ ItemUseMedicine:
 	push hl
 	ld bc, wPartyMon1Level - wPartyMon1
 	add hl, bc ; hl now points to level
+	ld b, MAX_LEVEL
+	ld a, [wOptions2]
+	bit 4, a
+	jr z, .haveLevelCap
+	ld a, [wLevelCap]
+	ld b, a
+.haveLevelCap
 	ld a, [hl] ; a = level
-	cp MAX_LEVEL
+	cp b
 	jr z, .vitaminNoEffect ; can't raise level above 100
 	inc a
 	ld [hl], a ; store incremented level
@@ -2826,11 +2844,22 @@ SendNewMonToBox:
 	dec b
 	jr nz, .asm_e89f
 	ld hl, wEnemyMonDVs
+	ld a, [wDVOptions]
+	and %00000011
+	cp $3
+	jr nz, .normalDVs
+	xor a
+	ld [de], a
+	inc de
+	ld [de], a
+	jr .pp
+.normalDVs	
 	ld a, [hli]
 	ld [de], a
 	inc de
 	ld a, [hli]
 	ld [de], a
+.pp
 	ld hl, wEnemyMonPP
 	ld b, NUM_MOVES
 .asm_e8b1

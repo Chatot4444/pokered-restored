@@ -582,9 +582,22 @@ _IndigoPlateauHQText::
 _RedBedroomSNESText::
 	text "<PLAYER> is"
 	line "playing the SNES!"
-	cont "...Okay!"
-	cont "It's time to go!"
 	done
+	
+_RedBedroomSNESText2::
+	text "...Okay!"
+	line "It's time to go!"
+	done
+
+_StartNewGameText::
+	text "Start a new"
+	line "game now?"
+	done
+
+_SoloModeText::
+	text "Can't switch"
+	line "in solo mode!"
+	prompt
 
 _Route15UpstairsBinocularsText::
 	text "Looked into the"

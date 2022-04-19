@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/nidoking.pic", 0, 1 ; sprite dimensions
 	dw NidokingPicFront, NidokingPicBack
 
-	db DRILL_RUN, DRAGONBREATH, CONFUSION, X_SCISSOR ; level 1 learnset
+	db DRAGONBREATH, X_SCISSOR, CONFUSION, DRILL_RUN ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

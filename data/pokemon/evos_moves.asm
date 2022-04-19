@@ -246,6 +246,7 @@ RhydonEvosMoves:
 	db EV_TRADE, 1, RHYPERIOR
 	db 0
 ; Learnset
+	db 3, MUD_SHOT
 	db 15, SAND_ATTACK
 	db 20, ROCK_THROW
 	db 25, LEER
@@ -855,9 +856,11 @@ MrMimeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 15, CONFUSION
+	db 10, DRAININGKISS
+	db 15, DOUBLESLAP
+	db 18, MIMIC
 	db 23, LIGHT_SCREEN
-	db 31, DOUBLESLAP
+	db 32, DISABLE
 	db 39, MEDITATE
 	db 44, PLAY_ROUGH
 	db 47, SUBSTITUTE
@@ -1054,11 +1057,11 @@ UmbreonEvosMoves:
 ; Learnset
 	db 27, QUICK_ATTACK
 	db 31, LICK
-	db 37, TAIL_WHIP
+	db 37, SCREECH
 	db 40, BITE
 	db 42, CONFUSE_RAY
 	db 44, CRUNCH
-	db 48, SCREECH
+	db 48, RECOVER
 	db 54, BODY_SLAM
 	db 0
 
@@ -1180,13 +1183,14 @@ VenonatEvosMoves:
 	db EV_LEVEL, 31, VENOMOTH
 	db 0
 ; Learnset
-	db 19, ACID
+	db 14, ACID
+	db 19, SIGNAL_BEAM
 	db 24, POISONPOWDER
 	db 27, PSYBEAM
 	db 30, STUN_SPORE
-	db 35, LEECH_LIFE
-	db 38, SLEEP_POWDER
-	db 43, PSYCHIC_M
+	db 34, LEECH_LIFE
+	db 37, SLEEP_POWDER
+	db 42, PSYCHIC_M
 	db 0
 
 DragoniteEvosMoves:
@@ -1200,6 +1204,7 @@ DragoniteEvosMoves:
 	db 25, SLAM
 	db 35, DRAGONBREATH
 	db 45, AGILITY
+	db 55, WING_ATTACK
 	db 60, HYPER_BEAM
 	db 0
 
@@ -1391,6 +1396,7 @@ RhyperiorEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
+	db 4, MUD_SHOT
 	db 15, SAND_ATTACK
 	db 20, ROCK_THROW
 	db 25, LEER
@@ -1438,25 +1444,25 @@ PikachuEvosMoves:
 ; Learnset
 	db 9, THUNDER_WAVE
 	db 16, QUICK_ATTACK
-	db 26, SWIFT
-	db 33, AGILITY
-	db 37, IRON_HEAD
-	db 43, THUNDER
-	db 50, LIGHT_SCREEN
+	db 25, SWIFT
+	db 32, AGILITY
+	db 36, IRON_HEAD
+	db 42, THUNDER
+	db 49, LIGHT_SCREEN
 	db 0
 
 RaichuEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 2, THUNDERSHOCK
-	db 3, THUNDERPUNCH
-	db 4, GROWL
-	db 5, THUNDERBOLT
-	db 6, THUNDER_WAVE
+	db 9, THUNDER_WAVE
+	db 16, QUICK_ATTACK
+	db 26, SWIFT
+	db 33, AGILITY
 	db 37, IRON_HEAD
 	db 43, THUNDER
 	db 50, LIGHT_SCREEN
+	db 0
 	db 0
 
 TangrowthEvosMoves:
@@ -1905,14 +1911,20 @@ VenomothEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 19, ACID
+	db 2, TACKLE
+	db 3, DISABLE
+	db 4, CONFUSION
+	db 14, ACID
+	db 19, SIGNAL_BEAM
 	db 24, POISONPOWDER
 	db 27, PSYBEAM
 	db 30, STUN_SPORE
 	db 33, WING_ATTACK
-	db 38, LEECH_LIFE
-	db 43, SLEEP_POWDER
-	db 50, PSYCHIC_M
+	db 36, LEECH_LIFE
+	db 40, SLEEP_POWDER
+	db 45, ACID_SPRAY
+	db 50, AMNESIA
+	db 55, PSYCHIC_M
 	db 0
 
 DewgongEvosMoves:
@@ -2548,7 +2560,7 @@ AerodactylEvosMoves:
 	db 45, CRUNCH
 	db 49, IRON_HEAD
 	db 54, HYPER_BEAM
-	db 61, ROCK_SLIDE
+	db 60, ROCK_SLIDE
 	db 0
 
 MissingNoACEvosMoves:
@@ -2742,23 +2754,23 @@ WeepinbellEvosMoves:
 	db 14, POISONPOWDER
 	db 17, SLEEP_POWDER
 	db 20, STUN_SPORE
-	db 28, ACID
-	db 37, RAZOR_LEAF
-	db 48, SLAM
+	db 27, ACID
+	db 36, RAZOR_LEAF
+	db 45, SLAM
 	db 0
 
 VictreebelEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 3, SLEEP_POWDER ;this moveset is weird so that erika gets the right moveset
-	db 4, STUN_SPORE
-	db 5, RAZOR_LEAF
+	db 3, VINE_WHIP
 	db 12, WRAP
 	db 14, POISONPOWDER
+	db 17, SLEEP_POWDER
+	db 20, STUN_SPORE
 	db 28, ACID
 	db 37, RAZOR_LEAF
-	db 48, SLAM
+	db 49, SLAM
 	db 0
 
 PichuEvosMoves:
@@ -2830,7 +2842,7 @@ HitmontopEvosMoves:
 	
 SmoochumEvosMoves:
 ; Evolutions
-	db EV_BABY, 35, 25, JYNX
+	db EV_LEVEL, 30, JYNX
 	db 0
 ; Learnset
 	db 5, DRAININGKISS
@@ -2845,7 +2857,7 @@ SmoochumEvosMoves:
 	
 ElekidEvosMoves:
 ; Evolutions
-	db EV_BABY, 35, 25, ELECTABUZZ
+	db EV_LEVEL, 30, ELECTABUZZ
 	db 0
 ; Learnset
 	db 34, THUNDERSHOCK
@@ -2857,7 +2869,7 @@ ElekidEvosMoves:
 	
 MagbyEvosMoves:
 ; Evolutions
-	db EV_BABY, 35, 25, MAGMAR
+	db EV_LEVEL, 30, MAGMAR
 	db 0
 ; Learnset
 	db 30, FEINT_ATTACK
@@ -2900,6 +2912,10 @@ RaichuaEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
+	db 9, THUNDER_WAVE
+	db 16, QUICK_ATTACK
+	db 26, SWIFT
+	db 33, AGILITY
 	db 37, PSYCHIC_M
 	db 43, THUNDER
 	db 50, LIGHT_SCREEN
@@ -3128,10 +3144,10 @@ MimeJrEvosMoves:
 	db EV_ITEM, ICE_STONE, 1, MR_MIMEG
 	db 0
 ; Learnset
-	db 15, CONFUSION
+	db 15, DOUBLESLAP
+	db 18, MIMIC
 	db 23, LIGHT_SCREEN
-	db 31, DOUBLESLAP
-	db 32, MIMIC
+	db 32, DISABLE
 	db 39, MEDITATE
 	db 44, PLAY_ROUGH
 	db 47, SUBSTITUTE
@@ -3230,7 +3246,7 @@ SlowpokegEvosMoves:
 ; Learnset
 	db 18, DISABLE
 	db 22, HEADBUTT
-	db 27, TOXIC
+	db 27, ACID_SPRAY
 	db 33, BUBBLE
 	db 40, AMNESIA
 	db 48, PSYCHIC_M
@@ -3242,7 +3258,7 @@ SlowbrogEvosMoves:
 ; Learnset
 	db 18, DISABLE
 	db 22, HEADBUTT
-	db 27, TOXIC
+	db 27, ACID_SPRAY
 	db 33, CRABHAMMER
 	db 37, FOCUS_ENERGY
 	db 44, AMNESIA
@@ -3255,7 +3271,7 @@ SlowkinggEvosMoves:
 ; Learnset
 	db 18, DISABLE
 	db 22, HEADBUTT
-	db 27, TOXIC
+	db 27, ACID_SPRAY
 	db 33, PSYBEAM
 	db 37, CONFUSE_RAY
 	db 44, AMNESIA
@@ -3307,9 +3323,11 @@ MrMimegEvosMoves:
 	db EV_LEVEL, 42, MR_RIME
 	db 0
 ; Learnset
-	db 15, CONFUSION
+	db 10, AURORA_BEAM
+	db 15, DOUBLESLAP
+	db 18, MIMIC
 	db 23, LIGHT_SCREEN
-	db 31, ICY_WIND
+	db 32, ICY_WIND
 	db 39, MEDITATE
 	db 44, ICE_PUNCH
 	db 47, SUBSTITUTE
@@ -3320,9 +3338,11 @@ MrRimeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 15, CONFUSION
+	db 10, AURORA_BEAM
+	db 15, DOUBLESLAP
+	db 18, MIMIC
 	db 23, LIGHT_SCREEN
-	db 31, ICY_WIND
+	db 32, ICY_WIND
 	db 39, MEDITATE
 	db 44, ICE_PUNCH
 	db 47, SUBSTITUTE

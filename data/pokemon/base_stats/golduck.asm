@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/golduck.pic", 0, 1 ; sprite dimensions
 	dw GolduckPicFront, GolduckPicBack
 
-	db SCRATCH, SIGNAL_BEAM, KARATE_CHOP, ICE_PUNCH ; level 1 learnset
+	db SIGNAL_BEAM, KARATE_CHOP, ICE_PUNCH, SCRATCH ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

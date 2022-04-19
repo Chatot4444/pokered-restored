@@ -116,6 +116,20 @@ NUM_ITEMS EQU const_value - 1
 	const FLOOR_B4F     ; $64
 NUM_FLOORS EQU const_value - 1 - NUM_ITEMS
 
+
+	;option menu constants
+	const FIELD_MOVE
+	const BADGE_BOOST_1
+	const BADGE_BOOST_2
+	const BADGE_BOOST_3
+	const LEVEL_CAP
+	const SOLO_MODE
+	const INSTANT_TEXT
+	const RED_BAR
+	const DVS_PLAYER
+	const DVS_ENEMY
+
+
 	const_next $C4
 
 ; HMs are defined before TMs, so the actual number of TM definitions

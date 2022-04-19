@@ -23,3 +23,7 @@ SetLastBlackoutMap:
 	ret
 
 INCLUDE "data/maps/rest_house_maps.asm"
+
+ResetStatusAndHalveMoneyOnBlackout::
+	callfar ResetStatusAndHalveMoneyOnBlackout_
+	ret

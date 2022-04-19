@@ -137,6 +137,7 @@ StartBattle:
 	ld [wPartyGainExpFlags], a
 	ld [wPartyFoughtCurrentEnemyFlags], a
 	ld [wActionResultOrTookBattleTurn], a
+	ld [wTransformedEnemyMonSpecies], a
 	inc a
 	ld [wFirstMonsNotOutYet], a
 	ld hl, wEnemyMon1HP
@@ -310,19 +311,16 @@ MainInBattleLoop:
 	ld a, [wEscapedFromBattle]
 	and a
 	ret nz ; return if pokedoll was used to escape from battle
-	ld a, [wBattleMonStatus]
-	and (1 << FRZ) ; is mon frozen?
-	jr nz, .selectEnemyMove ; if so, jump
 	ld a, [wPlayerBattleStatus1]
 	and (1 << STORING_ENERGY) | (1 << USING_TRAPPING_MOVE) ; check player is using Bide or using a multi-turn attack like wrap
 	jr nz, .selectEnemyMove ; if so, jump
-	ld a, [wEnemyBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; check if enemy is using a multi-turn attack like wrap
-	jr z, .selectPlayerMove ; if not, jump
-; enemy is using a multi-turn attack like wrap, so player is trapped and cannot execute a move
-	ld a, $ff
-	ld [wPlayerSelectedMove], a
-	jr .selectEnemyMove
+	; ld a, [wEnemyBattleStatus1]
+	; bit USING_TRAPPING_MOVE, a ; check if enemy is using a multi-turn attack like wrap
+	; jr z, .selectPlayerMove ; if not, jump
+; ; enemy is using a multi-turn attack like wrap, so player is trapped and cannot execute a move
+	; ld a, $ff
+	; ld [wPlayerSelectedMove], a
+	; jr .selectEnemyMove
 .selectPlayerMove
 	ld a, [wActionResultOrTookBattleTurn]
 	and a ; has the player already used the turn (e.g. by using an item, trying to run or switching pokemon)
@@ -458,6 +456,10 @@ MainInBattleLoop:
 	call CheckNumAttacksLeft
 	jp MainInBattleLoop
 .playerMovesFirst
+	ld a, $1
+	ldh [hWhoseTurn], a
+	callfar TrainerAI
+	jr c, .AIActionUsedEnemyFirst
 	call ExecutePlayerMove
 	ld a, [wEscapedFromBattle]
 	and a ; was Teleport, Roar, or Whirlwind used to escape from battle?
@@ -468,10 +470,6 @@ MainInBattleLoop:
 	call HandlePoisonBurnLeechSeed
 	jp z, HandlePlayerMonFainted
 	call DrawHUDsAndHPBars
-	ld a, $1
-	ldh [hWhoseTurn], a
-	callfar TrainerAI
-	jr c, .AIActionUsedPlayerFirst
 	call ExecuteEnemyMove
 	ld a, [wEscapedFromBattle]
 	and a ; was Teleport, Road, or Whirlwind used to escape from battle?
@@ -794,7 +792,7 @@ FaintEnemyPokemon:
 ; and the states of the two Game Boys will go out of sync unless the damage
 ; was congruent to 0 modulo 256.
 	xor a
-	ld [wPlayerBideAccumulatedDamage], a
+	; ld [wPlayerBideAccumulatedDamage], a
 	ld hl, wEnemyStatsToDouble ; clear enemy statuses
 	ld [hli], a
 	ld [hli], a
@@ -1084,9 +1082,9 @@ RemoveFaintedPlayerMon:
 	call WaitForSoundToFinish
 .skipWaitForSound
 ; a is 0, so this zeroes the enemy's accumulated damage.
-	ld hl, wEnemyBideAccumulatedDamage
-	ld [hli], a
-	ld [hl], a
+	; ld hl, wEnemyBideAccumulatedDamage
+	; ld [hli], a
+	; ld [hl], a
 	ld [wBattleMonStatus], a
 	call ReadPlayerMonCurHPAndStatus
 	hlcoord 9, 7
@@ -1444,6 +1442,9 @@ EnemySendOutFirstMon:
 	ld a, [wOptions]
 	bit 6, a
 	jr nz, .next4
+	ld a, [wOptions2]
+	bit 5, a
+	jr nz, .next
 	ld hl, TrainerAboutToUseText
 	call PrintText
 	hlcoord 0, 7
@@ -1524,6 +1525,11 @@ TrainerSentOutText:
 AnyPartyAlive::
 	ld a, [wPartyCount]
 	ld e, a
+	ld a, [wOptions2]
+	bit 5, a
+	jr z, .notSoloMode
+	ld e, $1
+.notSoloMode
 	xor a
 	ld d, a
 	ld hl, wPartyMon1HP
@@ -1729,7 +1735,9 @@ LoadBattleMonFromParty:
 	ld bc, 1 + NUM_STATS * 2
 	call CopyData
 	call ApplyBurnAndParalysisPenaltiesToPlayer
-	call ApplyBadgeStatBoosts
+	ld a, [wOptions2]
+	bit 2, a
+	call nz, ApplyBadgeStatBoosts
 	ld a, $7 ; default stat modifier
 	ld b, NUM_STAT_MODS
 	ld hl, wPlayerMonAttackMod
@@ -1773,6 +1781,9 @@ LoadEnemyMonFromParty:
 	ld bc, 1 + NUM_STATS * 2
 	call CopyData
 	call ApplyBurnAndParalysisPenaltiesToEnemy
+	ld a, [wOptions2]
+	bit 3, a
+	call nz, ApplyBadgeStatBoosts.ApplyToEnemy
 	ld hl, wMonHBaseStats
 	ld de, wEnemyMonBaseStats
 	ld b, NUM_STATS
@@ -2483,8 +2494,19 @@ PartyMenuOrRockOrRun:
 .notAlreadyOut
 	call HasMonFainted
 	jp z, .partyMonDeselected ; can't switch to fainted mon
-	ld a, $1
+	ld a, [wOptions2]
+	bit 5, a
+	jp z, .canSwitch
+	ld hl, SoloModeText
+	call PrintText
+	jp .partyMonDeselected
+.canSwitch
+	ld a, $3
 	ld [wActionResultOrTookBattleTurn], a
+	ld a, [wBattleMonType1]
+	ld [wSwitchedMonType1], a
+	ld a, [wBattleMonType2]
+	ld [wSwitchedMonType2], a
 	call GBPalWhiteOut
 	call ClearSprites
 	call LoadHudTilePatterns
@@ -2523,6 +2545,10 @@ SwitchPlayerMonNoAnim:
 
 AlreadyOutText:
 	text_far _AlreadyOutText
+	text_end
+
+SoloModeText:
+	text_far _SoloModeText
 	text_end
 
 BattleMenu_RunWasSelected:
@@ -3078,15 +3104,10 @@ SelectEnemyMove:
 	ld a, [hl]
 	and (1 << CHARGING_UP) | (1 << THRASHING_ABOUT) ; using a charging move or thrash/petal dance
 	ret nz
-	ld a, [wEnemyMonStatus]
-	and SLP | 1 << FRZ ; sleeping or frozen
-	ret nz
 	ld a, [wEnemyBattleStatus1]
 	and (1 << USING_TRAPPING_MOVE) | (1 << STORING_ENERGY) ; using a trapping move like wrap or bide
 	ret nz
-	ld a, [wPlayerBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; caught in player's trapping move (e.g. wrap)
-	jr z, .canSelectMove
+	jr .canSelectMove
 .unableToSelectMove
 	ld a, $ff
 	jr .done
@@ -3508,6 +3529,7 @@ CheckPlayerStatusConditions:
 .WakeUp
 	ld hl, WokeUpText
 	call PrintText
+	jr .HeldInPlaceCheck
 .sleepDone
 	xor a
 	ld [wPlayerUsedMove], a
@@ -3517,6 +3539,17 @@ CheckPlayerStatusConditions:
 .FrozenCheck
 	bit FRZ, [hl] ; frozen?
 	jr z, .HeldInPlaceCheck
+	ld a, [wPlayerMoveType]
+	cp FIRE
+	jr nz, .stillFrozen
+	ld a, 1
+	ldh [hWhoseTurn], a
+	ld hl, FireDefrostedText
+	call PrintText
+	xor a
+	ldh [hWhoseTurn], a
+	jr z, .HeldInPlaceCheck
+.stillFrozen
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
@@ -3697,6 +3730,7 @@ CheckPlayerStatusConditions:
 	; jp .returnToHL
 
 .ThrashingAboutCheck
+	ld hl, wPlayerBattleStatus1
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
 	jr z, .MultiturnMoveCheck
 	ld a, THRASH
@@ -3730,6 +3764,10 @@ CheckPlayerStatusConditions:
 	ld hl, getPlayerAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
 	                ; DecrementPP and MoveHitTest
 	jp nz, .returnToHL
+	push hl
+	ld hl, wPlayerBattleStatus1
+	res USING_TRAPPING_MOVE, [hl]
+	pop hl
 	jp .returnToHL
 
 ; .RageCheck
@@ -3901,28 +3939,23 @@ MonName1Text:
 	ld hl, wEnemyUsedMove
 .playerTurn
 	ld [hl], a
-	ld [wd11e], a
-	call DetermineExclamationPointTextNum
-	ld a, [wMonIsDisobedient]
-	and a
-	ld hl, Used2Text
-	ret nz
-	ld a, [wd11e]
-	cp 3
-	ld hl, Used2Text
-	ret c
+	; ld [wd11e], a
+	;call DetermineExclamationPointTextNum
+	; ld a, [wMonIsDisobedient]
+	; and a
+	; ld hl, Used2Text
+	; ret nz
+	; ld a, [wd11e]
+	; cp 3
+	; ld hl, Used2Text
+	; ret c
 	ld hl, Used1Text
 	ret
 
 Used1Text:
 	text_far _Used1Text
 	text_asm
-	jr PrintInsteadText
-
-Used2Text:
-	text_far _Used2Text
-	text_asm
-	; fall through
+	;fallthrough
 
 PrintInsteadText:
 	ld a, [wMonIsDisobedient]
@@ -3943,45 +3976,35 @@ PrintMoveName:
 _PrintMoveName:
 	text_far _CF4BText
 	text_asm
-	ld hl, ExclamationPointPointerTable
-	ld a, [wd11e] ; exclamation point num
-	add a
-	push bc
-	ld b, $0
-	ld c, a
-	add hl, bc
-	pop bc
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
+	ld hl, ExclamationPoint1Text
 	ret
 
-ExclamationPointPointerTable:
-	dw ExclamationPoint1Text
-	dw ExclamationPoint2Text
-	dw ExclamationPoint3Text
-	dw ExclamationPoint4Text
-	dw ExclamationPoint5Text
+; ExclamationPointPointerTable:
+	; dw ExclamationPoint1Text
+	; dw ExclamationPoint2Text
+	; dw ExclamationPoint3Text
+	; dw ExclamationPoint4Text
+	; dw ExclamationPoint5Text
 
 ExclamationPoint1Text:
 	text_far _ExclamationPoint1Text
 	text_end
 
-ExclamationPoint2Text:
-	text_far _ExclamationPoint2Text
-	text_end
+; ExclamationPoint2Text:
+	; text_far _ExclamationPoint2Text
+	; text_end
 
-ExclamationPoint3Text:
-	text_far _ExclamationPoint3Text
-	text_end
+; ExclamationPoint3Text:
+	; text_far _ExclamationPoint3Text
+	; text_end
 
-ExclamationPoint4Text:
-	text_far _ExclamationPoint4Text
-	text_end
+; ExclamationPoint4Text:
+	; text_far _ExclamationPoint4Text
+	; text_end
 
-ExclamationPoint5Text:
-	text_far _ExclamationPoint5Text
-	text_end
+; ExclamationPoint5Text:
+	; text_far _ExclamationPoint5Text
+	; text_end
 
 ; this function does nothing useful
 ; if the move being used is in set [1-4] from ExclamationPointMoveSets,
@@ -3990,29 +4013,29 @@ ExclamationPoint5Text:
 ; but all five text strings are identical
 ; this likely had to do with Japanese grammar that got translated,
 ; but the functionality didn't get removed
-DetermineExclamationPointTextNum:
-	push bc
-	ld a, [wd11e] ; move ID
-	ld c, a
-	ld b, $0
-	ld hl, ExclamationPointMoveSets
-.loop
-	ld a, [hli]
-	cp $ff
-	jr z, .done
-	cp c
-	jr z, .done
-	and a
-	jr nz, .loop
-	inc b
-	jr .loop
-.done
-	ld a, b
-	ld [wd11e], a ; exclamation point num
-	pop bc
-	ret
+; DetermineExclamationPointTextNum:
+	; push bc
+	; ld a, [wd11e] ; move ID
+	; ld c, a
+	; ld b, $0
+	; ld hl, ExclamationPointMoveSets
+; .loop
+	; ld a, [hli]
+	; cp $ff
+	; jr z, .done
+	; cp c
+	; jr z, .done
+	; and a
+	; jr nz, .loop
+	; inc b
+	; jr .loop
+; .done
+	; ld a, b
+	; ld [wd11e], a ; exclamation point num
+	; pop bc
+	; ret
 
-INCLUDE "data/moves/grammar.asm"
+;INCLUDE "data/moves/grammar.asm"
 
 PrintMoveFailureText:
 	ld de, wPlayerMoveEffect
@@ -4942,7 +4965,6 @@ JumpToOHKOMoveEffect:
 	dec a
 	ret
 
-INCLUDE "data/battle/unused_critical_hit_moves.asm"
 
 ; determines if attack is a critical hit
 ; Azure Heights claims "the fastest pokémon (who are, not coincidentally,
@@ -4953,12 +4975,30 @@ CriticalHitTest:
 	ldh a, [hWhoseTurn]
 	and a
 	ld a, [wEnemyMonSpecies]
-	jr nz, .handleEnemy
+	ld hl, wBattleMonSpecies
+	jr z, .handlePlayer
 	ld a, [wBattleMonSpecies]
-.handleEnemy
+	ld hl, wEnemyMonSpecies
+.handlePlayer
+	ld [wd0b5], a
+	call GetMonHeader
+	ld a, [wMonHBaseDefense]
+	sub 60
+	jr nc, .noCarry1
+	xor a 
+.noCarry1
+	srl a
+	srl a
+	ld b, a
+	ld a, [hl]
 	ld [wd0b5], a
 	call GetMonHeader
 	ld a, [wMonHBaseSpeed]
+	sub b
+	jr nc, .noCarry2
+	xor a
+.noCarry2
+	inc a
 	ld b, a
 	ldh a, [hWhoseTurn]
 	and a
@@ -5440,9 +5480,9 @@ HandleBuildingRage:
 	; ldh [hWhoseTurn], a
 	ret
 
-BuildingRageText:
-	text_far _BuildingRageText
-	text_end
+; BuildingRageText:
+	; text_far _BuildingRageText
+	; text_end
 
 ; copy last move for Mirror Move
 ; sets zero flag on failure and unsets zero flag on success
@@ -5668,7 +5708,7 @@ AdjustDamageForMoveType:
 	ld [hli], a
 	ld b, a
 	ldh a, [hQuotient + 3]
-	ld [hld], a
+	ld [hl], a
 	or b ; is damage 0?
 	jr nz, .skipTypeImmunity
 .typeImmunity
@@ -5998,6 +6038,8 @@ RandomizeDamage:
 
 ; for more detailed commentary, see equivalent function for player side (ExecutePlayerMove)
 ExecuteEnemyMove:
+	ld a, 1
+	ldh [hWhoseTurn], a
 	ld a, [wEnemySelectedMove]
 	inc a
 	jp z, ExecuteEnemyMoveDone
@@ -6261,6 +6303,17 @@ CheckEnemyStatusConditions:
 .checkIfFrozen
 	bit FRZ, [hl]
 	jr z, .checkIfTrapped
+	ld a, [wEnemyMoveType]
+	cp FIRE
+	jr nz, .stillFrozen
+	xor a
+	ldh [hWhoseTurn], a
+	ld hl, FireDefrostedText
+	call PrintText
+	ld a, 1
+	ldh [hWhoseTurn], a
+	jr .checkIfTrapped
+.stillFrozen
 	ld hl, IsFrozenText
 	call PrintText
 	xor a
@@ -6465,6 +6518,7 @@ CheckEnemyStatusConditions:
 	; ld hl, handleIfEnemyMoveMissed ; skip damage calculation, DecrementPP and MoveHitTest
 	; jp .enemyReturnToHL
 .checkIfThrashingAbout
+	ld hl, wPlayerBattleStatus1
 	bit THRASHING_ABOUT, [hl] ; is mon using thrash or petal dance?
 	jr z, .checkIfUsingMultiturnMove
 	ld a, THRASH
@@ -6496,6 +6550,10 @@ CheckEnemyStatusConditions:
 	ld hl, GetEnemyAnimationType ; if it didn't, skip damage calculation (deal damage equal to last hit),
 	                             ; DecrementPP and MoveHitTest
 	jp nz, .enemyReturnToHL
+	push hl
+	ld hl, wEnemyBattleStatus1
+	res USING_TRAPPING_MOVE, [hl]
+	pop hl
 	jp .enemyReturnToHL
 ; .checkIfUsingRage
 	; ld a, [wEnemyBattleStatus2]
@@ -6565,13 +6623,31 @@ LoadEnemyMonData:
 	ld a, [wIsInBattle]
 	cp $2 ; is it a trainer battle?
 ; fixed DVs for trainer mon
-	ld a, ATKDEFDV_TRAINER
-	ld b, SPDSPCDV_TRAINER
-	jr z, .storeDVs
+	jr nz, .wildMon
+	ld hl, wEnemyMon1DVs + 1
+	ld a, [wWhichPokemon]
+	ld bc, wEnemyMon2 - wEnemyMon1
+	call AddNTimes
+	ld a, [hld]
+	ld b, a
+	ld a, [hl]
+	jr .storeDVs
 ; random DVs for wild mon
+.wildMon
+	ld a, [wDVOptions]
+	and %00000011
+	jr nz, .notNormal
 	call BattleRandom
 	ld b, a
 	call BattleRandom
+	jr .storeDVs
+.notNormal
+	and %00000001
+	ld a, $FF
+	ld b, a
+	jr nz, .storeDVs
+	xor a
+	ld b, a
 .storeDVs
 	ld hl, wEnemyMonDVs
 	ld [hli], a
@@ -6713,6 +6789,9 @@ LoadEnemyMonData:
 	jr nz, .end_set_sendout
 	callfar SetAISentOut	;joenote - custom function
 	call ApplyBurnAndParalysisPenaltiesToEnemy
+	ld a, [wOptions2]
+	bit 3, a
+	call nz, ApplyBadgeStatBoosts.ApplyToEnemy
 .end_set_sendout
 	pop af
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -6836,9 +6915,9 @@ LoadPlayerBackPic:
 	predef_jump CopyUncompressedPicToTilemap
 
 ; does nothing since no stats are ever selected (barring glitches)
-DoubleOrHalveSelectedStats:
-	callfar DoubleSelectedStats
-	jpfar HalveSelectedStats
+; DoubleOrHalveSelectedStats:
+	; callfar DoubleSelectedStats
+	; jpfar HalveSelectedStats
 
 ScrollTrainerPicAfterBattle:
 	jpfar _ScrollTrainerPicAfterBattle
@@ -7034,6 +7113,18 @@ ApplyBadgeStatBoosts:
 	ld b, a
 	ld hl, wBattleMonAttack
 	ld c, $4
+	jr .loop
+	
+.ApplyToEnemy
+	ld a, [wObtainedBadges]
+	ld b, a
+	ld hl, wEnemyMonAttack
+	ld c, $4
+	ld a, [wGymLeaderNo]
+	and a
+	jr z, .loop
+	ld b, $ff
+
 ; the boost is applied for badges whose bit position is even
 ; the order of boosts matches the order they are laid out in RAM
 ; Boulder (bit 0) - attack

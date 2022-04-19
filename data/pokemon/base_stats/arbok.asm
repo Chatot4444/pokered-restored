@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/arbok.pic", 0, 1 ; sprite dimensions
 	dw ArbokPicFront, ArbokPicBack
 
-	db HAZE, DISABLE, IRON_HEAD, LEECH_LIFE ; level 1 learnset
+	db IRON_HEAD, DISABLE, HAZE, LEECH_LIFE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

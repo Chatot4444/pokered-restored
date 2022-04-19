@@ -100,15 +100,15 @@ GaryScript2:
 	ld a, [wRivalStarter]
 	cp STARTER2
 	jr nz, .NotStarter2Rematch
-	ld a, $4
+	ld a, $5
 	jr .saveTrainerId
 .NotStarter2Rematch
 	cp STARTER3
 	jr nz, .NotStarter3Rematch
-	ld a, $5
+	ld a, $6
 	jr .saveTrainerId
 .NotStarter3Rematch
-	ld a, $6
+	ld a, $7
 .saveTrainerId
 	ld [wTrainerNo], a
 	ld a, 1

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/venomoth.pic", 0, 1 ; sprite dimensions
 	dw VenomothPicFront, VenomothPicBack
 
-	db TACKLE, DISABLE, CONFUSION, LEECH_LIFE ; level 1 learnset
+	db RECOVER, AGILITY, OMINOUS_WIND, CONFUSE_RAY ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

@@ -21,7 +21,11 @@ SetDefaultNames:
 	ld [wLetterPrintingDelayFlags], a
 	ld a, [wOptionsInitialized]
 	and a
+	push af
 	call z, InitOptions
+	pop af
+	dec a
+	call z, InitOptions2
 	ld hl, NintenText
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
@@ -31,6 +35,11 @@ SetDefaultNames:
 	ld bc, NAME_LENGTH
 	jp CopyData
 
+InitOptions2:
+	ld a, %00000101
+	ld [wOptions2], a
+	ret
+	
 OakSpeech:
 	ld a, SFX_STOP_ALL_MUSIC
 	call PlaySound

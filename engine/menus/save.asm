@@ -219,6 +219,8 @@ SaveSAVtoSRAM0:
 	call CopyData
 	ld a, [wPlayerGender]
 	ld [sPlayerGender], a
+	ld a, [wOptions]
+	ld [sOptions], a
 	ldh a, [hTileAnimations]
 	ld [sTileAnimations], a
 	ld hl, sPlayerName

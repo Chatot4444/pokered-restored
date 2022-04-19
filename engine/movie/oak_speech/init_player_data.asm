@@ -22,6 +22,10 @@ InitPlayerData2:
 	call InitializeEmptyList
 
 START_MONEY EQU $3000
+	ld a, 12
+	ld [wLevelCap], a
+	ld a, [wOptions2Storage]
+	ld [wOptions2], a
 	ld hl, wPlayerMoney + 1
 	ld a, HIGH(START_MONEY)
 	ld [hld], a
@@ -33,8 +37,6 @@ START_MONEY EQU $3000
 	ld [wMonDataLocation], a
 
 	ld hl, wObtainedBadges
-	ld [hli], a
-
 	ld [hl], a
 
 	ld hl, wPlayerCoins

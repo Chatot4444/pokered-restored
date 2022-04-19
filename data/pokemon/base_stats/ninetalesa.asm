@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/ninetalesa.pic", 0, 1 ; sprite dimensions
 	dw NinetalesaPicFront, NinetalesaPicBack
 
-	db ICY_WIND, TAIL_WHIP, PLAY_ROUGH, OMINOUS_WIND ; level 1 learnset
+	db OMINOUS_WIND, ICY_WIND, TAIL_WHIP, PLAY_ROUGH ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

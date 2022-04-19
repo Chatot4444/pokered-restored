@@ -101,5 +101,9 @@ KeyItemBitfield:
 	FALSE, \ ; ETHER
 	FALSE, \ ; MAX_ETHER
 	FALSE, \ ; ELIXER
-	FALSE    ; MAX_ELIXER
+	FALSE, \ ; MAX_ELIXER
+	FALSE, \ ; TRADE_STONE
+	FALSE, \ ; FRIEND_STONE
+	FALSE, \ ; SUN_STONE
+	FALSE    ; ICE_STONE
 	assert_table_length (NUM_ITEMS + 7) / 8

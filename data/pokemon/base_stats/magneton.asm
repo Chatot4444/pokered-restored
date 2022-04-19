@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/magneton.pic", 0, 1 ; sprite dimensions
 	dw MagnetonPicFront, MagnetonPicBack
 
-	db TACKLE, SONICBOOM, THUNDERSHOCK, HEAT_WAVE ; level 1 learnset
+	db HEAT_WAVE, TACKLE, SONICBOOM, THUNDERSHOCK ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

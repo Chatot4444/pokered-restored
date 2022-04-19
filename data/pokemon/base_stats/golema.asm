@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/golema.pic", 0, 1 ; sprite dimensions
 	dw GolemaPicFront, GolemaPicBack
 
-	db FEINT_ATTACK, IRON_HEAD, THUNDERPUNCH, EXPLOSION ; level 1 learnset
+	db FEINT_ATTACK, IRON_HEAD, EXPLOSION, THUNDERPUNCH ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset
@@ -18,7 +18,7 @@
 	     DOUBLE_EDGE,  HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, \
 	     FLAMETHROWER,            THUNDERBOLT, THUNDER,     EARTHQUAKE,   FISSURE,      DIG,          MIMIC,        \
 	     DOUBLE_TEAM,   ROCK_TOMB,               METRONOME,    SELFDESTRUCT, FIRE_BLAST,   \
-	     REST,         EXPLOSION,    ROCK_SLIDE,   SUBSTITUTE,   STRENGTH
+	     REST,      THUNDER_WAVE,      EXPLOSION,    ROCK_SLIDE,   SUBSTITUTE,   STRENGTH
 	; end
 
 	db 0 ; padding

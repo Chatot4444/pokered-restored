@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/umbreon.pic", 0, 1 ; sprite dimensions
 	dw UmbreonPicFront, UmbreonPicBack
 
-	db TACKLE, SAND_ATTACK, CRUNCH, IRON_HEAD ; level 1 learnset
+	db IRON_HEAD, TACKLE, SAND_ATTACK, CRUNCH ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

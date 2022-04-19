@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/beedrill.pic", 0, 1 ; sprite dimensions
 	dw BeedrillPicFront, BeedrillPicBack
 
-	db FURY_ATTACK, DRILL_RUN, KARATE_CHOP, NO_MOVE ; level 1 learnset
+	db KARATE_CHOP, DRILL_RUN, FURY_ATTACK, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

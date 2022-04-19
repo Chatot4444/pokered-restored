@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/espeon.pic", 0, 1 ; sprite dimensions
 	dw EspeonPicFront, EspeonPicBack
 
-	db TACKLE, SAND_ATTACK, PSYCHIC_M, DRAININGKISS ; level 1 learnset
+	db DRAININGKISS, TACKLE, SAND_ATTACK, PSYCHIC_M ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

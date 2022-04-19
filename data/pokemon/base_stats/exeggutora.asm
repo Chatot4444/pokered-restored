@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/exeggutora.pic", 0, 1 ; sprite dimensions
 	dw ExeggutoraPicFront, ExeggutoraPicBack
 
-	db BARRAGE, HYPNOSIS, CONFUSION, IRON_HEAD ; level 1 learnset
+	db IRON_HEAD, BARRAGE, HYPNOSIS, CONFUSION ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

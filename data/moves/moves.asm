@@ -84,7 +84,7 @@ MoveEnd:
 	move ABSORB,       DRAIN_HP_EFFECT,             40, GRASS,        100, 20
 	move MEGA_DRAIN,   DRAIN_HP_EFFECT,             75, GRASS,        100, 10
 	move LEECH_SEED,   LEECH_SEED_EFFECT,            0, GRASS,         90, 10
-	move GROWTH,       GROWTH_EFFECT,           0, NORMAL,       100, 40
+	move GROWTH,       GROWTH_EFFECT,                0, NORMAL,       100, 40
 	move RAZOR_LEAF,   NO_ADDITIONAL_EFFECT,        55, GRASS,         95, 25
 	move SOLARBEAM,    CHARGE_EFFECT,              120, GRASS,        100, 10
 	move POISONPOWDER, POISON_EFFECT,                0, POISON,        75, 35
@@ -137,7 +137,7 @@ MoveEnd:
 	move SLUDGE,       POISON_SIDE_EFFECT2,         65, POISON,       100, 20
 	move BONE_CLUB,    FLINCH_SIDE_EFFECT1,         65, GROUND,        85, 20
 	move FIRE_BLAST,   BURN_SIDE_EFFECT2,          120, FIRE,          85,  5
-	move WATERFALL,    NO_ADDITIONAL_EFFECT,        80, WATER,        100, 15
+	move WATERFALL,    FLINCH_SIDE_EFFECT2,         80, WATER,        100, 15
 	move CLAMP,        TRAPPING_EFFECT,             35, WATER,         75, 10
 	move SWIFT,        SWIFT_EFFECT,                60, NORMAL,       100, 20
 	move SKULL_BASH,   CHARGE_EFFECT,              130, NORMAL,       100, 10
@@ -199,3 +199,11 @@ MoveEnd:
 	move ACID_SPRAY,   SPEED_DOWN_SIDE_EFFECT,      40, POISON,       100, 20
 	move STRUGGLE,     RECOIL_EFFECT,               50, TYPELESS,     100, 10
 	assert_table_length NUM_ATTACKS
+
+MoveCopyData:
+	ld h, d
+	ld l, e
+	ld de, wEnemyMoveNum
+	call CopyData
+	ret
+	

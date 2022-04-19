@@ -61,7 +61,12 @@ VermilionGymLTSurgePostBattle:
 	jp z, VermilionGymResetScripts
 	ld a, D_RIGHT | D_LEFT | D_UP | D_DOWN
 	ld [wJoyIgnore], a
-
+	ld a, [wLevelCap]
+	cp 33
+	jr nc, .skipCap
+	ld a, 33
+	ld [wLevelCap], a
+.skipCap
 VermilionGymReceiveTM24:
 	ld a, $8
 	ldh [hSpriteIndexOrTextID], a
@@ -291,7 +296,13 @@ VermilionGymScript5:
 	ld a, $f0
 	ld [wJoyIgnore], a
 VermilionGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_LT_SURGE2
+	CheckAndSetEvent EVENT_BEAT_LT_SURGE2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $7
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

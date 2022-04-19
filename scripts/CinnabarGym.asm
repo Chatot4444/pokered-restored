@@ -142,6 +142,12 @@ CinnabarGymScript3:
 	jp z, CinnabarGymScript_75792
 	ld a, $f0
 	ld [wJoyIgnore], a
+	ld a, [wLevelCap]
+	cp 50
+	jr nc, .skipCap
+	ld a, 50
+	ld [wLevelCap], a
+.skipCap
 CinnabarGymScript3_75857:
 	ld a, $C
 	ldh [hSpriteIndexOrTextID], a
@@ -517,7 +523,13 @@ CinnabarGymScript4:
 	ld a, $f0
 	ld [wJoyIgnore], a
 CinnabarGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_BLAINE2
+	CheckAndSetEvent EVENT_BEAT_BLAINE2
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $B
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/hypno.pic", 0, 1 ; sprite dimensions
 	dw HypnoPicFront, HypnoPicBack
 
-	db POUND, FIRE_PUNCH, ICE_PUNCH, THUNDERPUNCH ; level 1 learnset
+	db FIRE_PUNCH, ICE_PUNCH, THUNDERPUNCH, POUND ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

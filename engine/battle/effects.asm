@@ -59,9 +59,17 @@ SleepEffect:
 	jr nz, .didntAffect
 .setSleepCounter
 ; set target's sleep counter to a random number between 1 and 7
+	ld a, [wIsTrainerBattle]
+	and a
+	ld a, $7
+	jr z, .wild
+	ld a, $3
+.wild
+	ld b, a
+.sleepLoop
 	call BattleRandom
-	and $7
-	jr z, .setSleepCounter
+	and b
+	jr z, .sleepLoop
 	ld [de], a
 	call PlayCurrentMoveAnimation2
 	ld hl, FellAsleepText
@@ -457,28 +465,22 @@ AncientpowerEffect:
 	ret nc
 	ld b, ATTACK_UP1_EFFECT
 	ld c, $4
+	ld hl, wEnemyMoveEffect
 	ldh a, [hWhoseTurn]
 	and a
-	jr nz, .enemyLoop
+	jr nz, .loop
+	ld hl, wPlayerMoveEffect
 .loop
 	ld a, b
-	ld [wPlayerMoveEffect], a
+	ld [hl], a
 	push bc
+	push hl
 	call StatModifierUpEffect
+	pop hl
 	pop bc
 	inc b
 	dec c
 	jr nz, .loop
-	ret
-.enemyLoop
-	ld a, b
-	ld [wEnemyMoveEffect], a
-	push bc
-	call StatModifierUpEffect
-	pop bc
-	inc b
-	dec c
-	jr nz, .enemyLoop
 	ret
 	
 GrowthEffect:
@@ -638,8 +640,10 @@ UpdateStatDone:
 	jr z, .applyBadgeBoostsAndStatusPenalties
 	call PlayCurrentMoveAnimation
 	ld a, [de]
+	push de
 	cp MINIMIZE
 	jr nz, .applyBadgeBoostsAndStatusPenalties
+	pop de
 	pop bc
 	ld a, $1
 	ld [bc], a
@@ -649,23 +653,81 @@ UpdateStatDone:
 	push de
 	call nz, Bankswitch
 .applyBadgeBoostsAndStatusPenalties
-	ldh a, [hWhoseTurn]
-	and a
-	call z, ApplyBadgeStatBoosts ; whenever the player uses a stat-up move, badge boosts get reapplied again to every stat,
-	                             ; even to those not affected by the stat-up move (will be boosted further)
 	pop de
 	inc de    ;MoveEffect
 	ld a, [de]
 	cp ATTACK_UP2_EFFECT
-	jr nc, .oneStage
+	jr c, .oneStage
 	sub ATTACK_UP2_EFFECT - ATTACK_UP1_EFFECT ; map +2 effects to equivalent +1 effect
 .oneStage
-	push af
+	ld [de], a
+	push de
+	ld a, [wOptions2]
+	bit 1, a
+	jr z, .skipGlitchFix
+	ld b, a
+	ldh a, [hWhoseTurn]
+	and a
+	jr nz, .checkBit
+	sla b
+.checkBit
+	bit 3, b
+	jr z, .finishedBadgeBoost
+	ld a, [de]
+	sub ATTACK_UP1_EFFECT
+	add a
+	ld c, a
+	ld b, $0
+	ld hl, wBattleMonAttack
+	ldh a, [hWhoseTurn]
+	and a
+	ld a, [wObtainedBadges]
+	jr z, .playerTurn2
+	ld hl, wEnemyMonAttack
+	ld a, [wGymLeaderNo]
+	and a
+	ld a, [wObtainedBadges]
+	jr z, .playerTurn2
+	ld a, $ff
+.playerTurn2
+	add hl, bc
+.badgeLoop
+	dec c
+	jr c, .gotBadges
+	srl a
+	srl a
+	jr .badgeLoop
+.gotBadges
+	ld b, a
+	ld c, $1
+	call ApplyBadgeStatBoosts.loop
+	jr .finishedBadgeBoost
+.skipGlitchFix
+	ldh a, [hWhoseTurn]
+	and a
+	ld a, [wOptions2]
+	jr z, .playerBoost
+	bit 3, a
+	call nz, ApplyBadgeStatBoosts.ApplyToEnemy
+	jr .finishedBadgeBoost
+.playerBoost
+	bit 2, a
+	call nz, ApplyBadgeStatBoosts ; whenever the player uses a stat-up move, badge boosts get reapplied again to every stat,
+	                             ; even to those not affected by the stat-up move (will be boosted further)
+.finishedBadgeBoost
+	ldh a, [hWhoseTurn]
+	xor $1
+	ldh [hWhoseTurn], a
+	pop de
+	ld a, [de]
 	cp SPEED_UP1_EFFECT
 	call z, QuarterSpeedDueToParalysis ; apply speed penalty to the player whose turn is not, if it's paralyzed
-	pop af
+	ld a, [de]
 	cp ATTACK_UP1_EFFECT
 	call z, HalveAttackDueToBurn ; apply attack penalty to the player whose turn is not, if it's burned
+	ldh a, [hWhoseTurn]
+	xor $1
+	ldh [hWhoseTurn], a
 	ld hl, MonsStatsRoseText
 	jp PrintText
 
@@ -723,25 +785,20 @@ StatModifierDownEffect:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .statModifierDownEffect
-	call BattleRandom
-	cp $40 ; 1/4 chance to miss by in regular battle
-	jp c, MoveMissed
+	; call BattleRandom
+	; cp $40 ; 1/4 chance to miss by in regular battle
+	; jp c, MoveMissed
 .statModifierDownEffect
 	call CheckTargetSubstitute ; can't hit through substitute
 	jp nz, MoveMissed
 	ld a, [de]
 	cp ATTACK_DOWN_SIDE_EFFECT
 	jr c, .nonSideEffect
-	push de
-	ld de, wPlayerMoveNum
-	ldh a, [hWhoseTurn]
-	and a
-	jr z, .rockTombCheck
-	ld de, wEnemyMoveNum
-.rockTombCheck ; checks if move is rock tomb
+	; this is where new stuff starts
+	dec de ;wPlayerMoveNum or wEnemyMoveNum
 	ld a, [de]
+	inc de ;wPlayerMoveEffect or wEnemyMoveEffect
 	cp ROCK_TOMB
-	pop de
 	jr z, .guaranteed ; skips the random chance if rock tomb
 	cp MUD_SHOT
 	jr z, .guaranteed ; skips the random chance if mud shot 
@@ -751,10 +808,11 @@ StatModifierDownEffect:
 	jr z, .guaranteed
 	cp ACID_SPRAY
 	jr z, .guaranteed
+	;end of new stuff mostly
 	call BattleRandom
 	cp $55 ; 85/256 chance for side effects
 	ret nc
-.guaranteed	
+.guaranteed	;this label is also new
 	ld a, [de]
 	sub ATTACK_DOWN_SIDE_EFFECT ; map each stat to 0-3
 	jr .decrementStatMod
@@ -878,22 +936,76 @@ UpdateLoweredStatDone:
 	jr nc, .ApplyBadgeBoostsAndStatusPenalties
 	call PlayCurrentMoveAnimation2
 .ApplyBadgeBoostsAndStatusPenalties
+	ld a, [de]
+	cp ATTACK_DOWN_SIDE_EFFECT
+	jr nc, .sideEffect
+	cp ATTACK_DOWN2_EFFECT
+	jr c, .oneStage
+	sub ATTACK_DOWN2_EFFECT - ATTACK_DOWN1_EFFECT ; map +2 effects to equivalent +1 effect
+	jr .oneStage
+.sideEffect
+	sub ATTACK_DOWN_SIDE_EFFECT - ATTACK_DOWN1_EFFECT
+.oneStage
+	ld [de], a
+	push de
+	ld a, [wOptions2]
+	bit 1, a
+	jr z, .skipGlitchFix
+	ld b, a
 	ldh a, [hWhoseTurn]
 	and a
+	jr z, .checkBit
+	sla b
+.checkBit
+	bit 3, b
+	jr z, .finishedBadgeBoost
+	ld a, [de]
+	sub ATTACK_DOWN1_EFFECT
+	add a
+	ld c, a
+	ld b, $0
+	ld hl, wBattleMonAttack
+	ldh a, [hWhoseTurn]
+	and a
+	ld a, [wObtainedBadges]
+	jr nz, .playerTurn2
+	ld hl, wEnemyMonAttack
+	ld a, [wGymLeaderNo]
+	and a
+	ld a, [wObtainedBadges]
+	jr z, .playerTurn2
+	ld a, $ff
+.playerTurn2
+	add hl, bc
+.badgeLoop
+	dec c
+	jr c, .gotBadges
+	srl a
+	srl a
+	jr .badgeLoop
+.gotBadges
+	ld b, a
+	ld c, $1
+	call ApplyBadgeStatBoosts.loop
+	jr .finishedBadgeBoost
+.skipGlitchFix
+	ldh a, [hWhoseTurn]
+	and a
+	ld a, [wOptions2]
+	jr nz, .playerBoost
+	bit 3, a
+	call nz, ApplyBadgeStatBoosts.ApplyToEnemy
+	jr .finishedBadgeBoost
+.playerBoost
+	bit 2, a
 	call nz, ApplyBadgeStatBoosts ; whenever the player uses a stat-down move, badge boosts get reapplied again to every stat,
 	                              ; even to those not affected by the stat-up move (will be boosted further)
+.finishedBadgeBoost
+	pop de
 	ld a, [de]
 	cp SPEED_DOWN1_EFFECT
 	call z, QuarterSpeedDueToParalysis
-	cp SPEED_DOWN2_EFFECT
-	call z, QuarterSpeedDueToParalysis
-	cp SPEED_DOWN_SIDE_EFFECT
-	call z, QuarterSpeedDueToParalysis   ;there's probably a better way to do this, I'm sorry
 	cp ATTACK_DOWN1_EFFECT
-	call z, HalveAttackDueToBurn
-	cp ATTACK_DOWN2_EFFECT
-	call z, HalveAttackDueToBurn
-	cp ATTACK_DOWN_SIDE_EFFECT
 	call z, HalveAttackDueToBurn
 	ld hl, MonsStatsFellText
 	jp PrintText
@@ -1325,9 +1437,9 @@ ChargeMoveEffectText:
 .gotText
 	ret
 
-MadeWhirlwindText:
-	text_far _MadeWhirlwindText
-	text_end
+; MadeWhirlwindText:
+	; text_far _MadeWhirlwindText
+	; text_end
 
 TookInSunlightText:
 	text_far _TookInSunlightText
@@ -1477,15 +1589,15 @@ ClearHyperBeam:
 	pop hl
 	ret
 
-RageEffect:
-	ld hl, wPlayerBattleStatus2
-	ldh a, [hWhoseTurn]
-	and a
-	jr z, .player
-	ld hl, wEnemyBattleStatus2
-.player
-	set USING_RAGE, [hl] ; mon is now in "rage" mode
-	ret
+; RageEffect:
+	; ld hl, wPlayerBattleStatus2
+	; ldh a, [hWhoseTurn]
+	; and a
+	; jr z, .player
+	; ld hl, wEnemyBattleStatus2
+; .player
+	; set USING_RAGE, [hl] ; mon is now in "rage" mode
+	; ret
 
 MimicEffect:
 	ld c, 50
@@ -1571,91 +1683,96 @@ SplashEffect:
 	jp PrintNoEffectText
 
 DisableEffect:
-	call MoveHitTest
-	ld a, [wMoveMissed]
-	and a
-	jr nz, .moveMissed
-	ld de, wEnemyDisabledMove
-	ld hl, wEnemyMonMoves
-	ld a, [wEnemyLastMove]
-	ld c, a
-	ldh a, [hWhoseTurn]
-	and a
-	jr z, .disableEffect
-	ld de, wPlayerDisabledMove
-	ld hl, wBattleMonMoves
-	ld a, [wPlayerLastMove]
-	ld c, a
-.disableEffect
-; no effect if target already has a move disabled
-	ld a, [de]
-	and a
-	jr nz, .moveMissed
-.pickMoveToDisable
-	ld a, c
-	cp $ff
-	jr z, .moveMissed
-	push hl
-	ld b, $0
-	add hl, bc
-	ld a, [hl]
-	pop hl
-	and a
-	jr z, .moveMissed ; If 00 move slot is found move fails
-	ld [wd11e], a ; store move number
-	push hl
-	ldh a, [hWhoseTurn]
-	and a
-	ld hl, wBattleMonPP
-	jr nz, .enemyTurn
-	ld a, [wLinkState]
-	cp LINK_STATE_BATTLING
-	pop hl ; wEnemyMonMoves
-	jr nz, .playerTurnNotLinkBattle
-; .playerTurnLinkBattle
-	push hl
-	ld hl, wEnemyMonPP
-.enemyTurn
-	push hl
-	ld a, [hli]
-	or [hl]
-	inc hl
-	or [hl]
-	inc hl
-	or [hl]
-	and $3f
-	pop hl ; wBattleMonPP or wEnemyMonPP
-	jr z, .moveMissedPopHL ; nothing to do if all moves have no PP left
-	add hl, bc
-	ld a, [hl]
-	pop hl
-	and a
-	jr z, .moveMissed ; miss if this one had 0 PP
-.playerTurnNotLinkBattle
-; non-link battle enemies have unlimited PP so the previous checks aren't needed
-	call BattleRandom
-	and $7
-	inc a ; 1-8 turns disabled
-	inc c ; move 1-4 will be disabled
-	swap c
-	add c ; map disabled move to high nibble of wEnemyDisabledMove / wPlayerDisabledMove
-	ld [de], a
-	call PlayCurrentMoveAnimation2
-	ld hl, wPlayerDisabledMoveNumber
-	ldh a, [hWhoseTurn]
-	and a
-	jr nz, .printDisableText
-	inc hl ; wEnemyDisabledMoveNumber
-.printDisableText
-	ld a, [wd11e] ; move number
-	ld [hl], a
-	call GetMoveName
+	jpfar DisableEffect_
+	; call MoveHitTest
+	; ld a, [wMoveMissed]
+	; and a
+	; jr nz, .moveMissed
+	; ld de, wEnemyDisabledMove
+	; ld hl, wEnemyMonMoves
+	; ld a, [wEnemyLastMove]
+	; ld c, a
+	; ldh a, [hWhoseTurn]
+	; and a
+	; jr z, .disableEffect
+	; ld de, wPlayerDisabledMove
+	; ld hl, wBattleMonMoves
+	; ld a, [wPlayerLastMove]
+	; ld c, a
+; .disableEffect
+; ; no effect if target already has a move disabled
+	; ld a, [de]
+	; and a
+	; jr nz, .moveMissed
+; .pickMoveToDisable
+	; ld a, c
+	; cp $ff
+	; jr z, .moveMissed
+	; push hl
+	; ld b, $0
+	; add hl, bc
+	; ld a, [hl]
+	; pop hl
+	; and a
+	; jr z, .moveMissed ; If 00 move slot is found move fails
+	; ld [wd11e], a ; store move number
+	; push hl
+	; ldh a, [hWhoseTurn]
+	; and a
+	; ld hl, wBattleMonPP
+	; jr nz, .enemyTurn
+	; ld a, [wLinkState]
+	; cp LINK_STATE_BATTLING
+	; pop hl ; wEnemyMonMoves
+	; jr nz, .playerTurnNotLinkBattle
+; ; .playerTurnLinkBattle
+	; push hl
+	; ld hl, wEnemyMonPP
+; .enemyTurn
+	; push hl
+	; ld a, [hli]
+	; or [hl]
+	; inc hl
+	; or [hl]
+	; inc hl
+	; or [hl]
+	; and $3f
+	; pop hl ; wBattleMonPP or wEnemyMonPP
+	; jr z, .moveMissedPopHL ; nothing to do if all moves have no PP left
+	; add hl, bc
+	; ld a, [hl]
+	; pop hl
+	; and a
+	; jr z, .moveMissed ; miss if this one had 0 PP
+; .playerTurnNotLinkBattle
+; ; non-link battle enemies have unlimited PP so the previous checks aren't needed
+	; call BattleRandom
+	; and $7
+	; inc a ; 1-8 turns disabled
+	; inc c ; move 1-4 will be disabled
+	; swap c
+	; add c ; map disabled move to high nibble of wEnemyDisabledMove / wPlayerDisabledMove
+	; ld [de], a
+	; call PlayCurrentMoveAnimation2
+	; ld hl, wPlayerDisabledMoveNumber
+	; ldh a, [hWhoseTurn]
+	; and a
+	; jr nz, .printDisableText
+	; inc hl ; wEnemyDisabledMoveNumber
+; .printDisableText
+	; ld a, [wd11e] ; move number
+	; ld [hl], a
+	; call GetMoveName
+	; ld hl, MoveWasDisabledText
+	; jp PrintText
+; .moveMissedPopHL
+	; pop hl
+; .moveMissed
+	; jp PrintButItFailedText_
+
+PrintMoveWasDisabledText:
 	ld hl, MoveWasDisabledText
 	jp PrintText
-.moveMissedPopHL
-	pop hl
-.moveMissed
-	jp PrintButItFailedText_
 
 MoveWasDisabledText:
 	text_far _MoveWasDisabledText

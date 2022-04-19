@@ -243,12 +243,22 @@ PlayCry::
 	ld e, a
 	ld d, 0
 	
+	cp DEX_PERRSERKER - 1
+	jr z, .perrserker
+	
+	cp DEX_SIRFETCHD - 1
+	jr z, .sirfetchd
+	
+	cp DEX_MR_RIME - 1
+	jr z, .mrRime
+	
 	cp DEX_RATTATAA - 1
 	jr nc, .normalCry
 	cp DEX_MIME_JR - 1
 	jr c, .normalCry
 
 	sub 170
+.wavCry
 	ld e, a
 	ldh a, [hLoadedROMBank]
 	push af
@@ -261,6 +271,13 @@ PlayCry::
 	ld [MBC1RomBank], a
 	jr .done
 
+
+.perrserker
+.sirfetchd
+.mrRime
+	sub 189
+	jr .wavCry
+	
 .normalCry
 	ldh a, [hLoadedROMBank]
 	push af
@@ -455,7 +472,9 @@ WaitSFX::
 	ld a, [wSFXDontWait]
 	and a
 	ret nz
-
+	ld a, [wOptions2]
+	bit 7, a
+	ret nz
 ; infinite loop until sfx is done playing
 
 	push hl

@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/muk.pic", 0, 1 ; sprite dimensions
 	dw MukPicFront, MukPicBack
 
-	db ACID, DISABLE, POISON_GAS, THUNDERPUNCH ; level 1 learnset
+	db THUNDERPUNCH, ACID, DISABLE, POISON_GAS ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

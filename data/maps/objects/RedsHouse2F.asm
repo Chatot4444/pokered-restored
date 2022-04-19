@@ -7,5 +7,6 @@ RedsHouse2F_Object:
 	def_signs
 
 	def_objects
-
+	object SPRITE_CLIPBOARD,  4,  1, STAY, NONE, 1 ; person
+	
 	def_warps_to REDS_HOUSE_2F

@@ -1,4 +1,6 @@
 CeladonMart1F_Script:
+	xor a
+	ld [wUnusedCC5B], a
 	jp EnableAutoTextBoxDrawing
 
 CeladonMart1F_TextPointers:

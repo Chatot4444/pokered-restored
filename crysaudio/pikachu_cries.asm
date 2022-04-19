@@ -59,4 +59,14 @@ PikachuCry13::
 	pcm INCBIN "audio/pikachu_cries/media_cries_700.pcm"
 
 
+SECTION "Pikachu Cries 5", ROMX
 
+PikachuCry14::
+	pcm INCBIN "audio/pikachu_cries/863Perrserker.pcm"
+	
+PikachuCry15::
+	pcm INCBIN "audio/pikachu_cries/865Sirfetchd.pcm"
+	
+PikachuCry16::
+	pcm INCBIN "audio/pikachu_cries/866Mr_Rime.pcm"
+	

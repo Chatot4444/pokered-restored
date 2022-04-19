@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/cloyster.pic", 0, 1 ; sprite dimensions
 	dw CloysterPicFront, CloysterPicBack
 
-	db WITHDRAW, SUPERSONIC, ICY_WIND, SIGNAL_BEAM ; level 1 learnset
+	db SIGNAL_BEAM, WITHDRAW, SUPERSONIC, ICY_WIND ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

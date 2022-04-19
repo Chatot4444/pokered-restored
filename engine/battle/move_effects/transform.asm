@@ -2,9 +2,9 @@ TransformEffect_:
 	ld hl, wBattleMonSpecies
 	ld de, wEnemyMonSpecies
 	ld bc, wEnemyBattleStatus3
-	ld a, [wEnemyBattleStatus1]
 	ldh a, [hWhoseTurn]
 	and a
+	ld a, [wEnemyBattleStatus1]
 	jr nz, .hitTest
 	ld hl, wEnemyMonSpecies
 	ld de, wBattleMonSpecies
@@ -49,8 +49,15 @@ TransformEffect_:
 	pop de
 	pop hl
 	push hl
+; if used by enemy, save original species in case it gets caught
+	ldh a, [hWhoseTurn]
+	and a
+	jr z, .notWild
+	ld a, [de]
+	ld [wTransformedEnemyMonSpecies], a
 ; transform user into opposing Pokemon
 ; species
+.notWild
 	ld a, [hl]
 	ld [de], a
 ; type 1, type 2, catch rate, and moves

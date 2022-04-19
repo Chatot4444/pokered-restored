@@ -134,6 +134,12 @@ ViridianGymScript3:
 	jp z, ViridianGymScript_748d6
 	ld a, $f0
 	ld [wJoyIgnore], a
+	ld a, [wLevelCap]
+	cp 62
+	jr nc, .skipCap
+	ld a, 62
+	ld [wLevelCap], a
+.skipCap
 ViridianGymScript3_74995:
 	ld a, $d
 	ldh [hSpriteIndexOrTextID], a
@@ -458,7 +464,7 @@ ViridianGymTextB:
 	ld [wSpriteIndex], a
 	call EngageMapTrainer
 	call InitBattleEnemyParameters
-	ld a, $8
+	ld a, $9
 	ld [wGymLeaderNo], a
 	xor a
 	ldh [hJoyHeld], a
@@ -479,7 +485,13 @@ ViridianGymScript5:
 	ld a, $f0
 	ld [wJoyIgnore], a
 ViridianGymScript_AfterRematch:
-	SetEvent EVENT_BEAT_VIRIDIAN_GYM_RIVAL
+	CheckAndSetEvent EVENT_BEAT_VIRIDIAN_GYM_RIVAL
+	jr nz, .alreadyWon
+	ld hl, wRematchWinCount
+	inc [hl]
+	ld hl, wLevelCap
+	inc [hl]
+.alreadyWon
 	ld a, $C
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

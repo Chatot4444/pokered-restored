@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/muka.pic", 0, 1 ; sprite dimensions
 	dw MukaPicFront, MukaPicBack
 
-	db LICK, DISABLE, CRUNCH, ICE_PUNCH ; level 1 learnset
+	db ICE_PUNCH, CRUNCH, LICK, DISABLE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

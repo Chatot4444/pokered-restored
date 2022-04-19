@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/marowaka.pic", 0, 1 ; sprite dimensions
 	dw MarowakaPicFront, MarowakaPicBack
 
-	db BONE_CLUB, GROWL, SCREECH, FIRE_SPIN ; level 1 learnset
+	db FIRE_SPIN, SCREECH, BONE_CLUB, GROWL ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

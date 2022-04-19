@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/mimejr.pic", 0, 1 ; sprite dimensions
 	dw MimeJrPicFront, MimeJrPicBack
 
-	db CONFUSION, BARRIER, SIGNAL_BEAM, NO_MOVE ; level 1 learnset
+	db CONFUSION, BARRIER, DRAININGKISS, SIGNAL_BEAM ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

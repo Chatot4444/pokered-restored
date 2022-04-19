@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/moltresg.pic", 0, 1 ; sprite dimensions
 	dw MoltresgPicFront, MoltresgPicBack
 
-	db GUST, FEINT_ATTACK, DRAGONBREATH, NO_MOVE ; level 1 learnset
+	db DRAGONBREATH, FEINT_ATTACK, GUST, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

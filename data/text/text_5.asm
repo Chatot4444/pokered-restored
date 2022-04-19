@@ -37,9 +37,14 @@ _FlashLightsAreaText::
 
 _WarpToLastPokemonCenterText::
 	text "Warp to the last"
-	line "#MON CENTER."
+	line "#MON CENTER?"
 	done
 
+_DigToEntranceText::
+	text "DIG to go back"
+	line "to entrance?"
+	done
+	
 _CannotUseTeleportNowText::
 	text_ram wcd6d
 	text " can't"
@@ -109,3 +114,16 @@ _BoxIsFullText::
 	para "Change the BOX at"
 	line "a #MON CENTER!"
 	done
+
+_BoxFilledText::
+	text "The #MON BOX"
+	line "is now full!"
+	
+	para "You will be"
+	line "unable to catch"
+	cont "any more #MON!"
+	
+	para "Change the BOX at"
+	line "a #MON CENTER!"
+	prompt
+	

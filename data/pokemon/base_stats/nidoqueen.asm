@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/nidoqueen.pic", 0, 1 ; sprite dimensions
 	dw NidoqueenPicFront, NidoqueenPicBack
 
-	db DRILL_RUN, DISABLE, SUPER_FANG, KARATE_CHOP ; level 1 learnset
+	db DISABLE, KARATE_CHOP, SUPER_FANG, DRILL_RUN ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

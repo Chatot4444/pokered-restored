@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/golem.pic", 0, 1 ; sprite dimensions
 	dw GolemPicFront, GolemPicBack
 
-	db TACKLE, IRON_HEAD, KARATE_CHOP, EXPLOSION ; level 1 learnset
+	db IRON_HEAD, KARATE_CHOP, EXPLOSION, TACKLE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

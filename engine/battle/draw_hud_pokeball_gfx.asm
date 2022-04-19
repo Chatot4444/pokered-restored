@@ -20,6 +20,13 @@ SetupOwnPartyPokeballs:
 	call PlacePlayerHUDTiles
 	ld hl, wPartyMon1
 	ld de, wPartyCount
+	ld a, [wOptions2]
+	bit 5, a
+	jr z, .notSoloMode
+	ld de, wBuffer
+	ld a, 1
+	ld [de], a
+.notSoloMode
 	call SetupPokeballs
 	ld a, $60
 	ld hl, wBaseCoordX

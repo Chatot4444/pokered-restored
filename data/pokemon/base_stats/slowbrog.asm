@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/slowbrog.pic", 0, 1 ; sprite dimensions
 	dw SlowbrogPicFront, SlowbrogPicBack
 
-	db CONFUSION, MUD_SHOT, IRON_HEAD, ACID ; level 1 learnset
+	db MAGNET_BOMB, QUICK_ATTACK, CONFUSION, ACID ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

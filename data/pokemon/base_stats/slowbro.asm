@@ -10,11 +10,11 @@
 	INCBIN "gfx/pokemon/front/slowbro.pic", 0, 1 ; sprite dimensions
 	dw SlowbroPicFront, SlowbroPicBack
 
-	db CONFUSION, DISABLE, HEADBUTT, WATER_GUN ; level 1 learnset
+	db SHADOW_BALL, MUD_SHOT, CONFUSION, WATER_GUN ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
-	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
+	tmhm MEGA_PUNCH,   AERIAL_ACE, MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
 	     DOUBLE_EDGE,  BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     BLIZZARD,     \
 	     HYPER_BEAM,   PAY_DAY,      SUBMISSION,   COUNTER,      SEISMIC_TOSS, \
 	     FLAMETHROWER,                 EARTHQUAKE,   FISSURE,      DIG,          PSYCHIC_M,    \

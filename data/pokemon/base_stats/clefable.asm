@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/clefable.pic", 0, 1 ; sprite dimensions
 	dw ClefablePicFront, ClefablePicBack
 
-	db BOUNCE, AMNESIA, PLAY_ROUGH, SIGNAL_BEAM ; level 1 learnset
+	db BOUNCE, AMNESIA, SIGNAL_BEAM, PLAY_ROUGH ; level 1 learnset
 	db GROWTH_FAST ; growth rate
 
 	; tm/hm learnset

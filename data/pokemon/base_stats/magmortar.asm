@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/magmortar.pic", 0, 1 ; sprite dimensions
 	dw MagmortarPicFront, MagmortarPicBack
 
-	db EMBER, FIRE_PUNCH, THUNDERPUNCH, FIRE_SPIN ; level 1 learnset
+	db THUNDERPUNCH, FIRE_PUNCH, EMBER, FIRE_SPIN ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

@@ -10,12 +10,12 @@
 	INCBIN "gfx/pokemon/front/parasect.pic", 0, 1 ; sprite dimensions
 	dw ParasectPicFront, ParasectPicBack
 
-	db SCRATCH, STUN_SPORE, LEECH_LIFE, NO_MOVE ; level 1 learnset
+	db ACID_SPRAY, PSYBEAM, LEECH_LIFE, SCRATCH ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
 	tmhm AERIAL_ACE, SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,                    MEGA_DRAIN,   SOLARBEAM,    DIG,          \
+	     HYPER_BEAM,   COUNTER,         MEGA_DRAIN,   SOLARBEAM,    DIG,          \
 	     MIMIC,        DOUBLE_TEAM,  REFLECT,     SLUDGE_BOMB,     SKULL_BASH,   \
 	     REST,         SUBSTITUTE,   CUT
 	; end

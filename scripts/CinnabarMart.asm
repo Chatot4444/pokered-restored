@@ -11,11 +11,6 @@ CinnabarMart_Badge_Script:
 	ld a, $1
 	ld [wUnusedCC5B], a
 .done
-	ld hl, CinnabarMart_TextPointers
-	ld a, l
-	ld [wMapTextPtr], a
-	ld a, h
-	ld [wMapTextPtr+1], a
 	ret
 
 

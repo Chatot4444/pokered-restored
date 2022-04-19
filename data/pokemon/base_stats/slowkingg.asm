@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/slowkingg.pic", 0, 1 ; sprite dimensions
 	dw SlowkinggPicFront, SlowkinggPicBack
 
-	db CONFUSION, FLAMETHROWER, SHADOW_BALL, ACID ; level 1 learnset
+	db OMINOUS_WIND, FEINT_ATTACK, CONFUSION, ACID ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

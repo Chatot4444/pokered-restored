@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/flareon.pic", 0, 1 ; sprite dimensions
 	dw FlareonPicFront, FlareonPicBack
 
-	db TACKLE, SAND_ATTACK, CRUNCH, FLAMETHROWER ; level 1 learnset
+	db CRUNCH, TACKLE, SAND_ATTACK, HEAT_WAVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

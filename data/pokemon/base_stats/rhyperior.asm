@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/rhyperior.pic", 0, 1 ; sprite dimensions
 	dw RhyperiorPicFront, RhyperiorPicBack
 
-	db HORN_ATTACK, TAKE_DOWN, X_SCISSOR, MUD_SHOT ; level 1 learnset
+	db X_SCISSOR, GLARE, HORN_ATTACK, TAKE_DOWN ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 
 	; tm/hm learnset

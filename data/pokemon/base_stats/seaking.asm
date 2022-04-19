@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/seaking.pic", 0, 1 ; sprite dimensions
 	dw SeakingPicFront, SeakingPicBack
 
-	db PECK, ICY_WIND, SIGNAL_BEAM, DRILL_RUN ; level 1 learnset
+	db SIGNAL_BEAM, DRILL_RUN, ICY_WIND, PECK ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

@@ -133,12 +133,24 @@ LoreleiTrainerHeader1:
 
 LoreleiText1:
 	text_asm
+	ld a, [wLevelCap]
+	cp 65
+	jr nc, .skipCap
+	ld a, 65
+	ld [wLevelCap], a
+.skipCap
 	ld hl, LoreleiTrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 	
 LoreleiText2:
 	text_asm
+	ld a, [wLevelCap]
+	cp 75
+	jr nc, .skipCap
+	ld a, 75
+	ld [wLevelCap], a
+.skipCap
 	ld hl, LoreleiTrainerHeader1
 	call TalkToTrainer
 	jp TextScriptEnd

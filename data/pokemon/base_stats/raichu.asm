@@ -10,11 +10,11 @@
 	INCBIN "gfx/pokemon/front/raichu.pic", 0, 1 ; sprite dimensions
 	dw RaichuPicFront, RaichuPicBack
 
-	db FEINT_ATTACK, AGILITY, KARATE_CHOP, QUICK_ATTACK ; level 1 learnset
+	db KARATE_CHOP, FEINT_ATTACK, THUNDERBOLT, THUNDERPUNCH ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset
-	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
+	tmhm MEGA_PUNCH,  SWORDS_DANCE,  MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
 	     DOUBLE_EDGE,  HYPER_BEAM,   PAY_DAY,      SUBMISSION,   SEISMIC_TOSS, \
 	                      THUNDERBOLT,  THUNDER,      MIMIC,        DOUBLE_TEAM,  \
 	     REFLECT,                      SWIFT,        SKULL_BASH,   REST,         \

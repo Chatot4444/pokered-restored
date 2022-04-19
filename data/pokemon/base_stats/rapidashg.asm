@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/rapidashg.pic", 0, 1 ; sprite dimensions
 	dw RapidashgPicFront, RapidashgPicBack
 
-	db CONFUSION, DRILL_RUN, RECOVER, HORN_DRILL ; level 1 learnset
+	db DRILL_RUN, RECOVER, HORN_DRILL, CONFUSION ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 
 	; tm/hm learnset

@@ -1,4 +1,4 @@
-ResetStatusAndHalveMoneyOnBlackout::
+ResetStatusAndHalveMoneyOnBlackout_::  ; the main one is in engine/events/set_blackout_map.asm
 ; Reset player status on blackout.
 	xor a
 	ld [wBattleResult], a

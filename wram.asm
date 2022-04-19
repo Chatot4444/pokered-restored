@@ -405,6 +405,7 @@ wCheckFor180DegreeTurn::
 ; whether to check for 180-degree turn (0 = don't, 1 = do)
 	ds 1
 
+wOptions2Storage::
 	ds 1
 
 wMissableObjectIndex::
@@ -560,7 +561,7 @@ wUnusedC000:: ; not actually at C000
 ;bit 3 - used for AIGetTypeEffectiveness (0 = enemy move effectiveness | 1 = player move effectiveness)
 ;bit 4 - if set, current move being handled is a static damaging move 
 ;bit 5 - if set, current ai trainer has ai routine 4 assigned
-;bit 6 - if set, poison/burn damage algorithm is being called to handle leech seed
+;bit 6 - if set, AI is calculating move type as if the trainer had not switched
 ;bit 7 - if set, force Counter to miss (for an opponent hurting itself or its jump kick missing)
 	ds 1
 
@@ -638,7 +639,10 @@ wLowHealthAlarmDisabled::
 wPlayerMonMinimized::
 	ds 1
 
-	ds 13
+wTransformedEnemyMonSpecies::
+	ds 1
+
+	ds 12
 
 wLuckySlotHiddenObjectIndex::
 
@@ -1140,7 +1144,7 @@ wFlags_0xcd60::
 ; bit 5: don't play sound when A or B is pressed in menu
 ; bit 6: tried pushing against boulder once (you need to push twice before it will move)
 	ds 1
-
+	
 	ds 9
 
 wActionResultOrTookBattleTurn::
@@ -2018,8 +2022,11 @@ wSavedTileAnimations::
 wDamage::
 	ds 2
 
-	ds 2
-
+wSwitchedMonType1::
+	ds 1
+wSwitchedMonType2::
+	ds 1
+	
 wRepelRemainingSteps::
 	ds 1
 
@@ -2217,7 +2224,7 @@ wPseudoItemID::
 ; that case, this would be ESCAPE_ROPE.
 	ds 1
 
-wUnusedD153::
+wRematchWinCount::
 	ds 1
 
 wIsTrainerBattle::
@@ -2297,6 +2304,7 @@ wOptions::
 wObtainedBadges::
 	flag_array 8
 
+wOptions2::
 	ds 1
 
 wLetterPrintingDelayFlags::
@@ -2501,6 +2509,9 @@ UNION
 NEXTU
 wChannel5:: channel_struct wChannel5
 wChannel6:: channel_struct wChannel6
+
+wLevelCap::
+	ds 1
 ENDU
 
 wNumSigns::
@@ -2868,7 +2879,10 @@ wWalkBikeSurfState::
 ; $02 = surfing
 	ds 1
 
-	ds 10
+wDVOptions::
+	ds 1
+	
+	ds 9
 
 wTownVisitedFlag::
 	flag_array NUM_CITY_MAPS

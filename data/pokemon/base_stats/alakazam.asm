@@ -10,7 +10,7 @@
 	INCBIN "gfx/pokemon/front/alakazam.pic", 0, 1 ; sprite dimensions
 	dw AlakazamPicFront, AlakazamPicBack
 
-	db TELEPORT, CONFUSION, DISABLE, SIGNAL_BEAM ; level 1 learnset
+	db SIGNAL_BEAM, TELEPORT, CONFUSION, DISABLE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
 
 	; tm/hm learnset

@@ -213,6 +213,12 @@ StartMenu_Pokemon::
 	text_far _FlashLightsAreaText
 	text_end
 .dig
+	ld hl, .digToEntranceText
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jp nz, .loop
 	ld a, ESCAPE_ROPE
 	ld [wcf91], a
 	ld [wPseudoItemID], a
@@ -222,6 +228,9 @@ StartMenu_Pokemon::
 	jp z, .loop
 	call GBPalWhiteOutWithDelay3
 	jp .goBackToMap
+.digToEntranceText
+	text_far _DigToEntranceText
+	text_end
 .teleport
 	call CheckIfInOutsideMap
 	jr z, .canTeleport
@@ -234,6 +243,10 @@ StartMenu_Pokemon::
 .canTeleport
 	ld hl, .warpToLastPokemonCenterText
 	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jp nz, .loop
 	ld hl, wd732
 	set 3, [hl]
 	set 6, [hl]
@@ -691,6 +704,10 @@ StartMenu_Option::
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call LoadTextBoxTilePatterns
 	call UpdateSprites
+	xor a
+	ld [wLastBGP], a
+	ld [wLastOBP0], a
+	call GBPalNormal
 	jp RedisplayStartMenu
 
 SwitchPartyMon::
