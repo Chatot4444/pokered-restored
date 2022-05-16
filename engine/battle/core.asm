@@ -980,8 +980,7 @@ TrainerBattleVictory:
 	jr nz, .gymleader
 	ld b, MUSIC_DEFEATED_TRAINER
 .gymleader
-	ld a, [wTrainerClass]
-	cp RIVAL3 ; final battle against rival
+	cp $A ; final battle against rival
 	jr nz, .notrival
 	ld b, MUSIC_DEFEATED_GYM_LEADER
 	ld hl, wFlags_D733

@@ -187,6 +187,7 @@ MoveSoundTable:
 	db SFX_BATTLE_19,          $01, $e0 ; FIERY_WRATH
 	db SFX_PSYBEAM,            $20, $80 ; SIGNAL_BEAM	
 	db SFX_BATTLE_2A,          $80, $c0 ; ACID_SPRAY
+	db SFX_BATTLE_2A,          $80, $c0 ; POISON_FANG
 	db SFX_BATTLE_0B,          $00, $80 ; STRUGGLE
 	assert_table_length NUM_ATTACKS
 	db SFX_BATTLE_0B,          $00, $80

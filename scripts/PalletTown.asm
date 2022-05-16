@@ -18,6 +18,8 @@ PalletTown_ScriptPointers:
 	dw PalletTownScript6
 
 PalletTownScript0:
+	CheckEvent EVENT_BECOME_CHAMPION
+	jr nz, .oakLetterScript
 	CheckEvent EVENT_FOLLOWED_OAK_INTO_LAB
 	ret nz
 	ld a, [wYCoord]
@@ -41,6 +43,13 @@ PalletTownScript0:
 	ld a, 1
 	ld [wPalletTownCurScript], a
 	ret
+
+.oakLetterScript
+	CheckAndSetEvent EVENT_RECEIVE_OAK_LETTER
+	ret nz
+	ld a, 8
+	ldh [hSpriteIndexOrTextID], a
+	jp DisplayTextID
 
 PalletTownScript1:
 	xor a
@@ -156,6 +165,7 @@ PalletTown_TextPointers:
 	dw PalletTownText5
 	dw PalletTownText6
 	dw PalletTownText7
+	dw OakLetterText
 
 PalletTownText1:
 	text_asm
@@ -211,4 +221,8 @@ PalletTownText6: ; sign by Red's house
 
 PalletTownText7: ; sign by Blue's house
 	text_far _PalletTownText7
+	text_end
+
+OakLetterText:
+	text_far _OakLetterText
 	text_end

@@ -71,8 +71,8 @@ DexRatingsTable:
 	dbw 130, PokedexRatingText_4423d
 	dbw 140, PokedexRatingText_44242
 	dbw 150, PokedexRatingText_44247
-	dbw 216, PokedexRatingText_All
-	dbw NUM_POKEMON + 1, PokedexRatingText_4424c
+	dbw 151, PokedexRatingText_4424c
+	dbw NUM_POKEMON + 1, PokedexRatingText_All
 
 PokedexRatingText_44201:
 	text_far _OaksLabText_44201

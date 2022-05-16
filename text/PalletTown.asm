@@ -54,3 +54,26 @@ _PalletTownText6::
 _PalletTownText7::
 	text "<RIVAL>'s house "
 	done
+
+_OakLetterText::
+	text "You got a letter"
+	line "from PROF. OAK."
+	
+	para "OAK: Congrats"
+	line "again, <PLAYER>!"
+	
+	para "As CHAMPION,"
+	line "you may defend"
+	cont "your title by"
+	cont "battling the GYM"
+	cont "LEADERS again."
+	
+	para "I've heard there"
+	line "is also someone"
+	cont "in the CELADON"
+	cont "MANSION who is"
+	cont "looking for you."
+	
+	para "Good luck,"
+	line "<PLAYER>!"
+	done 

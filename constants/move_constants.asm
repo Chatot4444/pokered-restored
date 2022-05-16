@@ -192,7 +192,8 @@
 	const FIERY_WRATH   ; b8
 	const SIGNAL_BEAM   ; b9
 	const ACID_SPRAY    ; ba
-	const STRUGGLE      ; bb
+	const POISON_FANG   ; bb
+	const STRUGGLE      ; bc
 	
 NUM_ATTACKS EQU const_value - 1 
 

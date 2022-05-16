@@ -278,10 +278,10 @@ NidoranMEvosMoves:
 	db EV_LEVEL, 16, NIDORINO
 	db 0
 ; Learnset
-	db 5, PECK
-	db 10, POISON_STING
-	db 15, DOUBLE_KICK
-	db 20, FOCUS_ENERGY
+	db 5, POISON_STING
+	db 10, DOUBLE_KICK
+	db 15, FOCUS_ENERGY
+	db 20, FURY_SWIPES
 	db 25, HORN_ATTACK
 	db 30, DRILL_RUN
 	db 35, HORN_DRILL
@@ -335,10 +335,11 @@ NidokingEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 5, PECK
-	db 10, POISON_STING
-	db 15, DOUBLE_KICK
-	db 20, FOCUS_ENERGY
+	db 4, PECK
+	db 5, POISON_STING
+	db 10, DOUBLE_KICK
+	db 15, FOCUS_ENERGY
+	db 21, FURY_SWIPES
 	db 26, HORN_ATTACK
 	db 31, THRASH
 	db 36, HORN_DRILL
@@ -454,11 +455,11 @@ NidoranFEvosMoves:
 	db EV_LEVEL, 16, NIDORINA
 	db 0
 ; Learnset
-	db 5, PECK
-	db 10, POISON_STING
-	db 15, DOUBLE_KICK
-	db 20, DEFENSE_CURL
-	db 25, BITE
+	db 5, POISON_STING
+	db 10, DOUBLE_KICK
+	db 15, DEFENSE_CURL
+	db 20, FURY_SWIPES
+	db 25, POISON_FANG
 	db 30, DRILL_RUN
 	db 35, CRUNCH
 	db 40, TOXIC
@@ -468,11 +469,12 @@ NidoqueenEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 5, PECK
-	db 10, POISON_STING
-	db 15, DOUBLE_KICK
-	db 21, DEFENSE_CURL
-	db 26, BITE
+	db 4, PECK
+	db 5, POISON_STING
+	db 10, DOUBLE_KICK
+	db 15, DEFENSE_CURL
+	db 21, FURY_SWIPES
+	db 26, POISON_FANG
 	db 31, BODY_SLAM
 	db 36, CRUNCH
 	db 41, TOXIC
@@ -698,9 +700,10 @@ CrobatEvosMoves:
 	db 0
 ; Learnset
 	db 4, HAZE
-	db 8, SUPERSONIC
-	db 13, OMINOUS_WIND
-	db 17, BITE
+	db 5, SUPERSONIC
+	db 9, OMINOUS_WIND
+	db 13, BITE
+	db 17, POISON_FANG
 	db 21, WING_ATTACK
 	db 30, CONFUSE_RAY
 	db 38, LEECH_LIFE
@@ -907,7 +910,7 @@ ArbokEvosMoves:
 	db 29, ACID_SPRAY
 	db 34, SCREECH
 	db 37, CRUNCH
-	db 42, SLUDGE_BOMB
+	db 42, POISON_FANG
 
 
 ParasectEvosMoves:
@@ -1070,10 +1073,11 @@ MankeyEvosMoves:
 	db EV_LEVEL, 28, PRIMEAPE
 	db 0
 ; Learnset
-	db 15, LOW_KICK
-	db 21, FURY_SWIPES
-	db 25, FOCUS_ENERGY
-	db 28, KARATE_CHOP
+	db 10, LOW_KICK
+	db 15, FURY_SWIPES
+	db 21, FOCUS_ENERGY
+	db 25, KARATE_CHOP
+	db 28, HEADBUTT
 	db 34, SEISMIC_TOSS
 	db 39, THRASH
 	db 44, IRON_HEAD 
@@ -1183,7 +1187,7 @@ VenonatEvosMoves:
 	db EV_LEVEL, 31, VENOMOTH
 	db 0
 ; Learnset
-	db 14, ACID
+	db 14, POISON_FANG
 	db 19, SIGNAL_BEAM
 	db 24, POISONPOWDER
 	db 27, PSYBEAM
@@ -1417,7 +1421,7 @@ VulpixEvosMoves:
 	db 18, FEINT_ATTACK
 	db 21, ROAR
 	db 28, CONFUSE_RAY
-	db 35, FLAMETHROWER
+	db 35, HEAT_WAVE
 	db 42, FIRE_SPIN
 	db 50, SHADOW_BALL
 	db 55, AGILITY
@@ -1431,7 +1435,7 @@ NinetalesEvosMoves:
 	db 18, FEINT_ATTACK
 	db 21, ROAR
 	db 28, CONFUSE_RAY
-	db 37, FLAMETHROWER
+	db 37, HEAT_WAVE
 	db 43, FIRE_SPIN
 	db 55, SHADOW_BALL
 	db 60, AGILITY
@@ -1756,9 +1760,10 @@ ZubatEvosMoves:
 	db EV_LEVEL, 22, GOLBAT
 	db 0
 ; Learnset
-	db 8, SUPERSONIC
-	db 13, OMINOUS_WIND
-	db 17, BITE
+	db 5, SUPERSONIC
+	db 9, OMINOUS_WIND
+	db 13, BITE
+	db 17, POISON_FANG
 	db 21, WING_ATTACK
 	db 28, CONFUSE_RAY
 	db 36, LEECH_LIFE
@@ -1776,7 +1781,7 @@ EkansEvosMoves:
 	db 23, MUD_SHOT
 	db 27, ACID_SPRAY
 	db 32, SCREECH
-	db 38, SLUDGE_BOMB
+	db 38, POISON_FANG
 	db 0
 
 ParasEvosMoves:
@@ -1884,10 +1889,11 @@ PrimeapeEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 15, LOW_KICK
-	db 21, FURY_SWIPES
-	db 25, FOCUS_ENERGY
-	db 28, KARATE_CHOP
+	db 10, LOW_KICK
+	db 15, FURY_SWIPES
+	db 21, FOCUS_ENERGY
+	db 25, KARATE_CHOP
+	db 28, HEADBUTT
 	db 35, SEISMIC_TOSS
 	db 41, THRASH
 	db 47, IRON_HEAD 
@@ -1914,7 +1920,7 @@ VenomothEvosMoves:
 	db 2, TACKLE
 	db 3, DISABLE
 	db 4, CONFUSION
-	db 14, ACID
+	db 14, POISON_FANG
 	db 19, SIGNAL_BEAM
 	db 24, POISONPOWDER
 	db 27, PSYBEAM
@@ -2054,9 +2060,10 @@ GolbatEvosMoves:
 	db EV_ITEM, FRIEND_STONE, 1, CROBAT
 	db 0
 ; Learnset
-	db 8, SUPERSONIC
-	db 13, OMINOUS_WIND
-	db 17, BITE
+	db 5, SUPERSONIC
+	db 9, OMINOUS_WIND
+	db 13, BITE
+	db 17, POISON_FANG
 	db 21, WING_ATTACK
 	db 30, CONFUSE_RAY
 	db 38, LEECH_LIFE
@@ -2442,7 +2449,7 @@ PonytaEvosMoves:
 	db 25, GROWL
 	db 29, DOUBLE_KICK
 	db 35, FIRE_SPIN
-	db 39, FLAMETHROWER
+	db 39, HEAT_WAVE
 	db 43, TAKE_DOWN
 	db 48, AGILITY
 	db 0
@@ -2456,7 +2463,7 @@ RapidashEvosMoves:
 	db 25, GROWL
 	db 29, DOUBLE_KICK
 	db 35, FIRE_SPIN
-	db 39, FLAMETHROWER
+	db 39, HEAT_WAVE
 	db 41, BOUNCE
 	db 47, TAKE_DOWN
 	db 55, AGILITY
@@ -2494,10 +2501,10 @@ NidorinoEvosMoves:
 	db EV_ITEM, MOON_STONE, 1, NIDOKING
 	db 0
 ; Learnset
-	db 5, PECK
-	db 10, POISON_STING
-	db 15, DOUBLE_KICK
-	db 21, FOCUS_ENERGY
+	db 5, POISON_STING
+	db 10, DOUBLE_KICK
+	db 15, FOCUS_ENERGY
+	db 21, FURY_SWIPES
 	db 26, HORN_ATTACK
 	db 31, DRILL_RUN
 	db 36, HORN_DRILL
@@ -2509,11 +2516,11 @@ NidorinaEvosMoves:
 	db EV_ITEM, MOON_STONE, 1, NIDOQUEEN
 	db 0
 ; Learnset
-	db 5, PECK
-	db 10, POISON_STING
-	db 15, DOUBLE_KICK
-	db 21, DEFENSE_CURL
-	db 26, BITE
+	db 5, POISON_STING
+	db 10, DOUBLE_KICK
+	db 15, DEFENSE_CURL
+	db 21, FURY_SWIPES
+	db 26, POISON_FANG
 	db 31, DRILL_RUN
 	db 36, CRUNCH
 	db 41, TOXIC
@@ -2605,7 +2612,7 @@ CharmanderEvosMoves:
 	db 22, DRAGONBREATH
 	db 26, SMOKESCREEN
 	db 30, SLASH
-	db 38, FLAMETHROWER
+	db 38, HEAT_WAVE
 	db 46, FIRE_SPIN
 	db 0
 
@@ -2633,7 +2640,7 @@ CharmeleonEvosMoves:
 	db 24, DRAGONBREATH
 	db 28, SMOKESCREEN
 	db 33, SLASH
-	db 42, FLAMETHROWER
+	db 42, HEAT_WAVE
 	db 56, FIRE_SPIN
 	db 0
 
@@ -2661,7 +2668,7 @@ CharizardEvosMoves:
 	db 28, SMOKESCREEN
 	db 33, SLASH
 	db 37, WING_ATTACK
-	db 46, FLAMETHROWER
+	db 46, HEAT_WAVE
 	db 55, FIRE_SPIN
 	db 0
 
@@ -3078,7 +3085,7 @@ GrimeraEvosMoves:
 	db EV_LEVEL, 38, MUKA
 	db 0
 ; Learnset
-	db 20, POISON_GAS
+	db 20, POISON_FANG
 	db 26, ACID_SPRAY
 	db 31, MINIMIZE
 	db 35, SLUDGE
@@ -3093,7 +3100,7 @@ MukaEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
-	db 20, POISON_GAS
+	db 20, POISON_FANG
 	db 26, ACID_SPRAY
 	db 31, MINIMIZE
 	db 35, SLUDGE

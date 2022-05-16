@@ -111,6 +111,8 @@ GaryScript2:
 	ld a, $7
 .saveTrainerId
 	ld [wTrainerNo], a
+	ld a, $A
+	ld [wGymLeaderNo], a
 	ld a, 1
 	ld [wIsTrainerBattle], a
 

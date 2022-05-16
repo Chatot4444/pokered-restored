@@ -161,7 +161,7 @@ PoisonEffect:
 	ld hl, wEnemyBattleStatus3
 	ld de, wEnemyToxicCounter
 .ok
-	cp SLUDGE_BOMB
+	cp POISON_FANG
 	jr z, .toxicPoison
 	cp TOXIC
 	jr nz, .normalPoison ; done if move is not Toxic

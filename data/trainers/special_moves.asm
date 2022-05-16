@@ -93,7 +93,7 @@ SpecialTrainerMoves:
 
 	db BLAINE, 1
 	db 1, 2, FLAMETHROWER
-	db 2, 1, FIRE_BLAST
+	db 2, 1, FLAMETHROWER
 	db 3, 2, SMOKESCREEN
 	db 4, 2, BODY_SLAM
 	db 4, 3, DRAGONBREATH
@@ -106,7 +106,6 @@ SpecialTrainerMoves:
 	db 1, 2, BODY_SLAM
 	db 1, 3, DRILL_RUN
 	db 3, 2, DOUBLE_TEAM
-	db 3, 3, FIRE_BLAST
 	db 4, 2, ROAR
 	db 5, 1, FIRE_SPIN
 	db 6, 1, THUNDERBOLT
@@ -215,7 +214,6 @@ SpecialTrainerMoves:
 	db 1, 1, DOUBLE_TEAM
 	db 1, 2, TOXIC
 	db 1, 4, WHIRLWIND
-	db 2, 1, FIRE_BLAST
 	db 3, 1, SWORDS_DANCE
 	db 4, 4, MEGA_DRAIN
 	db 5, 4, TOXIC

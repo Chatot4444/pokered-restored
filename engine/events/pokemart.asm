@@ -158,7 +158,16 @@ DisplayPokemartDialogue_::
 	jr z, .buyMenuLoop ; if the player closed the choose quantity menu with the B button
 	ld a, [wcf91] ; item ID
 	ld [wd11e], a ; store item ID for GetItemName
+	cp TM_MEGA_PUNCH
+	jp c, .notTM
+	sub TM_MEGA_PUNCH - 1
+	ld [wd11e], a
+	predef TMToMove
+	call GetMoveName
+	jr .tm
+.notTM
 	call GetItemName
+.tm
 	call CopyStringToCF4B ; copy name to wcf4b
 	ld hl, PokemartTellBuyPriceText
 	call PrintText

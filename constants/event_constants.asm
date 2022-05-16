@@ -3,7 +3,8 @@
 ; Pallet Town events
 	const_def
 	const EVENT_FOLLOWED_OAK_INTO_LAB
-	const_skip 2
+	const_skip
+	const EVENT_RECEIVE_OAK_LETTER
 	const EVENT_HALL_OF_FAME_DEX_RATING
 	const_skip 2
 	const EVENT_PALLET_AFTER_GETTING_POKEBALLS
@@ -20,7 +21,8 @@
 	const EVENT_GOT_POKEDEX
 	const EVENT_PALLET_AFTER_GETTING_POKEBALLS_2
 	const EVENT_OAK_APPEARED_IN_PALLET
-
+	
+	
 ; Viridian City events
 	const_next $28
 	const EVENT_VIRIDIAN_GYM_OPEN

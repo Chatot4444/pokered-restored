@@ -186,6 +186,7 @@ AttackAnimationPointers:
 	dw FieryWrathAnim
 	dw SignalBeamAnim
 	dw AcidSprayAnim
+	dw PoisonFangAnim
 	dw StruggleAnim
 	assert_table_length NUM_ATTACKS
 	dw ShowPicAnim
@@ -488,8 +489,11 @@ LeerAnim:
 	battle_anim NO_MOVE, SE_RESET_SCREEN_PALETTE
 	db -1 ; end
 
+PoisonFangAnim:
+	battle_anim LEECH_SEED, SE_DARKEN_MON_PALETTE
 BiteAnim:
 	battle_anim BITE, SUBANIM_02, 0, 8
+	battle_anim NO_MOVE, SE_RESET_SCREEN_PALETTE
 	db -1 ; end
 
 GrowlAnim:

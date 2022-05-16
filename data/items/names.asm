@@ -105,9 +105,9 @@ ItemNames::
 	assert_list_length NUM_ITEMS + NUM_FLOORS
 
 	li "Field Move"
-	li "BB1"
-	li "BB2"
-	li "BB3"
+	li "Badge Fix"
+	li "Badge Self"
+	li "Badge Opp."
 	li "Level Cap"
 	li "Solo Mode"
 	li "Fast Text"

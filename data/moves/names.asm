@@ -186,5 +186,6 @@ MoveNames::
 	li "FIERY WRATH"   ; b8
 	li "SIGNAL BEAM"
 	li "ACID SPRAY"
+	li "POISON FANG"
 	li "STRUGGLE"
 	assert_list_length NUM_ATTACKS

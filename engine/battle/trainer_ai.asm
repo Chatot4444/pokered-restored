@@ -800,6 +800,27 @@ AIMoveChoiceModification3:
 	;else ai is slower so don't bother
 	jp .heavydiscourage2
 .skipout3
+	ld a, [wEnemyMoveNum]	;load the move index
+	cp QUICK_ATTACK ;see if it is quick attack
+	jr nz, .speedDownCheck
+	ld a, [wPlayerHPBarColor]
+	cp HP_BAR_RED
+	jr z, .checkSpeed
+	ld a, [wEnemyHPBarColor]
+	cp HP_BAR_RED
+	jr nz, .speedDownCheck
+.checkSpeed
+	push hl
+	push bc
+	push de
+	call StrCmpSpeed	;do a speed compare
+	pop de
+	pop bc
+	pop hl
+	jr c, .speedDownCheck ; skip if already faster
+	dec [hl]  ; if slower, encourage this move
+	dec [hl]
+.speedDownCheck
 	ld a, [wEnemyMoveEffect]	;load the move effect
 	cp SPEED_DOWN_SIDE_EFFECT	;see if it is speed down move
 	jr nz, .hyperBeamCheck	
@@ -819,32 +840,12 @@ AIMoveChoiceModification3:
 	ld a, [wEnemyMoveEffect]
 	cp HYPER_BEAM_EFFECT
 	jr nz, .effectivenessCheck
-	push hl
-	push de
-	push bc
-	ld hl, wBattleMonMaxHP
-	ld de, wBattleMonHP
-	ld a, [hli]
-	ld b, a
-	ld a, [de]
-	sub b
-	jr nz, .notMaxHP
-	inc de
-	ld a, [hl]
-	ld b, a
-	ld a, [de]
-	sub b
-	jr nz, .notMaxHP
-	pop bc
-	pop de
-	pop hl
-	inc hl ;slightly discourage if player at max hp
+	ld a, [wPlayerHPBarColor]
+	and a ; HP_BAR_GREEN = 0
+	jr nz, .effectivenessCheck
+	inc hl ;slightly discourage if player in green hp
 	inc hl
 	jr .effectivenessCheck
-.notMaxHP
-	pop bc
-	pop de
-	pop hl
 .effectivenessCheck
 	ld a, [wTypeEffectiveness]
 	cp $0A

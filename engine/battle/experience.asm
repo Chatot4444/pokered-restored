@@ -106,6 +106,7 @@ GainExperience:
 	jr nc, .noCarry
 	dec hl
 	inc [hl]
+	inc hl
 .noCarry
 ; calculate exp for the mon at max level, and cap the exp at that value
 	inc hl
@@ -155,7 +156,7 @@ GainExperience:
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	ld a, [wWastedByteCD39]
-	cp $0
+	and a
 	jr nz, .skipText
 	ld hl, GainedText
 	call PrintText
@@ -171,6 +172,36 @@ GainExperience:
 	push hl
 	ld a, [hl]
 	ld d, a
+	farcall CalcExperience
+	pop hl
+	push hl
+	ld bc, wPartyMon1Exp + 2 - wPartyMon1Level
+	add hl, bc
+	ldh a, [hExperience]
+	ld b, a
+	ldh a, [hExperience + 1]
+	ld c, a
+	ldh a, [hExperience + 2]
+	ld d, a
+	ld a, [hld]
+	sub d
+	ld a, [hld]
+	sbc c
+	ld a, [hl]
+	sbc b
+	jr nc, .nextAgain
+; the mon's exp is less than the exp at its level, so overwrite it with the exp for its level
+	ld a, b
+	ld [hli], a
+	ld a, c
+	ld [hli], a
+	ld a, d
+	ld [hl], a
+.nextAgain
+	pop hl
+	ld a, [hl]
+	ld d, a
+	push hl
 	ld a, [wLoadedMonSpecies]
 	ld [wd0b5], a
 	call GetMonHeader

@@ -55,7 +55,7 @@ MoveEnd:
 	move PIN_MISSILE,  TWO_TO_FIVE_ATTACKS_EFFECT,  25, BUG,           95, 20
 	move LEER,         DEFENSE_DOWN1_EFFECT,         0, NORMAL,       100, 30
 	move BITE,         FLINCH_SIDE_EFFECT2,         60, DARK,         100, 25
-	move GROWL,        ATTACK_DOWN1_EFFECT,          0, NORMAL,        55, 15
+	move GROWL,        ATTACK_DOWN1_EFFECT,          0, NORMAL,       100, 40
 	move ROAR,         SWITCH_AND_TELEPORT_EFFECT,   0, NORMAL,       100, 20
 	move SING,         SLEEP_EFFECT,                 0, NORMAL,        55, 15
 	move SUPERSONIC,   CONFUSION_EFFECT,             0, NORMAL,        55, 20
@@ -63,13 +63,13 @@ MoveEnd:
 	move DISABLE,      DISABLE_EFFECT,               0, NORMAL,       100, 20
 	move ACID,         DEFENSE_DOWN_SIDE_EFFECT,    40, POISON,       100, 30
 	move EMBER,        BURN_SIDE_EFFECT1,           40, FIRE,         100, 25
-	move FLAMETHROWER, BURN_SIDE_EFFECT1,           95, FIRE,         100, 15
+	move FLAMETHROWER, BURN_SIDE_EFFECT1,           90, FIRE,         100, 15
 	move MIST,         MIST_EFFECT,                  0, ICE,          100, 30
 	move WATER_GUN,    NO_ADDITIONAL_EFFECT,        40, WATER,        100, 25
 	move HYDRO_PUMP,   NO_ADDITIONAL_EFFECT,       120, WATER,         80,  5
-	move SURF,         NO_ADDITIONAL_EFFECT,        95, WATER,        100, 15
-	move ICE_BEAM,     FREEZE_SIDE_EFFECT,          95, ICE,          100, 10
-	move BLIZZARD,     FREEZE_SIDE_EFFECT,         120, ICE,           90,  5
+	move SURF,         NO_ADDITIONAL_EFFECT,        90, WATER,        100, 15
+	move ICE_BEAM,     FREEZE_SIDE_EFFECT,          90, ICE,          100, 10
+	move BLIZZARD,     FREEZE_SIDE_EFFECT,         110, ICE,           85,  5
 	move PSYBEAM,      CONFUSION_SIDE_EFFECT,       65, PSYCHIC_TYPE, 100, 20
 	move BUBBLEBEAM,   SPEED_DOWN_SIDE_EFFECT,      65, WATER,        100, 20
 	move AURORA_BEAM,  ATTACK_DOWN_SIDE_EFFECT,     65, ICE,          100, 20
@@ -95,9 +95,9 @@ MoveEnd:
 	move DRAGON_RAGE,  SPECIAL_DAMAGE_EFFECT,        1, DRAGON,       100, 10
 	move FIRE_SPIN,    TRAPPING_EFFECT,             15, FIRE,          70, 15
 	move THUNDERSHOCK, PARALYZE_SIDE_EFFECT1,       40, ELECTRIC,     100, 30
-	move THUNDERBOLT,  PARALYZE_SIDE_EFFECT1,       95, ELECTRIC,     100, 15
+	move THUNDERBOLT,  PARALYZE_SIDE_EFFECT1,       90, ELECTRIC,     100, 15
 	move THUNDER_WAVE, PARALYZE_EFFECT,              0, ELECTRIC,      90, 20
-	move THUNDER,      PARALYZE_SIDE_EFFECT1,      120, ELECTRIC,      70, 10
+	move THUNDER,      PARALYZE_SIDE_EFFECT2,      110, ELECTRIC,      70, 10
 	move ROCK_THROW,   NO_ADDITIONAL_EFFECT,        50, ROCK,          90, 15
 	move EARTHQUAKE,   NO_ADDITIONAL_EFFECT,       100, GROUND,       100, 10
 	move FISSURE,      OHKO_EFFECT,                  1, GROUND,        30,  5
@@ -136,7 +136,7 @@ MoveEnd:
 	move SMOG,         POISON_SIDE_EFFECT2,         30, POISON,        70, 20
 	move SLUDGE,       POISON_SIDE_EFFECT2,         65, POISON,       100, 20
 	move BONE_CLUB,    FLINCH_SIDE_EFFECT1,         65, GROUND,        85, 20
-	move FIRE_BLAST,   BURN_SIDE_EFFECT2,          120, FIRE,          85,  5
+	move FIRE_BLAST,   BURN_SIDE_EFFECT1,          110, FIRE,          85,  5
 	move WATERFALL,    FLINCH_SIDE_EFFECT2,         80, WATER,        100, 15
 	move CLAMP,        TRAPPING_EFFECT,             35, WATER,         75, 10
 	move SWIFT,        SWIFT_EFFECT,                60, NORMAL,       100, 20
@@ -188,7 +188,7 @@ MoveEnd:
 	move MUD_SHOT,     SPEED_DOWN_SIDE_EFFECT,      55, GROUND,        90, 15 ; MUD_SHOT
 	move DRILL_RUN,    FLINCH_SIDE_EFFECT1,         80, GROUND,        95, 10 ; DRILL_RUN
 	move BOUNCE,       FLY_EFFECT,                  85, FLYING, 	   85, 5  ; BOUNCE
-	move HEAT_WAVE,    BURN_SIDE_EFFECT1,           95, FIRE,          90, 10
+	move HEAT_WAVE,    BURN_SIDE_EFFECT2,           95, FIRE,          90, 10
 	move HURRICANE,    CONFUSION_SIDE_EFFECT,      110, FLYING,        70, 10
 	move ANCIENTPOWER, ANCIENTPOWER_EFFECT,         60, ROCK,         100, 5
 	move FEINT_ATTACK, SWIFT_EFFECT,                60, DARK,         100, 20
@@ -197,6 +197,7 @@ MoveEnd:
 	move FIERY_WRATH,  FLINCH_SIDE_EFFECT2,         90, DARK,         100, 10
 	move SIGNAL_BEAM,  CONFUSION_SIDE_EFFECT,       75, BUG,          100, 15
 	move ACID_SPRAY,   SPEED_DOWN_SIDE_EFFECT,      40, POISON,       100, 20
+	move POISON_FANG,  POISON_SIDE_EFFECT2,         50, POISON,       100, 15
 	move STRUGGLE,     RECOIL_EFFECT,               50, TYPELESS,     100, 10
 	assert_table_length NUM_ATTACKS
 
