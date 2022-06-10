@@ -979,6 +979,12 @@ _AlreadyOutText::
 	line "already out!"
 	prompt
 
+_MonIsTrappedText::
+	text_ram wBattleMonNick
+	text " is"
+	line "trapped!"
+	prompt
+
 _MoveNoPPText::
 	text "No PP left for"
 	line "this move!"

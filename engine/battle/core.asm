@@ -1443,7 +1443,7 @@ EnemySendOutFirstMon:
 	jr nz, .next4
 	ld a, [wOptions2]
 	bit 5, a
-	jr nz, .next
+	jr nz, .next4
 	ld hl, TrainerAboutToUseText
 	call PrintText
 	hlcoord 0, 7
@@ -2495,8 +2495,15 @@ PartyMenuOrRockOrRun:
 	jp z, .partyMonDeselected ; can't switch to fainted mon
 	ld a, [wOptions2]
 	bit 5, a
-	jp z, .canSwitch
+	jr z, .checkIfTrapped
 	ld hl, SoloModeText
+	call PrintText
+	jp .partyMonDeselected
+.checkIfTrapped	
+	ld a, [wEnemyBattleStatus1]
+	and 1 << USING_TRAPPING_MOVE
+	jr z, .canSwitch
+	ld hl, MonIsTrappedText
 	call PrintText
 	jp .partyMonDeselected
 .canSwitch
@@ -2548,6 +2555,10 @@ AlreadyOutText:
 
 SoloModeText:
 	text_far _SoloModeText
+	text_end
+
+MonIsTrappedText:
+	text_far _MonIsTrappedText
 	text_end
 
 BattleMenu_RunWasSelected:
@@ -2693,6 +2704,13 @@ SelectMenuItem:
 	hlcoord 1, 14
 	ld de, WhichTechniqueString
 	call PlaceString
+	hlcoord 1, 16  ;clear text below "which move" text when using mimic
+	ld a, " "
+	ld b, SCREEN_WIDTH - 2
+.clearText
+	ld [hli], a
+	dec b
+	jr nz, .clearText
 	jr .select
 .battleselect
 	ld a, [wFlags_D733]
@@ -2756,10 +2774,10 @@ SelectMenuItem:
 	dec a
 	cp c
 	jr z, .disabled
-	ld a, [wPlayerBattleStatus3]
-	bit 3, a ; transformed
-	jr nz, .dummy ; game freak derp
-.dummy
+	; ld a, [wPlayerBattleStatus3]
+	; bit 3, a ; transformed
+	; jr nz, .dummy ; game freak derp
+; .dummy
 	ld a, [wCurrentMenuItem]
 	ld hl, wBattleMonMoves
 	ld c, a
@@ -2788,7 +2806,7 @@ MoveDisabledText:
 	text_end
 
 WhichTechniqueString:
-	db "WHICH TECHNIQUE?@"
+	db "WHICH MOVE?@"
 
 SelectMenuItem_CursorUp:
 	ld a, [wCurrentMenuItem]
@@ -2983,7 +3001,7 @@ PrintMenuItem:
 	ld a, [hl]
 	and $3f
 	ld [wcd6d], a
-; print TYPE/<type> and <curPP>/<maxPP>
+; print POW/<power>, ACC/<accuracy>, TYPE/<type> and <curPP>/<maxPP>
 	coord hl, 1, 9
 	ld de, TypeText
 	call PlaceString
@@ -3005,9 +3023,9 @@ PrintMenuItem:
 	coord hl, 1, 8
 	ld de, AccText
 	call PlaceString
-	ld a, [wPlayerMoveAccuracy]
-	cp 2
-	jr nc, .printAcc
+	ld a, [wPlayerMoveEffect]
+	cp SWIFT_EFFECT
+	jr nz, .printAcc
 	coord hl, 8, 8
 	ld de, PowerAccNoneText
 	call PlaceString
@@ -3097,14 +3115,10 @@ SelectEnemyMove:
 	jr .done
 .noLinkBattle
 	ld a, [wEnemyBattleStatus2]
-	and (1 << NEEDS_TO_RECHARGE) | (1 << USING_RAGE) ; need to recharge or using rage
-	ret nz
-	ld hl, wEnemyBattleStatus1
-	ld a, [hl]
-	and (1 << CHARGING_UP) | (1 << THRASHING_ABOUT) ; using a charging move or thrash/petal dance
+	and (1 << NEEDS_TO_RECHARGE) | (1 << USING_RAGE)   ; need to recharge or using rage
 	ret nz
 	ld a, [wEnemyBattleStatus1]
-	and (1 << USING_TRAPPING_MOVE) | (1 << STORING_ENERGY) ; using a trapping move like wrap or bide
+	and (1 << CHARGING_UP) | (1 << THRASHING_ABOUT) | (1 << USING_TRAPPING_MOVE) | (1 << STORING_ENERGY) ; using a charging move or thrash/petal dance, or using a trapping move like wrap or bide
 	ret nz
 	jr .canSelectMove
 .unableToSelectMove
@@ -3160,27 +3174,6 @@ SelectEnemyMove:
 	ld a, STRUGGLE
 	jr .done
 
-;calls out to trainer ai routines with no-attack bit set
-;move-choosing ai routines now check for the no-attack bit and kick out if found
-;used so only ai switching checks can run
-NoAttackAICall:
-	push af	;preserve flags on stack
-	ld a, [wIsInBattle]
-	dec a
-	jr z, .NoAttackAICall_exit ; exit if this is a wild encounter
-	;set the no-attack bit
-	ld a, [wUnusedC000]
-	set 2, a 
-	ld [wUnusedC000], a
-	;call ai routines
-	callfar AIEnemyTrainerChooseMoves
-	;joenote - reset the no-attack bit
-	ld a, [wUnusedC000]
-	res 2, a 
-	ld [wUnusedC000], a
-.NoAttackAICall_exit
-	pop af ;get flags from stack
-	ret
 	
 ; this appears to exchange data with the other gameboy during link battles
 LinkBattleExchangeData:

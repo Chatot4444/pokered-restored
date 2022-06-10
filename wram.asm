@@ -2512,6 +2512,10 @@ wChannel6:: channel_struct wChannel6
 
 wLevelCap::
 	ds 1
+	
+wRegisteredItem::
+	ds 1
+	
 ENDU
 
 wNumSigns::

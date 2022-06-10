@@ -380,9 +380,10 @@ StartMenu_Item::
 	call PlaceUnfilledArrowMenuCursor
 	xor a
 	ld [wMenuItemToSwap], a
-	ld a, [wcf91]
-	cp BICYCLE
-	jp z, .useOrTossItem
+	call IsKeyItem
+	ld a, [wIsKeyItem]
+	and a
+	jr nz, .useOrRegister
 .notBicycle1
 	ld a, USE_TOSS_MENU_TEMPLATE
 	ld [wTextBoxID], a
@@ -391,6 +392,7 @@ StartMenu_Item::
 	ld a, 11
 	ld [hli], a ; top menu item Y
 	ld a, 14
+.displayChoice
 	ld [hli], a ; top menu item X
 	xor a
 	ld [hli], a ; current menu item ID
@@ -406,25 +408,33 @@ StartMenu_Item::
 	bit 1, a ; was the B button pressed?
 	jr z, .useOrTossItem
 	jp ItemMenuLoop
+.useOrRegister
+	ld a, USE_REGISTER_MENU_TEMPLATE
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	ld hl, wTopMenuItemY
+	ld a, 11
+	ld [hli], a ; top menu item Y
+	ld a, 10
+	jr .displayChoice
 .useOrTossItem ; if the player made the choice to use or toss the item
 	ld a, [wcf91]
 	ld [wd11e], a
 	call GetItemName
 	call CopyStringToCF4B ; copy name to wcf4b
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .tossItem
 	ld a, [wcf91]
 	cp BICYCLE
-	jr nz, .notBicycle2
+	jr nz, .useItem
 	ld a, [wd732]
 	bit 5, a
 	jr z, .useItem_closeMenu
 	ld hl, CannotGetOffHereText
 	call PrintText
 	jp ItemMenuLoop
-.notBicycle2
-	ld a, [wCurrentMenuItem]
-	and a
-	jr nz, .tossItem
-; use item
+.useItem
 	ld [wPseudoItemID], a ; a must be 0 due to above conditional jump
 	ld a, [wcf91]
 	cp HM01
@@ -465,10 +475,10 @@ StartMenu_Item::
 	ld [wUpdateSpritesEnabled], a
 	jp ItemMenuLoop
 .tossItem
-	call IsKeyItem
+	;call IsKeyItem   ;already ran this earlier
 	ld a, [wIsKeyItem]
 	and a
-	jr nz, .skipAskingQuantity
+	jr nz, .registerItem
 	ld a, [wcf91]
 	call IsItemHM
 	jr c, .skipAskingQuantity
@@ -480,6 +490,12 @@ StartMenu_Item::
 	call TossItem
 .tossZeroItems
 	jp ItemMenuLoop
+.registerItem
+	ld a, [wcf91]
+	ld [wRegisteredItem], a
+	ld hl, RegisteredItemText
+	call PrintText
+	jr .tossZeroItems
 
 CannotUseItemsHereText:
 	text_far _CannotUseItemsHereText
@@ -487,6 +503,10 @@ CannotUseItemsHereText:
 
 CannotGetOffHereText:
 	text_far _CannotGetOffHereText
+	text_end
+	
+RegisteredItemText:
+	text_far _RegisteredItemText
 	text_end
 
 INCLUDE "data/items/use_party.asm"

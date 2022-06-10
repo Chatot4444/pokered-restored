@@ -902,6 +902,9 @@ AIMoveChoiceModification4:	;this unused routine now handles intelligent trainer 
 	ld a, [wUnusedC000]
 	set 5, a ; sets the bit that signifies trainer has intelligent switching
 	ld [wUnusedC000], a
+	ld a, [wPlayerBattleStatus1]
+	and 1 << USING_TRAPPING_MOVE
+	ret nz
 	push hl
 	push bc
 	callfar ScoreAIParty	;carry is cleared if current mon score >= highest score of remaining roster; don't switch

@@ -84,6 +84,14 @@ _CannotGetOffHereText::
 	line "here."
 	prompt
 
+_RegisteredItemText::
+	text "Registered the"
+	line "@"
+	text_ram wcf4b
+	text " to"
+	cont "SELECT Button."
+	prompt
+
 _GotMonText::
 	text "<PLAYER> got"
 	line "@"

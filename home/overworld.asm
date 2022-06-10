@@ -80,13 +80,22 @@ OverworldLoopLessDelay::
 	jp .displayDialogue
 .startButtonNotPressed
 	bit 0, a ; A button
+	jr nz, .AorSelectPressed
+	bit 2, a	;Select button
 	jp z, .checkIfDownButtonIsPressed
-; if A is pressed
+; if A or SELECT is pressed
+.AorSelectPressed
 	ld a, [wd730]
 	bit 2, a
 	jp nz, .noDirectionButtonsPressed
 	call IsPlayerCharacterBeingControlledByGame
 	jr nz, .checkForOpponent
+	ld a, [hJoyPressed]
+	bit 2, a	;is Select being pressed?
+	jr z, .notselect
+	farcall UseRegisteredItem	;this function jumps back to OverworldLoop on completion
+	jp OverworldLoop
+.notselect
 	call CheckForHiddenObjectOrBookshelfOrCardKeyDoor
 	ldh a, [hItemAlreadyFound]
 	and a

@@ -35,6 +35,7 @@ TextBoxTextAndCoordTable:
 	text_box_text MONEY_BOX_TEMPLATE,                11,  0, 19,  2, MoneyText,               13,  0
 	text_box_text JP_AH_MENU_TEMPLATE,                7,  6, 11, 10, JapaneseAhText,           8,  8
 	text_box_text JP_POKEDEX_MENU_TEMPLATE,          11,  8, 19, 17, JapanesePokedexMenu,     12, 10
+	text_box_text USE_REGISTER_MENU_TEMPLATE,          9, 10, 19, 14, UseRegisterText,         11, 11
 
 BuySellQuitText:
 	db   "BUY"
@@ -86,3 +87,8 @@ JapanesePokedexMenu:
 	next "なきごえ"
 	next "ぶんぷをみる"
 	next "キャンセル@"
+
+UseRegisterText:
+	db   "USE"
+	next "REGISTER@"
+	

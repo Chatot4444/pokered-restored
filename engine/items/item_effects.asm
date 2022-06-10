@@ -2693,6 +2693,30 @@ IsKeyItem_::
 
 INCLUDE "data/items/key_items.asm"
 
+UseRegisteredItem::
+	ld a, [wRegisteredItem] ;check if an item is registered
+	and a
+	ret z
+	; initialize a text box without drawing anything special
+	ld a, 1
+	ld [wAutoTextBoxDrawingControl], a
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	callfar DisplayTextIDInit
+	;determine item to use
+	ld a, [wRegisteredItem]
+	ld [wcf91], a	;load item to be used
+	ld [wd11e], a	;load item so its name can be grabbed
+	call GetItemName	;get the item name into de register
+	call CopyStringToCF4B ; copy name from de to wcf4b so it shows up in text
+	call UseItem_	;use the item
+
+	call CloseTextDisplay
+	;use $ff value loaded into hSpriteIndexOrTextID to make DisplayTextID display nothing and close any text
+	; ld a, $FF
+	; ld [hSpriteIndexOrTextID], a
+	; call DisplayTextID
+	ret
+	
 SendNewMonToBox:
 	ld de, wNumInBox
 	ld a, [de]
