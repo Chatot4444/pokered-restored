@@ -94,6 +94,9 @@ HandlePokedexSideMenu:
 	ld [hli], a ; old menu item ID
 	ld [wMenuWatchMovingOutOfBounds], a
 .handleMenuInput
+	ld a, [wFlags_0xcd60]
+	set 5, a
+	ld [wFlags_0xcd60], a
 	call HandleMenuInput
 	bit 1, a ; was the B button pressed?
 	ld b, 2
@@ -124,6 +127,9 @@ HandlePokedexSideMenu:
 	lb bc, " ", 13
 	call DrawTileLine ; cover up the menu cursor in the pokemon list
 	pop bc
+	ld a, [wFlags_0xcd60]
+	res 5, a
+	ld [wFlags_0xcd60], a
 	ret
 
 .buttonBPressed

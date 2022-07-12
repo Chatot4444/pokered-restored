@@ -1,4 +1,4 @@
-roms := pokered.gbc pokeblue.gbc pokeblue_debug.gbc
+roms := pokered-restored.gbc pokeblue-restored.gbc pokeblue-restored_debug.gbc
 
 rom_obj := \
 audio.o \
@@ -11,9 +11,9 @@ gfx/pics.o \
 gfx/sprites.o \
 gfx/tilesets.o
 
-pokered_obj        := $(rom_obj:.o=_red.o)
-pokeblue_obj       := $(rom_obj:.o=_blue.o)
-pokeblue_debug_obj := $(rom_obj:.o=_blue_debug.o)
+pokered-restored_obj        := $(rom_obj:.o=_red.o)
+pokeblue-restored_obj       := $(rom_obj:.o=_blue.o)
+pokeblue-restored_debug_obj := $(rom_obj:.o=_blue_debug.o)
 
 
 ### Build tools
@@ -40,16 +40,16 @@ RGBLINK ?= $(RGBDS)rgblink
 .PHONY: all red blue blue_debug clean tidy compare tools
 
 all: $(roms)
-red:        pokered.gbc
-blue:       pokeblue.gbc
-blue_debug: pokeblue_debug.gbc
+red:        pokered-restored.gbc
+blue:       pokeblue-restored.gbc
+blue_debug: pokeblue-restored_debug.gbc
 
 clean: tidy
 	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
 	find audio/pikachu_cries \( -iname '*.pcm' \) -delete
 
 tidy:
-	rm -f $(roms) $(pokered_obj) $(pokeblue_obj) $(pokeblue_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
+	rm -f $(roms) $(pokered-restored_obj) $(pokeblue-restored_obj) $(pokeblue-restored_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
 	$(MAKE) clean -C tools/
 
 compare: $(roms)
@@ -65,9 +65,9 @@ ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
 endif
 
-$(pokered_obj):        RGBASMFLAGS += -D _RED
-$(pokeblue_obj):       RGBASMFLAGS += -D _BLUE
-$(pokeblue_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
+$(pokered-restored_obj):        RGBASMFLAGS += -D _RED
+$(pokeblue-restored_obj):       RGBASMFLAGS += -D _BLUE
+$(pokeblue-restored_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
 
 rgbdscheck.o: rgbdscheck.asm
 	$(RGBASM) -o $@ $<
@@ -87,9 +87,9 @@ ifeq (,$(filter clean tidy tools,$(MAKECMDGOALS)))
 $(info $(shell $(MAKE) -C tools))
 
 # Dependencies for objects (drop _red and _blue from asm file basenames)
-$(foreach obj, $(pokered_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))
-$(foreach obj, $(pokeblue_obj), $(eval $(call DEP,$(obj),$(obj:_blue.o=.asm))))
-$(foreach obj, $(pokeblue_debug_obj), $(eval $(call DEP,$(obj),$(obj:_blue_debug.o=.asm))))
+$(foreach obj, $(pokered-restored_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))
+$(foreach obj, $(pokeblue-restored_obj), $(eval $(call DEP,$(obj),$(obj:_blue.o=.asm))))
+$(foreach obj, $(pokeblue-restored_debug_obj), $(eval $(call DEP,$(obj),$(obj:_blue_debug.o=.asm))))
 
 endif
 
@@ -97,13 +97,13 @@ endif
 %.asm: ;
 
 
-pokered_pad        = 0x00
-pokeblue_pad       = 0x00
-pokeblue_debug_pad = 0xff
+pokered-restored_pad        = 0x00
+pokeblue-restored_pad       = 0x00
+pokeblue-restored_debug_pad = 0xff
 
-pokered_opt        = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON RED"
-pokeblue_opt       = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
-pokeblue_debug_opt = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "POKEMON BLUE"
+pokered-restored_opt        = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "RED RESTORED"
+pokeblue-restored_opt       = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "BLUE RESTORED"
+pokeblue-restored_debug_opt = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "BLUE RESTORED"
 
 %.gbc: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -d -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)
