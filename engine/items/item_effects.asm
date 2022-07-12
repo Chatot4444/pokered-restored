@@ -91,7 +91,7 @@ ItemUsePtrTable:
 	dw UnusableItem      ; SILPH_SCOPE
 	dw ItemUsePokeflute  ; POKE_FLUTE
 	dw UnusableItem      ; LIFT_KEY
-	dw UnusableItem      ; EXP_ALL
+	dw UnusableItem      ; LUCKY_EGG
 	dw ItemUseOldRod     ; OLD_ROD
 	dw ItemUseGoodRod    ; GOOD_ROD
 	dw ItemUseSuperRod   ; SUPER_ROD
@@ -2704,6 +2704,18 @@ UseRegisteredItem::
 	callfar DisplayTextIDInit
 	;determine item to use
 	ld a, [wRegisteredItem]
+	cp BICYCLE
+	jr nz, .notBicycle
+	ld a, [wd732]
+	bit 5, a
+	ld a, BICYCLE
+	jr z, .notBicycle
+	ld hl, CannotGetOffHereText2
+	call PrintText
+	call CloseTextDisplay
+	ret
+	
+.notBicycle
 	ld [wcf91], a	;load item to be used
 	ld [wd11e], a	;load item so its name can be grabbed
 	call GetItemName	;get the item name into de register
@@ -2711,11 +2723,11 @@ UseRegisteredItem::
 	call UseItem_	;use the item
 
 	call CloseTextDisplay
-	;use $ff value loaded into hSpriteIndexOrTextID to make DisplayTextID display nothing and close any text
-	; ld a, $FF
-	; ld [hSpriteIndexOrTextID], a
-	; call DisplayTextID
 	ret
+	
+CannotGetOffHereText2:
+	text_far _CannotGetOffHereText
+	text_end
 	
 SendNewMonToBox:
 	ld de, wNumInBox

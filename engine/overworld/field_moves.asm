@@ -246,14 +246,13 @@ HasHM::       ; input: HM constant in wLastFieldMoveID output: z
 	
 
 PromptToSurfText:
-	text "The water is calm."
-	line "Would you like to"
-	cont "SURF?@@"
+	text_far _PromptToSurfText
+	text_end
 
 ExplainCutText:
-	text "This tree can be"
-	line "CUT!@@"
+	text_far _ExplainCutText
+	text_end
 
 PromptToCutText:
-	text "Would you like to"
-	line "use CUT?@@"
+	text_far _PromptToCutText
+	text_end

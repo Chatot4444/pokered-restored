@@ -93,7 +93,7 @@ KeyItemBitfield:
 	TRUE,  \ ; SILPH_SCOPE
 	TRUE,  \ ; POKE_FLUTE
 	TRUE,  \ ; LIFT_KEY
-	FALSE, \ ; EXP_ALL
+	FALSE, \ ; LUCKY_EGG
 	TRUE,  \ ; OLD_ROD
 	TRUE,  \ ; GOOD_ROD
 	TRUE,  \ ; SUPER_ROD

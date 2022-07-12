@@ -24,17 +24,33 @@ _JumpMoveEffect:
 INCLUDE "data/moves/effects_pointers.asm"
 
 SleepEffect:
-	ld de, wEnemyMonStatus
+	ld de, wEnemyMonType2
 	ld bc, wEnemyBattleStatus2
+	ld hl, wPlayerMoveType
 	ldh a, [hWhoseTurn]
 	and a
 	jp z, .sleepEffect
-	ld de, wBattleMonStatus
+	ld de, wBattleMonType2
 	ld bc, wPlayerBattleStatus2
-
+	ld hl, wEnemyMoveType
 .sleepEffect
 	call CheckTargetSubstitute ; test bit 4 of d063/d068 flags [target has substitute flag]
 	jr nz, .didntAffect; jump if they have a substitute, can't effect them
+	ld a, [hl]   ; if using a grass move, check if target is grass type
+	cp GRASS
+	jr nz, .notGrass
+	ld l, a
+	ld a, [de]
+	cp l
+	jp z, PrintDoesntAffectText
+	dec de
+	ld a, [de]
+	cp l
+	jp z, PrintDoesntAffectText
+	inc de
+.notGrass
+	dec de
+	dec de
 	ld a, [bc]
 	bit NEEDS_TO_RECHARGE, a ; does the target need to recharge? (hyper beam)
 	res NEEDS_TO_RECHARGE, a ; target no longer needs to recharge
@@ -87,12 +103,12 @@ AlreadyAsleepText:
 
 PoisonEffect:
 	ld hl, wEnemyMonStatus
-	ld de, wPlayerMoveEffect
+	ld de, wPlayerMoveType
 	ldh a, [hWhoseTurn]
 	and a
 	jr z, .poisonEffect
 	ld hl, wBattleMonStatus
-	ld de, wEnemyMoveEffect
+	ld de, wEnemyMoveType
 .poisonEffect
 	call CheckTargetSubstitute
 	jp nz, .noEffect ; can't poison a substitute target
@@ -106,6 +122,17 @@ PoisonEffect:
 	ld a, [hld]
 	cp POISON ; can't poison a poison-type target
 	jp z, .noEffect
+	ld a, [de]
+	inc de
+	cp POISONPOWDER
+	jr z, .notPoisonPowder
+	ld a, [hli]
+	cp GRASS
+	jp z, .noEffect
+	ld a, [hld]
+	cp GRASS
+	jp z, .noEffect
+.notPoisonPowder
 	ld a, [de]
 	cp POISON_SIDE_EFFECT1
 	ld b, $34 ; ~20% chance of poisoning
@@ -1009,10 +1036,6 @@ UpdateLoweredStatDone:
 	call z, HalveAttackDueToBurn
 	ld hl, MonsStatsFellText
 	jp PrintText
-
-; These where probably added given that a stat-down move affecting speed or attack will override
-; the stat penalties from paralysis and burn respectively.
-; But they are always called regardless of the stat affected by the stat-down move.
 	
 
 CantLowerAnymore_Pop:
@@ -1082,33 +1105,6 @@ PrintStatText:
 INCLUDE "data/battle/stat_mod_names.asm"
 
 INCLUDE "data/battle/stat_modifiers.asm"
-
-; BideEffect:
-	; ld hl, wPlayerBattleStatus1
-	; ld de, wPlayerBideAccumulatedDamage
-	; ld bc, wPlayerNumAttacksLeft
-	; ldh a, [hWhoseTurn]
-	; and a
-	; jr z, .bideEffect
-	; ld hl, wEnemyBattleStatus1
-	; ld de, wEnemyBideAccumulatedDamage
-	; ld bc, wEnemyNumAttacksLeft
-; .bideEffect
-	; set STORING_ENERGY, [hl] ; mon is now using bide
-	; xor a
-	; ld [de], a
-	; inc de
-	; ld [de], a
-	; ld [wPlayerMoveEffect], a
-	; ld [wEnemyMoveEffect], a
-	; call BattleRandom
-	; and $1
-	; inc a
-	; inc a
-	; ld [bc], a ; set Bide counter to 2 or 3 at random
-	; ldh a, [hWhoseTurn]
-	; add XSTATITEM_ANIM
-	; jp PlayBattleAnimation2
 
 ThrashPetalDanceEffect:
 	ld hl, wPlayerBattleStatus1
@@ -1372,98 +1368,7 @@ OneHitKOEffect:
 	jpfar OneHitKOEffect_
 
 ChargeEffect:
-	ld hl, wPlayerBattleStatus1
-	ld de, wPlayerMoveEffect
-	ldh a, [hWhoseTurn]
-	and a
-	ld b, XSTATITEM_ANIM
-	jr z, .chargeEffect
-	ld hl, wEnemyBattleStatus1
-	ld de, wEnemyMoveEffect
-	ld b, ANIM_AF
-.chargeEffect
-	set CHARGING_UP, [hl]
-	ld a, [de]
-	dec de ; de contains enemy or player MOVENUM
-	cp FLY_EFFECT
-	jr nz, .notFly
-	set INVULNERABLE, [hl] ; mon is now invulnerable to typical attacks (fly/dig)
-	ld b, TELEPORT ; load Teleport's animation
-.notFly
-	ld a, [de]
-	cp DIG
-	jr nz, .notDigOrFly
-	set INVULNERABLE, [hl] ; mon is now invulnerable to typical attacks (fly/dig)
-	ld b, ANIM_C0
-.notDigOrFly
-	xor a
-	ld [wAnimationType], a
-	ld a, b
-	call PlayBattleAnimation
-	ld a, [de]
-	ld [wChargeMoveNum], a
-	ld hl, ChargeMoveEffectText
-	cp SKULL_BASH
-	jp nz, PrintText
-	push de
-	call PrintText
-	pop de
-	inc de
-	ld a, DEFENSE_UP1_EFFECT
-	ld [de], a
-	jp StatModifierUpEffect
-
-ChargeMoveEffectText:
-	text_far _ChargeMoveEffectText
-	text_asm
-	ld a, [wChargeMoveNum]
-	cp SOLARBEAM
-	ld hl, TookInSunlightText
-	jr z, .gotText
-	cp SKULL_BASH
-	ld hl, LoweredItsHeadText
-	jr z, .gotText
-	cp SKY_ATTACK
-	ld hl, SkyAttackGlowingText
-	jr z, .gotText
-	cp FLY
-	ld hl, FlewUpHighText
-	jr z, .gotText
-	cp DIG
-	ld hl, DugAHoleText
-	jr z, .gotText
-	cp BOUNCE
-	ld hl, SprangUpText
-.gotText
-	ret
-
-; MadeWhirlwindText:
-	; text_far _MadeWhirlwindText
-	; text_end
-
-TookInSunlightText:
-	text_far _TookInSunlightText
-	text_end
-
-LoweredItsHeadText:
-	text_far _LoweredItsHeadText
-	text_end
-
-SkyAttackGlowingText:
-	text_far _SkyAttackGlowingText
-	text_end
-
-FlewUpHighText:
-	text_far _FlewUpHighText
-	text_end
-
-DugAHoleText:
-	text_far _DugAHoleText
-	text_end
-
-SprangUpText:
-	text_far _SprangUpText
-	text_end
+	jpfar ChargeEffect_
 
 TrappingEffect:
 	ld hl, wPlayerBattleStatus1
@@ -1589,16 +1494,6 @@ ClearHyperBeam:
 	pop hl
 	ret
 
-; RageEffect:
-	; ld hl, wPlayerBattleStatus2
-	; ldh a, [hWhoseTurn]
-	; and a
-	; jr z, .player
-	; ld hl, wEnemyBattleStatus2
-; .player
-	; set USING_RAGE, [hl] ; mon is now in "rage" mode
-	; ret
-
 MimicEffect:
 	ld c, 50
 	call DelayFrames
@@ -1684,91 +1579,6 @@ SplashEffect:
 
 DisableEffect:
 	jpfar DisableEffect_
-	; call MoveHitTest
-	; ld a, [wMoveMissed]
-	; and a
-	; jr nz, .moveMissed
-	; ld de, wEnemyDisabledMove
-	; ld hl, wEnemyMonMoves
-	; ld a, [wEnemyLastMove]
-	; ld c, a
-	; ldh a, [hWhoseTurn]
-	; and a
-	; jr z, .disableEffect
-	; ld de, wPlayerDisabledMove
-	; ld hl, wBattleMonMoves
-	; ld a, [wPlayerLastMove]
-	; ld c, a
-; .disableEffect
-; ; no effect if target already has a move disabled
-	; ld a, [de]
-	; and a
-	; jr nz, .moveMissed
-; .pickMoveToDisable
-	; ld a, c
-	; cp $ff
-	; jr z, .moveMissed
-	; push hl
-	; ld b, $0
-	; add hl, bc
-	; ld a, [hl]
-	; pop hl
-	; and a
-	; jr z, .moveMissed ; If 00 move slot is found move fails
-	; ld [wd11e], a ; store move number
-	; push hl
-	; ldh a, [hWhoseTurn]
-	; and a
-	; ld hl, wBattleMonPP
-	; jr nz, .enemyTurn
-	; ld a, [wLinkState]
-	; cp LINK_STATE_BATTLING
-	; pop hl ; wEnemyMonMoves
-	; jr nz, .playerTurnNotLinkBattle
-; ; .playerTurnLinkBattle
-	; push hl
-	; ld hl, wEnemyMonPP
-; .enemyTurn
-	; push hl
-	; ld a, [hli]
-	; or [hl]
-	; inc hl
-	; or [hl]
-	; inc hl
-	; or [hl]
-	; and $3f
-	; pop hl ; wBattleMonPP or wEnemyMonPP
-	; jr z, .moveMissedPopHL ; nothing to do if all moves have no PP left
-	; add hl, bc
-	; ld a, [hl]
-	; pop hl
-	; and a
-	; jr z, .moveMissed ; miss if this one had 0 PP
-; .playerTurnNotLinkBattle
-; ; non-link battle enemies have unlimited PP so the previous checks aren't needed
-	; call BattleRandom
-	; and $7
-	; inc a ; 1-8 turns disabled
-	; inc c ; move 1-4 will be disabled
-	; swap c
-	; add c ; map disabled move to high nibble of wEnemyDisabledMove / wPlayerDisabledMove
-	; ld [de], a
-	; call PlayCurrentMoveAnimation2
-	; ld hl, wPlayerDisabledMoveNumber
-	; ldh a, [hWhoseTurn]
-	; and a
-	; jr nz, .printDisableText
-	; inc hl ; wEnemyDisabledMoveNumber
-; .printDisableText
-	; ld a, [wd11e] ; move number
-	; ld [hl], a
-	; call GetMoveName
-	; ld hl, MoveWasDisabledText
-	; jp PrintText
-; .moveMissedPopHL
-	; pop hl
-; .moveMissed
-	; jp PrintButItFailedText_
 
 PrintMoveWasDisabledText:
 	ld hl, MoveWasDisabledText
@@ -1895,7 +1705,7 @@ PlayBattleAnimation:
 ; play animation ID at a and predefined animation type
 	ld [wAnimationID], a
 
-PlayBattleAnimationGotID:
+PlayBattleAnimationGotID::
 ; play animation at wAnimationID
 	push hl
 	push de

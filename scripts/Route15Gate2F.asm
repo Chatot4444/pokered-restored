@@ -11,7 +11,7 @@ Route15GateUpstairsText1:
 	jr nz, .got_item
 	ld a, 50
 	ldh [hOaksAideRequirement], a
-	ld a, EXP_ALL
+	ld a, LUCKY_EGG
 	ldh [hOaksAideRewardItem], a
 	ld [wd11e], a
 	call GetItemName

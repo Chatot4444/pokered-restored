@@ -1237,7 +1237,7 @@ _GainedText::
 	cont "@"
 	text_end
 
-_WithExpAllText::
+_WithLuckyEggText::
 	text "with LUCKY EGG,"
 	cont "@"
 	text_end
@@ -1817,3 +1817,19 @@ _TextIDErrorText::
 _ContCharText::
 	text "<_CONT>@"
 	text_end
+
+_PromptToSurfText::
+	text "The water is calm."
+	line "Would you like to"
+	cont "SURF?"
+	done
+
+_ExplainCutText::
+	text "This tree can be"
+	line "CUT!"
+	done
+
+_PromptToCutText::
+	text "Would you like to"
+	line "use CUT?"
+	done

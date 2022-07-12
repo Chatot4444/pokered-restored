@@ -15,20 +15,31 @@ ParalyzeEffect_:
 	pop hl
 	jr nz, .didntAffect ; return if they have a substitute, can't effect them
 ; check if the target is immune due to types
-	ld a, [de]
-	cp ELECTRIC
-	jr nz, .hitTest
 	ld b, h
 	ld c, l
 	inc bc
-	ld a, [bc]
+	ld a, [de]
+	cp NORMAL
+	jr z, .hitTest
+	cp ELECTRIC
+	ld d, a
+	jr nz, .hitTest
+	ld a, [bc]   ; if using thunder wave, check if target is ground type
 	cp GROUND
 	jr z, .doesntAffect
 	inc bc
 	ld a, [bc]
 	cp GROUND
 	jr z, .doesntAffect
-.hitTest
+.sameTypeTest
+	ld a, [bc]  ; if not using glare, check if target is same type as attack
+	cp d
+	jr z, .doesntAffect
+	dec bc
+	ld a, [bc]
+	cp d
+	jr z, .doesntAffect
+.hitTest 
 	push hl
 	callfar MoveHitTest
 	pop hl

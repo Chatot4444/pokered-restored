@@ -356,39 +356,6 @@ GainExperience:
 	pop bc
 	predef_jump FlagActionPredef ; set the fought current enemy flag for the mon that is currently out
 
-; divide enemy base stats, catch rate, and base exp by the number of mons gaining exp
-; DivideExpDataByNumMonsGainingExp:
-	; ld a, [wPartyGainExpFlags]
-	; ld b, a
-	; xor a
-	; ld c, $8
-	; ld d, $0
-; .countSetBitsLoop ; loop to count set bits in wPartyGainExpFlags
-	; xor a
-	; srl b
-	; adc d
-	; ld d, a
-	; dec c
-	; jr nz, .countSetBitsLoop
-	; cp $2
-	; ret c ; return if only one mon is gaining exp
-	; ld [wd11e], a ; store number of mons gaining exp
-	; ld hl, wEnemyMonBaseStats
-	; ld c, wEnemyMonBaseExp + 1 - wEnemyMonBaseStats
-; .divideLoop
-	; xor a
-	; ldh [hDividend], a
-	; ld a, [hl]
-	; ldh [hDividend + 1], a
-	; ld a, [wd11e]
-	; ldh [hDivisor], a
-	; ld b, $2
-	; call Divide ; divide value by number of mons gaining exp
-	; ldh a, [hQuotient + 3]
-	; ld [hli], a
-	; dec c
-	; jr nz, .divideLoop
-	; ret
 
 ; multiplies exp by 1.5
 BoostExp:
@@ -409,7 +376,7 @@ GainedText:
 	text_far _GainedText
 	text_asm
 	ld a, [wBoostExpByExpAll]
-	ld hl, WithExpAllText
+	ld hl, WithLuckyEggText
 	and a
 	ret nz
 	ld hl, ExpPointsText
@@ -419,8 +386,8 @@ GainedText:
 	ld hl, BoostedText
 	ret
 
-WithExpAllText:
-	text_far _WithExpAllText
+WithLuckyEggText:
+	text_far _WithLuckyEggText
 	text_asm
 	ld hl, ExpPointsText
 	ret

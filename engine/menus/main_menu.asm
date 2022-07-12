@@ -388,7 +388,7 @@ DisplayContinueGameInfo:
 	ld c, 14
 	call TextBoxBorder
 	hlcoord 5, 9
-	ld de, SaveScreenInfoText
+	ld de, SaveScreenInfoTextMainMenu
 	call PlaceString
 	hlcoord 12, 9
 	ld de, wPlayerName
@@ -408,7 +408,7 @@ PrintSaveScreenText:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	hlcoord 4, 0
-	ld b, $8
+	ld b, $A
 	ld c, $e
 	call TextBoxBorder
 	call LoadTextBoxTilePatterns
@@ -425,6 +425,8 @@ PrintSaveScreenText:
 	call PrintNumOwnedMons
 	hlcoord 13, 8
 	call PrintPlayTime
+	hlcoord 9, 10
+	call PrintBoxInfo
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld c, 10    ; shortened from 30
@@ -460,11 +462,39 @@ PrintPlayTime:
 	lb bc, LEADING_ZEROES | 1, 2
 	jp PrintNumber
 
+PrintBoxInfo:
+	ld a, [wCurrentBoxNum]
+	and $7F
+	inc a
+	ld [wBuffer], a
+	ld de, wBuffer
+	lb bc, 1, 2
+	call PrintNumber
+	inc hl
+	inc hl
+	inc hl
+	ld de, wNumInBox
+	lb bc, 1, 2
+	call PrintNumber
+	ld [hl], "/"
+	inc hl
+	ld [hl], "2"
+	inc hl
+	ld [hl], "0"
+	ret
+
+SaveScreenInfoTextMainMenu:
+	db   "PLAYER"
+	next "BADGES"
+	next "#DEX"
+	next "TIME@"
+
 SaveScreenInfoText:
 	db   "PLAYER"
-	next "BADGES    "
-	next "#DEX    "
-	next "TIME@"
+	next "BADGES"
+	next "#DEX"
+	next " TIME"
+	next " BOX@"
 
 DisplayOptionMenu:
 	hlcoord 0, 0
