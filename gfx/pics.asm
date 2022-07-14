@@ -319,13 +319,6 @@ AlakazamPicBack::      INCBIN "gfx/pokemon/back/alakazamb.pic"
 PidgeottoPicFront::    INCBIN "gfx/pokemon/front/pidgeotto.pic"
 PidgeottoPicBack::     INCBIN "gfx/pokemon/back/pidgeottob.pic"
 
-
-
-
-
-
-
-
 SECTION "Pics 6", ROMX
 
 TrainerPics::
@@ -450,7 +443,6 @@ SmoochumPicFront::      INCBIN "gfx/pokemon/front/smoochum.pic"
 SmoochumPicBack::       INCBIN "gfx/pokemon/back/smoochumb.pic"
 
 
-
 SECTION "Pics 8", ROMX
 ElekidPicFront::       INCBIN "gfx/pokemon/front/elekid.pic"
 ElekidPicBack::        INCBIN "gfx/pokemon/back/elekidb.pic"
@@ -508,8 +500,6 @@ RapidashgPicFront::     INCBIN "gfx/pokemon/front/rapidashg.pic"
 RapidashgPicBack::      INCBIN "gfx/pokemon/back/rapidashgb.pic"
 SlowpokegPicFront::    INCBIN "gfx/pokemon/front/slowpokeg.pic"
 SlowpokegPicBack::     INCBIN "gfx/pokemon/back/slowpokegb.pic"
-
-
 
 
 Section "Pics 9", ROMX

@@ -97,4 +97,4 @@
 	const PHYS_BURN_SIDE_EFFECT1          ; $5A
 	const PHYS_FREEZE_SIDE_EFFECT         ; $5B
 	const PHYS_PARALYZE_SIDE_EFFECT1      ; $5C
-NUM_MOVE_EFFECTS EQU const_value - 1
+DEF NUM_MOVE_EFFECTS EQU const_value - 1

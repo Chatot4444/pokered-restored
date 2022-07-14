@@ -135,10 +135,10 @@ PoisonEffect:
 .notPoisonPowder
 	ld a, [de]
 	cp POISON_SIDE_EFFECT1
-	ld b, $34 ; ~20% chance of poisoning
+	ld b, 20 percent + 1 ; chance of poisoning
 	jr z, .sideEffectTest
 	cp POISON_SIDE_EFFECT2
-	ld b, $67 ; ~40% chance of poisoning
+	ld b, 40 percent + 1 ; chance of poisoning
 	jr z, .sideEffectTest
 	dec de
 	ld a, [de]
@@ -812,9 +812,6 @@ StatModifierDownEffect:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .statModifierDownEffect
-	; call BattleRandom
-	; cp $40 ; 1/4 chance to miss by in regular battle
-	; jp c, MoveMissed
 .statModifierDownEffect
 	call CheckTargetSubstitute ; can't hit through substitute
 	jp nz, MoveMissed
@@ -837,7 +834,7 @@ StatModifierDownEffect:
 	jr z, .guaranteed
 	;end of new stuff mostly
 	call BattleRandom
-	cp $55 ; 85/256 chance for side effects
+	cp 33 percent + 1 ; chance for side effects
 	ret nc
 .guaranteed	;this label is also new
 	ld a, [de]
@@ -1098,7 +1095,7 @@ PrintStatText:
 	jr z, .findStatName_outer
 	jr .findStatName_inner
 .foundStatName
-	ld de, wcf4b
+	ld de, wStringBuffer
 	ld bc, $a
 	jp CopyData
 
@@ -1139,14 +1136,14 @@ SwitchAndTeleportEffect:
 	jr nc, .playerMoveWasSuccessful ; if so, teleport will always succeed
 	add b
 	ld c, a
-	inc c ; c = sum of player level and enemy level
+	inc c ; c = playerLevel + enemyLevel + 1
 .rejectionSampleLoop1
 	call BattleRandom
 	cp c ; get a random number between 0 and c
 	jr nc, .rejectionSampleLoop1
 	srl b
 	srl b  ; b = enemyLevel / 4
-	cp b ; is rand[0, playerLevel + enemyLevel) >= (enemyLevel / 4)?
+	cp b ; is rand[0, playerLevel + enemyLevel] >= (enemyLevel / 4)?
 	jr nc, .playerMoveWasSuccessful ; if so, allow teleporting
 .playerMoveFailed
 	ld c, 50
@@ -1353,9 +1350,9 @@ FlinchSideEffect:
 .flinchSideEffect
 	ld a, [de]
 	cp FLINCH_SIDE_EFFECT1
-	ld b, $1a ; ~10% chance of flinch
+	ld b, 10 percent + 1 ; chance of flinch (FLINCH_SIDE_EFFECT1)
 	jr z, .gotEffectChance
-	ld b, $4d ; ~30% chance of flinch
+	ld b, 30 percent + 1 ; chance of flinch otherwise
 .gotEffectChance
 	call BattleRandom
 	cp b
@@ -1417,7 +1414,7 @@ ConfusionSideEffect:
 	call CheckTargetSubstitute ; test bit 4 of d063/d068 flags [target has substitute flag]
 	ret nz ; return if they have a substitute, can't effect them
 	call BattleRandom
-	cp $19 ; ~10% chance
+	cp 10 percent ; chance of confusion
 	ret nc
 	jr ConfusionSideEffectSuccess
 

@@ -9,7 +9,7 @@ VermilionGym_Script:
 	res 6, [hl]
 	call nz, VermilionGymSetDoorTile
 	call EnableAutoTextBoxDrawing
-	ld hl, VermilionGymTrainerHeader0
+	ld hl, VermilionGymTrainerHeaders
 	ld de, VermilionGym_ScriptPointers
 	ld a, [wVermilionGymCurScript]
 	call ExecuteCurMapScriptInTable
@@ -53,7 +53,7 @@ VermilionGym_ScriptPointers:
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
 	dw VermilionGymLTSurgePostBattle
-	dw VermilionGymScript5
+	dw VermilionGymPostRematch
 
 VermilionGymLTSurgePostBattle:
 	ld a, [wIsInBattle]
@@ -100,14 +100,15 @@ VermilionGym_TextPointers:
 	dw VermilionGymTrainerText1
 	dw VermilionGymTrainerText2
 	dw VermilionGymTrainerText3
-	dw VermilionGymFanText
-	dw VermilionGymText6
-	dw VermilionGymText7
-	dw LTSurgeThunderbadgeInfoText
+	dw VermilionGymGuideText
+	dw VermilionGymRematchText
+	dw VermilionGymAfterWinText
+	dw LTSurgeThunderBadgeInfoText
 	dw ReceivedTM24Text
 	dw TM24NoRoomText
 
-
+VermilionGymTrainerHeaders:
+	def_trainers 2
 VermilionGymTrainerHeader0:
 	trainer EVENT_BEAT_VERMILION_GYM_TRAINER_0, 3, VermilionGymBattleText1, VermilionGymEndBattleText1, VermilionGymAfterBattleText1
 VermilionGymTrainerHeader1:
@@ -135,8 +136,8 @@ LTSurgeText:
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, ReceivedThunderbadgeText
-	ld de, ReceivedThunderbadgeText
+	ld hl, ReceivedThunderBadgeText
+	ld de, ReceivedThunderBadgeText
 	call SaveEndBattleTextPointers
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
@@ -160,8 +161,8 @@ LTSurgePostBattleAdviceText:
 	text_far _LTSurgePostBattleAdviceText
 	text_end
 
-LTSurgeThunderbadgeInfoText:
-	text_far _LTSurgeThunderbadgeInfoText
+LTSurgeThunderBadgeInfoText:
+	text_far _LTSurgeThunderBadgeInfoText
 	text_end
 
 ReceivedTM24Text:
@@ -174,8 +175,8 @@ TM24NoRoomText:
 	text_far _TM24NoRoomText
 	text_end
 
-ReceivedThunderbadgeText:
-	text_far _ReceivedThunderbadgeText
+ReceivedThunderBadgeText:
+	text_far _ReceivedThunderBadgeText
 	text_end
 
 VermilionGymTrainerText1:
@@ -232,29 +233,29 @@ VermilionGymAfterBattleText3:
 	text_far _VermilionGymAfterBattleText3
 	text_end
 
-VermilionGymFanText:
+VermilionGymGuideText:
 	text_asm
 	ld a, [wBeatGymFlags]
 	bit BIT_THUNDERBADGE, a
 	jr nz, .afterBeat
-	ld hl, VermilionGymFanPreBattleText
+	ld hl, VermilionGymGuidePreBattleText
 	call PrintText
 	jr .done
 .afterBeat
-	ld hl, VermilionGymFanPostBattleText
+	ld hl, VermilionGymGuidePostBattleText
 	call PrintText
 .done
 	jp TextScriptEnd
 
-VermilionGymFanPreBattleText:
-	text_far _VermilionGymFanPreBattleText
+VermilionGymGuidePreBattleText:
+	text_far _VermilionGymGuidePreBattleText
 	text_end
 
-VermilionGymFanPostBattleText:
-	text_far _VermilionGymFanPostBattleText
+VermilionGymGuidePostBattleText:
+	text_far _VermilionGymGuidePostBattleText
 	text_end
 
-VermilionGymText6:
+VermilionGymRematchText:
 	text_asm
 	ld hl, VermilionGymText_Rematch
 	call PrintText
@@ -289,7 +290,7 @@ VermilionGymText6:
 	jp TextScriptEnd
 	
 	
-VermilionGymScript5:
+VermilionGymPostRematch:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, VermilionGymResetScripts
@@ -324,6 +325,6 @@ VermilionGymText_RematchWin:
 	text_far _VermilionGymText_RematchWin
 	text_end
 	
-VermilionGymText7:
+VermilionGymAfterWinText:
 	text_far _VermilionGymText7
 	text_end

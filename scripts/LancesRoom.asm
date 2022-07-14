@@ -1,7 +1,7 @@
 LancesRoom_Script:
 	call LanceShowOrHideEntranceBlocks
 	call EnableAutoTextBoxDrawing
-	ld hl, LanceTrainerHeader0
+	ld hl, LancesRoomTrainerHeaders
 	ld de, LancesRoom_ScriptPointers
 	ld a, [wLancesRoomCurScript]
 	call ExecuteCurMapScriptInTable
@@ -134,17 +134,19 @@ LancesRoom_TextPointers:
 	dw LanceText1
 	dw LanceText2
 
-LanceTrainerHeader0:
+LancesRoomTrainerHeaders:
+	def_trainers
+LancesRoomTrainerHeader0:
 	trainer EVENT_BEAT_LANCES_ROOM_TRAINER_0, 0, LanceBeforeBattleText, LanceEndBattleText, LanceAfterBattleText
 LanceTrainerHeader1:
-	trainer EVENT_BEAT_LANCES_ROOM_TRAINER_0, 0, LanceBeforeRematchText, LanceEndRematchText, LanceAfterRematchText
+	trainer EVENT_BEAT_LANCES_ROOM_TRAINER_1, 0, LanceBeforeRematchText, LanceEndRematchText, LanceAfterRematchText
 	db -1 ; end
 
 LanceText1:
 	text_asm
 	CheckEvent EVENT_BECOME_CHAMPION
 	jr nz, .rematch
-	ld hl, LanceTrainerHeader0
+	ld hl, LancesRoomTrainerHeader0
 	jr .done
 .rematch
 	ld hl, LanceTrainerHeader1

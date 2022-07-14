@@ -92,9 +92,9 @@ SubanimationPointers:
 ; subanim type, count
 ; REPT count
 ;     db frame block id, base coordinate id, frame block mode
-; endr
+; ENDR
 
-subanim: MACRO
+MACRO subanim
 	db (\1 << 5) | \2
 ENDM
 

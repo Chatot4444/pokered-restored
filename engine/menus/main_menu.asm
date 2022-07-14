@@ -66,7 +66,7 @@ MainMenu:
 	ld a, [wSaveFileStatus]
 	ld [wMaxMenuItem], a
 	call HandleMenuInput
-	bit 1, a ; pressed B?
+	bit BIT_B_BUTTON, a
 	jp nz, DisplayTitleScreen ; if so, go back to the title screen
 	bit 2, a
 	jp nz, .gameGenie
@@ -154,9 +154,8 @@ StartNewGameText::
 	text_end
 
 InitOptions:
-	ld a, 1 ; no delay
+	ld a, TEXT_DELAY_FAST
 	ld [wLetterPrintingDelayFlags], a
-	ld a, 1 ; Fast speed
 	ld [wOptions], a
 	ld hl, wOptions
 	set 7, [hl] ; Animations: Off
@@ -221,13 +220,13 @@ LinkMenu:
 	ld b, a
 	and $f0
 	cp $d0
-	jr z, .asm_5c7d
+	jr z, .checkEnemyMenuSelection
 	ld a, [wLinkMenuSelectionReceiveBuffer + 1]
 	ld b, a
 	and $f0
 	cp $d0
 	jr nz, .exchangeMenuSelectionLoop
-.asm_5c7d
+.checkEnemyMenuSelection
 	ld a, b
 	and $c ; did the enemy press A or B?
 	jr nz, .enemyPressedAOrB
@@ -321,9 +320,11 @@ LinkMenu:
 .choseCancel
 	xor a
 	ld [wMenuJoypadPollCount], a
+	vc_hook Wireless_net_stop
 	call Delay3
 	call CloseLinkConnection
 	ld hl, LinkCanceledText
+	vc_hook Wireless_net_end
 	call PrintText
 	ld hl, wd72e
 	res 6, [hl]
@@ -473,7 +474,7 @@ PrintBoxInfo:
 	inc hl
 	inc hl
 	inc hl
-	ld de, wNumInBox
+	ld de, wBoxCount
 	lb bc, 1, 2
 	call PrintNumber
 	ld [hl], "/"
@@ -510,7 +511,7 @@ DisplayOptionMenu:
 	ld c, 18
 	call TextBoxBorder
 	hlcoord 1, 1
-	ld de, TextSpeedOptionText
+	ld de, GammaOptionText
 	call PlaceString
 	hlcoord 1, 6
 	ld de, BattleAnimationOptionText
@@ -530,7 +531,7 @@ DisplayOptionMenu:
 	ld a, 3 ; text speed cursor Y coordinate
 	ld [wTopMenuItemY], a
 	call SetCursorPositionsFromOptions
-	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
+	ld a, [wOptionsGammaCursorX] ; text speed cursor X coordinate
 	ld [wTopMenuItemX], a
 	ld a, $01
 	ldh [hAutoBGTransferEnabled], a ; enable auto background transfer
@@ -544,11 +545,11 @@ DisplayOptionMenu:
 	ld b, a
 	and A_BUTTON | B_BUTTON | START | D_RIGHT | D_LEFT | D_UP | D_DOWN ; any key besides select pressed?
 	jr z, .getJoypadStateLoop
-	bit 1, b ; B button pressed?
+	bit BIT_B_BUTTON, b
 	jr nz, .exitMenu
-	bit 3, b ; Start button pressed?
+	bit BIT_START, b
 	jr nz, .exitMenu
-	bit 0, b ; A button pressed?
+	bit BIT_A_BUTTON, b
 	jr z, .checkDirectionKeys
 	ld a, [wTopMenuItemY]
 	cp 16 ; is the cursor on Cancel?
@@ -563,9 +564,9 @@ DisplayOptionMenu:
 	jp .loop
 .checkDirectionKeys
 	ld a, [wTopMenuItemY]
-	bit 7, b ; Down pressed?
+	bit BIT_D_DOWN, b
 	jr nz, .downPressed
-	bit 6, b ; Up pressed?
+	bit BIT_D_UP, b
 	jr nz, .upPressed
 	cp 8 ; cursor in Battle Animation section?
 	jr z, .cursorInBattleAnimation
@@ -573,11 +574,11 @@ DisplayOptionMenu:
 	jr z, .cursorInBattleStyle
 	cp 16 ; cursor on Cancel?
 	jr z, .loop
-	jp .cursorInTextSpeed
+	jp .cursorInGamma
 .downPressed
 	cp 16
 	ld b, -13
-	ld hl, wOptionsTextSpeedCursorX
+	ld hl, wOptionsGammaCursorX
 	jr z, .updateMenuVariables
 	ld b, 5
 	cp 3
@@ -592,7 +593,7 @@ DisplayOptionMenu:
 .upPressed
 	cp 8
 	ld b, -5
-	ld hl, wOptionsTextSpeedCursorX
+	ld hl, wOptionsGammaCursorX
 	jr z, .updateMenuVariables
 	cp 13
 	inc hl
@@ -620,14 +621,14 @@ DisplayOptionMenu:
 	xor $0b ; toggle between 1 and 10
 	ld [wOptionsBattleStyleCursorX], a
 	jp .eraseOldMenuCursor
-.cursorInTextSpeed
-	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
+.cursorInGamma
+	ld a, [wOptionsGammaCursorX] ; text speed cursor X coordinate
 	xor $0b
-	ld [wOptionsTextSpeedCursorX], a
+	ld [wOptionsGammaCursorX], a
 	jp .eraseOldMenuCursor
 
 
-TextSpeedOptionText:
+GammaOptionText:
 	db   "GBC GAMMA SHADER"
 	next " ON       OFF@"
 
@@ -647,7 +648,7 @@ SetOptionsFromCursorPositions:
 	ld a, [wOptions]
 	and %111
 	ld d, a
-	ld a, [wOptionsTextSpeedCursorX] ; text speed cursor X coordinate
+	ld a, [wOptionsGammaCursorX] ; text speed cursor X coordinate
 	dec a
 	jr z, .gammaOn
 .gammaOff
@@ -687,7 +688,7 @@ SetCursorPositionsFromOptions:
 	jr nz, .storeGammaCursorX
 	ld a, 10
 .storeGammaCursorX
-	ld [wOptionsTextSpeedCursorX], a ; text speed cursor X coordinate
+	ld [wOptionsGammaCursorX], a ; text speed cursor X coordinate
 	hlcoord 0, 3
 	call .placeUnfilledRightArrow
 	sla c
@@ -715,17 +716,6 @@ SetCursorPositionsFromOptions:
 	add hl, de
 	ld [hl], "▷"
 	ret
-
-; table that indicates how the 3 text speed options affect frame delays
-; Format:
-; 00: X coordinate of menu cursor
-; 01: delay after printing a letter (in frames)
-; TextSpeedOptionData:
-	; db 14, 5 ; Slow
-	; db  7, 3 ; Medium
-	; db  1, 1 ; Fast
-	; db 7 ; default X coordinate (Medium)
-	; db -1 ; end
 
 CheckForPlayerNameInSRAM:
 ; Check if the player name data in SRAM has a string terminator character

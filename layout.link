@@ -187,12 +187,18 @@ ROMX $2F
 	"Pokédex Text 2"
 	"Pics 9"
 WRAM0
-	"WRAM"
+	"Audio RAM"
 	org $c100
 	"Sprite State Data"
 	"OAM Buffer"
+	"Tilemap"
+	"Overworld Map"
+	"WRAM"
+	"Party Data"
+	"Main Data"
+	"Current Box Data"
 	"GBC Palette Data"
-	org $dfff
+	org $dffe
 	"Stack"
 VRAM
 	"VRAM"

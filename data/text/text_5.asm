@@ -87,7 +87,7 @@ _CannotGetOffHereText::
 _RegisteredItemText::
 	text "Registered the"
 	line "@"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " to"
 	cont "SELECT Button."
 	prompt
@@ -107,7 +107,7 @@ _SentToBoxText::
 	text " was"
 	cont "sent to #MON"
 	cont "BOX @"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " on PC!"
 	done
 

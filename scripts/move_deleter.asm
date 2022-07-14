@@ -61,7 +61,7 @@ _MoveDeleterText1:
 	ld [wMoveNum], a
 	ld [wd11e],a
 	call GetMoveName
-	call CopyStringToCF4B ; copy name to wcf4b
+	call CopyToStringBuffer
 	ld hl, MoveDeleterConfirmText
 	call PrintText
 	call YesNoChoice

@@ -1571,7 +1571,7 @@ Music_GalarBirdBattle_branch_22d9c::
 	note F#, 6
 	;tempo 74
 	note G_, 2
-	note_type, 12, 1, 11
+	note_type 12, 1, 11
 	rest 10
 	note B_, 2
 	note F#, 2

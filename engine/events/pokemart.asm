@@ -168,7 +168,7 @@ DisplayPokemartDialogue_::
 .notTM
 	call GetItemName
 .tm
-	call CopyStringToCF4B ; copy name to wcf4b
+	call CopyToStringBuffer
 	ld hl, PokemartTellBuyPriceText
 	call PrintText
 	hlcoord 14, 7

@@ -4,7 +4,7 @@ CeladonGym_Script:
 	res 6, [hl]
 	call nz, .LoadNames
 	call EnableAutoTextBoxDrawing
-	ld hl, CeladonGymTrainerHeader0
+	ld hl, CeladonGymTrainerHeaders
 	ld de, CeladonGym_ScriptPointers
 	ld a, [wCeladonGymCurScript]
 	call ExecuteCurMapScriptInTable
@@ -22,7 +22,7 @@ CeladonGym_Script:
 .LeaderName:
 	db "ERIKA@"
 
-CeladonGymText_48943:
+CeladonGymResetScripts:
 	xor a
 	ld [wJoyIgnore], a
 	ld [wCeladonGymCurScript], a
@@ -33,13 +33,14 @@ CeladonGym_ScriptPointers:
 	dw CheckFightingMapTrainers
 	dw DisplayEnemyTrainerTextAndStartBattle
 	dw EndTrainerBattle
-	dw CeladonGymScript3
-	dw CeladonGymScript4
+	dw CeladonGymErikaPostBattle
+	dw CeladonGymPostRematch
 
-CeladonGymScript3:
+
+CeladonGymErikaPostBattle:
 	ld a, [wIsInBattle]
 	cp $ff
-	jp z, CeladonGymText_48943
+	jp z, CeladonGymResetScripts
 	ld a, $f0
 	ld [wJoyIgnore], a
 	ld a, [wLevelCap]
@@ -48,8 +49,8 @@ CeladonGymScript3:
 	ld a, 41
 	ld [wLevelCap], a
 .skipCap
-CeladonGymText_48963:
-	ld a, $b
+CeladonGymReceiveTM21:
+	ld a, $B
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	SetEvent EVENT_BEAT_ERIKA
@@ -74,23 +75,25 @@ CeladonGymText_48963:
 	; deactivate gym trainers
 	SetEventRange EVENT_BEAT_CELADON_GYM_TRAINER_0, EVENT_BEAT_CELADON_GYM_TRAINER_6
 
-	jp CeladonGymText_48943
+	jp CeladonGymResetScripts
 
 CeladonGym_TextPointers:
-	dw CeladonGymText1
-	dw CeladonGymText2
-	dw CeladonGymText3
-	dw CeladonGymText4
-	dw CeladonGymText5
-	dw CeladonGymText6
-	dw CeladonGymText7
-	dw CeladonGymText8
-	dw CeladonGymText9
+	dw ErikaText
+	dw CeladonGymTrainerText1
+	dw CeladonGymTrainerText2
+	dw CeladonGymTrainerText3
+	dw CeladonGymTrainerText4
+	dw CeladonGymTrainerText5
+	dw CeladonGymTrainerText6
+	dw CeladonGymTrainerText7
+	dw ErikaRematchText
 	dw CeladonGymTextA
-	dw CeladonGymTextB
-	dw TM21Text
+	dw ErikaRainbowBadgeInfoText
+	dw ReceivedTM21Text
 	dw TM21NoRoomText
 
+CeladonGymTrainerHeaders:
+	def_trainers 2
 CeladonGymTrainerHeader0:
 	trainer EVENT_BEAT_CELADON_GYM_TRAINER_0, 2, CeladonGymBattleText2, CeladonGymEndBattleText2, CeladonGymAfterBattleText2
 CeladonGymTrainerHeader1:
@@ -104,30 +107,30 @@ CeladonGymTrainerHeader4:
 CeladonGymTrainerHeader5:
 	trainer EVENT_BEAT_CELADON_GYM_TRAINER_5, 2, CeladonGymBattleText7, CeladonGymEndBattleText7, CeladonGymAfterBattleText7
 CeladonGymTrainerHeader6:
-	trainer EVENT_BEAT_CELADON_GYM_TRAINER_6, 1, 3, CeladonGymBattleText8, CeladonGymEndBattleText8, CeladonGymAfterBattleText8
+	trainer EVENT_BEAT_CELADON_GYM_TRAINER_6, 3, CeladonGymBattleText8, CeladonGymEndBattleText8, CeladonGymAfterBattleText8
 	db -1 ; end
 
-CeladonGymText1:
+ErikaText:
 	text_asm
 	CheckEvent EVENT_BEAT_ERIKA
-	jr z, .beginBattle
+	jr z, .beforeBeat
 	CheckEventReuseA EVENT_GOT_TM21
-	jr nz, .afterVictory
-	call z, CeladonGymText_48963
+	jr nz, .afterBeat
+	call z, CeladonGymReceiveTM21
 	call DisableWaitingAfterTextDisplay
 	jr .done
-.afterVictory
-	ld hl, CeladonGymText_48a68
+.afterBeat
+	ld hl, ErikaPostBattleAdviceText
 	call PrintText
 	jr .done
-.beginBattle
-	ld hl, CeladonGymText_48a5e
+.beforeBeat
+	ld hl, ErikaPreBattleText
 	call PrintText
 	ld hl, wd72d
 	set 6, [hl]
 	set 7, [hl]
-	ld hl, CeladonGymText_48a63
-	ld de, CeladonGymText_48a63
+	ld hl, ReceivedRainbowBadgeText
+	ld de, ReceivedRainbowBadgeText
 	call SaveEndBattleTextPointers
 	ldh a, [hSpriteIndex]
 	ld [wSpriteIndex], a
@@ -141,23 +144,23 @@ CeladonGymText1:
 .done
 	jp TextScriptEnd
 
-CeladonGymText_48a5e:
-	text_far _CeladonGymText_48a5e
+ErikaPreBattleText:
+	text_far _ErikaPreBattleText
 	text_end
 
-CeladonGymText_48a63:
-	text_far _CeladonGymText_48a63
+ReceivedRainbowBadgeText:
+	text_far _ReceivedRainbowBadgeText
 	text_end
 
-CeladonGymText_48a68:
-	text_far _CeladonGymText_48a68
+ErikaPostBattleAdviceText:
+	text_far _ErikaPostBattleAdviceText
 	text_end
 
-CeladonGymTextB:
-	text_far _CeladonGymTextB
+ErikaRainbowBadgeInfoText:
+	text_far _ErikaRainbowBadgeInfoText
 	text_end
 
-TM21Text:
+ReceivedTM21Text:
 	text_far _ReceivedTM21Text
 	sound_get_item_1
 	text_far _TM21ExplanationText
@@ -167,7 +170,7 @@ TM21NoRoomText:
 	text_far _TM21NoRoomText
 	text_end
 
-CeladonGymText2:
+CeladonGymTrainerText1:
 	text_asm
 	ld hl, CeladonGymTrainerHeader0
 	call TalkToTrainer
@@ -185,7 +188,7 @@ CeladonGymAfterBattleText2:
 	text_far _CeladonGymAfterBattleText2
 	text_end
 
-CeladonGymText3:
+CeladonGymTrainerText2:
 	text_asm
 	ld hl, CeladonGymTrainerHeader1
 	call TalkToTrainer
@@ -203,7 +206,7 @@ CeladonGymAfterBattleText3:
 	text_far _CeladonGymAfterBattleText3
 	text_end
 
-CeladonGymText4:
+CeladonGymTrainerText3:
 	text_asm
 	ld hl, CeladonGymTrainerHeader2
 	call TalkToTrainer
@@ -221,7 +224,7 @@ CeladonGymAfterBattleText4:
 	text_far _CeladonGymAfterBattleText4
 	text_end
 
-CeladonGymText5:
+CeladonGymTrainerText4:
 	text_asm
 	ld hl, CeladonGymTrainerHeader3
 	call TalkToTrainer
@@ -239,7 +242,7 @@ CeladonGymAfterBattleText5:
 	text_far _CeladonGymAfterBattleText5
 	text_end
 
-CeladonGymText6:
+CeladonGymTrainerText5:
 	text_asm
 	ld hl, CeladonGymTrainerHeader4
 	call TalkToTrainer
@@ -257,7 +260,7 @@ CeladonGymAfterBattleText6:
 	text_far _CeladonGymAfterBattleText6
 	text_end
 
-CeladonGymText7:
+CeladonGymTrainerText6:
 	text_asm
 	ld hl, CeladonGymTrainerHeader5
 	call TalkToTrainer
@@ -275,7 +278,7 @@ CeladonGymAfterBattleText7:
 	text_far _CeladonGymAfterBattleText7
 	text_end
 
-CeladonGymText8:
+CeladonGymTrainerText7:
 	text_asm
 	ld hl, CeladonGymTrainerHeader6
 	call TalkToTrainer
@@ -293,7 +296,7 @@ CeladonGymAfterBattleText8:
 	text_far _CeladonGymAfterBattleText8
 	text_end
 
-CeladonGymText9:
+ErikaRematchText:
 	text_asm
 	ld hl, CeladonGymText_Rematch
 	call PrintText
@@ -327,10 +330,10 @@ CeladonGymText9:
 .done
 	jp TextScriptEnd
 	
-CeladonGymScript4:
+CeladonGymPostRematch:
 	ld a, [wIsInBattle]
 	cp $ff
-	jp z, CeladonGymText_48943
+	jp z, CeladonGymResetScripts
 	ld a, $f0
 	ld [wJoyIgnore], a
 CeladonGymScript_AfterRematch:
@@ -344,7 +347,7 @@ CeladonGymScript_AfterRematch:
 	ld a, $A
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	jp CeladonGymText_48943
+	jp CeladonGymResetScripts
 	
 CeladonGymText_Rematch:
 	text_far _CeladonGymText_Rematch

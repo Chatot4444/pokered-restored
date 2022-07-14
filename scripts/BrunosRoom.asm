@@ -1,7 +1,7 @@
 BrunosRoom_Script:
 	call BrunoShowOrHideExitBlock
 	call EnableAutoTextBoxDrawing
-	ld hl, BrunoTrainerHeader0
+	ld hl, BrunosRoomTrainerHeaders
 	ld de, BrunosRoom_ScriptPointers
 	ld a, [wBrunosRoomCurScript]
 	call ExecuteCurMapScriptInTable
@@ -123,15 +123,17 @@ BrunosRoom_TextPointers:
 	dw BrunoText2
 	dw BrunoDontRunAwayText
 
-BrunoTrainerHeader0:
+BrunosRoomTrainerHeaders:
+	def_trainers
+BrunosRoomTrainerHeader0:
 	trainer EVENT_BEAT_BRUNOS_ROOM_TRAINER_0, 0, BrunoBeforeBattleText, BrunoEndBattleText, BrunoAfterBattleText
 BrunoTrainerHeader1:
-	trainer EVENT_BEAT_BRUNOS_ROOM_TRAINER_0, 0, BrunoBeforeRematchText, BrunoEndRematchText, BrunoAfterRematchText
+	trainer EVENT_BEAT_BRUNOS_ROOM_TRAINER_1, 0, BrunoBeforeRematchText, BrunoEndRematchText, BrunoAfterRematchText
 	db -1 ; end
 
 BrunoText1:
 	text_asm
-	ld hl, BrunoTrainerHeader0
+	ld hl, BrunosRoomTrainerHeader0
 	call TalkToTrainer
 	jp TextScriptEnd
 	

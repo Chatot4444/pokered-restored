@@ -60,7 +60,7 @@ _PokeCenterSignText::
 _FoundItemText::
 	text "<PLAYER> found"
 	line "@"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text "!@"
 	text_end
 
@@ -153,7 +153,7 @@ _CanAlreadyUseFieldMoveText::
 	text " can"
 	line "already use"
 	cont "@"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " as a"
 	cont "field move."
 	

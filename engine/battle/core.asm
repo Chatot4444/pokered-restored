@@ -108,7 +108,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 ; instead, the enemy pic is part of the background and uses the scroll register, while the player's head is a sprite and is slid by changing its X coordinates in a loop
 SlidePlayerHeadLeft:
 	push bc
-	ld hl, wOAMBuffer + $01
+	ld hl, wShadowOAMSprite00XCoord
 	ld c, $15 ; number of OAM entries
 	ld de, $4 ; size of OAM entry
 .loop
@@ -412,12 +412,12 @@ MainInBattleLoop:
 	cp USING_INTERNAL_CLOCK
 	jr z, .invertOutcome
 	call BattleRandom
-	cp $80
+	cp 50 percent + 1
 	jr c, .playerMovesFirst
 	jr .enemyMovesFirst
 .invertOutcome
 	call BattleRandom
-	cp $80
+	cp 50 percent + 1
 	jr c, .enemyMovesFirst
 	jr .playerMovesFirst
 .enemyMovesFirst
@@ -1401,7 +1401,7 @@ EnemySendOutFirstMon:
 	cp LINK_STATE_BATTLING
 	jr z, .next4
 	ld a, [wOptions]
-	bit 6, a
+	bit BIT_BATTLE_SHIFT, a
 	jr nz, .next4
 	ld a, [wOptions2]
 	bit 5, a
@@ -1767,9 +1767,9 @@ LoadEnemyMonFromParty:
 
 SendOutMon:
 ;joenote - reset AI switching tracker since the player is sending out a new pokemon
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	and %10000001
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 	callfar PrintSendOutMonMessage
 	ld hl, wEnemyMonHP
 	ld a, [hli]
@@ -2137,7 +2137,7 @@ DisplayBattleMenu::
 	ld [hli], a ; wMaxMenuItem
 	ld [hl], D_RIGHT | A_BUTTON ; wMenuWatchedKeys
 	call HandleMenuInput
-	bit 4, a ; check if right was pressed
+	bit BIT_D_RIGHT, a
 	jr nz, .rightColumn
 	jr .AButtonPressed ; the A button was pressed
 .rightColumn ; put cursor in right column of menu
@@ -2289,7 +2289,7 @@ UseBagItem:
 	ld a, [wcf91]
 	ld [wd11e], a
 	call GetItemName
-	call CopyStringToCF4B ; copy name
+	call CopyToStringBuffer
 	xor a
 	ld [wPseudoItemID], a
 	call UseItem
@@ -2400,7 +2400,7 @@ PartyMenuOrRockOrRun:
 	xor a
 	ld [hl], a ; wLastMenuItem
 	call HandleMenuInput
-	bit 1, a ; was A pressed?
+	bit BIT_B_BUTTON, a
 	jr nz, .partyMonDeselected ; if B was pressed, jump
 ; A was pressed
 	call PlaceUnfilledArrowMenuCursor
@@ -3097,19 +3097,19 @@ SelectEnemyMove:
 .chooseRandomMove
 	push hl
 	call BattleRandom
-	ld b, $1
-	cp $3f ; select move 1, [0,3e] (63/256 chance)
+	ld b, 1 ; 25% chance to select move 1
+	cp 25 percent
 	jr c, .moveChosen
 	inc hl
-	inc b
-	cp $7f ; select move 2, [3f,7e] (64/256 chance)
+	inc b ; 25% chance to select move 2
+	cp 50 percent
 	jr c, .moveChosen
 	inc hl
-	inc b
-	cp $be ; select move 3, [7f,bd] (63/256 chance)
+	inc b ; 25% chance to select move 3
+	cp 75 percent - 1
 	jr c, .moveChosen
 	inc hl
-	inc b ; select move 4, [be,ff] (66/256 chance)
+	inc b ; 25% chance to select move 4
 .moveChosen
 	ld a, b
 	dec a
@@ -3159,6 +3159,7 @@ LinkBattleExchangeData:
 	ld a, b
 .doExchange
 	ld [wSerialExchangeNybbleSendData], a
+	vc_hook Wireless_start_exchange
 	callfar PrintWaitingText
 .syncLoop1
 	call Serial_ExchangeNybble
@@ -3166,18 +3167,33 @@ LinkBattleExchangeData:
 	ld a, [wSerialExchangeNybbleReceiveData]
 	inc a
 	jr z, .syncLoop1
+	vc_hook Wireless_end_exchange
+	vc_patch Wireless_net_delay_1
+IF DEF(_RED_VC) || DEF(_BLUE_VC)
+	ld b, 26
+ELSE
 	ld b, 10
+ENDC
+	vc_patch_end
 .syncLoop2
 	call DelayFrame
 	call Serial_ExchangeNybble
 	dec b
 	jr nz, .syncLoop2
+	vc_hook Wireless_start_send_zero_bytes
+	vc_patch Wireless_net_delay_2
+IF DEF(_RED_VC) || DEF(_BLUE_VC)
+	ld b, 26
+ELSE
 	ld b, 10
+ENDC
+	vc_patch_end
 .syncLoop3
 	call DelayFrame
 	call Serial_SendZeroByte
 	dec b
 	jr nz, .syncLoop3
+	vc_hook Wireless_end_send_zero_bytes
 	ret
 
 ExecutePlayerMove:
@@ -3413,7 +3429,7 @@ PrintGhostText:
 	and a
 	jr nz, .Ghost
 	ld a, [wBattleMonStatus] ; player's turn
-	and SLP | (1 << FRZ)
+	and (1 << FRZ) | SLP_MASK
 	ret nz
 	ld hl, ScaredText
 	call PrintText
@@ -3440,7 +3456,7 @@ IsGhostBattle:
 	ld a, [wCurMap]
 	cp POKEMON_TOWER_1F
 	jr c, .next
-	cp MR_FUJIS_HOUSE
+	cp POKEMON_TOWER_7F + 1
 	jr nc, .next
 	ld b, SILPH_SCOPE
 	call IsItemInPC
@@ -3458,7 +3474,7 @@ IsGhostBattle:
 CheckPlayerStatusConditions:
 	ld hl, wBattleMonStatus
 	ld a, [hl]
-	and SLP ; sleep mask
+	and SLP_MASK
 	jr z, .FrozenCheck
 ; sleeping
 	dec a
@@ -3506,7 +3522,7 @@ CheckPlayerStatusConditions:
 
 .HeldInPlaceCheck
 	ld a, [wEnemyBattleStatus1]
-	bit USING_TRAPPING_MOVE, a ; is enemy using a mult-turn move like wrap?
+	bit USING_TRAPPING_MOVE, a ; is enemy using a multi-turn move like wrap?
 	jp z, .FlinchedCheck
 	ld hl, CantMoveText
 	call PrintText
@@ -3567,7 +3583,7 @@ CheckPlayerStatusConditions:
 	ld a, CONF_ANIM - 1
 	call PlayMoveAnimation
 	call BattleRandom
-	cp $80 ; 50% chance to hurt itself
+	cp 50 percent + 1 ; chance to hurt itself
 	jr c, .TriedToUseDisabledMoveCheck
 	ld hl, wPlayerBattleStatus1
 	ld a, [hl]
@@ -3604,8 +3620,8 @@ CheckPlayerStatusConditions:
 	ld [wDamage + 1], a
 	ld hl, wPlayerBattleStatus1
 	ld a, [hl]
-	; clear bide, thrashing, charging up, and trapping moves such as warp (already cleared for confusion damage)
-	and $ff ^ ((1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
+	; clear thrashing, charging up, and trapping moves such as warp (already cleared for confusion damage)
+	and ~((1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
 	res INVULNERABLE, [hl]
 	ld [hl], a
 	ld a, [wPlayerMoveEffect]
@@ -3844,7 +3860,7 @@ PrintMoveName:
 	ret
 
 _PrintMoveName:
-	text_far _CF4BText
+	text_far _MoveNameText
 	text_asm
 	ld hl, ExclamationPoint1Text
 	ret
@@ -4047,7 +4063,7 @@ CheckForDisobedience:
 	call BattleRandom
 	add a
 	swap a
-	and SLP ; sleep mask
+	and SLP_MASK
 	jr z, .monNaps ; keep trying until we get at least 1 turn of sleep
 	ld [wBattleMonStatus], a
 	ld hl, BeganToNapText
@@ -4711,24 +4727,24 @@ CriticalHitTest:
 .handlePlayer
 	ld [wd0b5], a
 	call GetMonHeader
-	ld a, [wMonHBaseDefense]
-	sub 60
+	ld a, [wMonHBaseDefense]; get target's base defense
+	sub 60                  ; subtract 60 from target defense
 	jr nc, .noCarry1
-	xor a 
+	xor a                   ; set to zero if defense was less than 60
 .noCarry1
-	srl a
-	srl a
+	srl a                   
+	srl a                   ; divide defense value by 4
 	ld b, a
 	ld a, [hl]
 	ld [wd0b5], a
 	call GetMonHeader
-	ld a, [wMonHBaseSpeed]
-	sub b
+	ld a, [wMonHBaseSpeed]  ; get attacker's base speed
+	sub b                   ; subtract defense value from base speed
 	jr nc, .noCarry2
-	xor a
+	xor a                   ; set to zero if defense value was greater
 .noCarry2
-	inc a
-	ld b, a
+	inc a                   ; add 1 
+	ld b, a                 ; this value is the crit rate before modifiers
 	ldh a, [hWhoseTurn]
 	and a
 	ld hl, wPlayerMovePower
@@ -4744,11 +4760,10 @@ CriticalHitTest:
 	ld c, [hl]                   ; read move id
 	ld a, [de]
 	bit GETTING_PUMPED, a         ; test for focus energy
-	jr z, .noFocusEnergyUsed      ; bug: using focus energy causes a shift to the right instead of left,
-	                             ; resulting in 1/4 the usual crit chance
-	sla b                        ; (effective (base speed/2)*2)
-	jr c, .guaranteedCritical
+	jr z, .noFocusEnergyUsed      ; focus energy now works properly
 	sla b                        
+	jr c, .guaranteedCritical
+	sla b                         ; x4 if used focus energy
 	jr c, .guaranteedCritical
 .noFocusEnergyUsed
 	ld hl, HighCriticalMoves     ; table of high critical hit moves
@@ -4758,23 +4773,20 @@ CriticalHitTest:
 	jr z, .HighCritical          ; if so, the move about to be used is a high critical hit ratio move
 	inc a                        ; move on to the next move, FF terminates loop
 	jr nz, .Loop                 ; check the next move in HighCriticalMoves
-	srl b                        ; /2 for regular move (effective (base speed / 2))
+	srl b                        ; /2 for regular move
 	jr .SkipHighCritical         ; continue as a normal move
 .HighCritical
-	sla b                        ; *2 for high critical hit moves
-	jr nc, .noCarry
-	ld b, $ff                    ; cap at 255/256
-.noCarry
-	sla b                        ; *4 for high critical move (effective (base speed/2)*8))
-	jr nc, .SkipHighCritical
-	ld b, $ff
+	sla b                        
+	jr c, .guaranteedCritical
+	sla b                        ; *4 for high critical move
+	jr c, .guaranteedCritical
 .SkipHighCritical
 	call BattleRandom            ; generates a random value, in "a"
 	rlc a
 	rlc a
 	rlc a
 	cp b                         ; check a against calculated crit rate
-	ret nc                       ; no critical hit if no borrow
+	ret nc                       ; if b is less than or equal to the random number, no critical hit
 .guaranteedCritical
 	ld a, $1
 	ld [wCriticalHitOrOHKO], a   ; set critical hit flag
@@ -5212,7 +5224,7 @@ ReloadMoveData:
 	call IncrementMovePP
 ; the follow two function calls are used to reload the move name
 	call GetMoveName
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 	ld a, $01
 	and a
 	ret
@@ -5505,7 +5517,7 @@ MoveHitTest:
 	cp DREAM_EATER_EFFECT
 	jr nz, .checkForDigOrFlyStatus
 	ld a, [bc]
-	and SLP ; is the target pokemon sleeping?
+	and SLP_MASK
 	jp z, .moveMissed
 .checkForDigOrFlyStatus
 	bit INVULNERABLE, [hl]
@@ -5796,7 +5808,7 @@ EnemyCanExecuteChargingMove:
 	ld [wNameListType], a
 	call GetName
 	ld de, wcd6d
-	call CopyStringToCF4B
+	call CopyToStringBuffer
 EnemyCanExecuteMove:
 	xor a
 	ld [wMonIsDisobedient], a
@@ -5973,7 +5985,7 @@ ExecuteEnemyMoveDone:
 CheckEnemyStatusConditions:
 	ld hl, wEnemyMonStatus
 	ld a, [hl]
-	and SLP ; sleep mask
+	and SLP_MASK
 	jr z, .checkIfFrozen
 	dec a ; decrement number of turns left
 	ld [wEnemyMonStatus], a
@@ -6136,7 +6148,7 @@ CheckEnemyStatusConditions:
 	bit PAR, [hl]
 	jr z, .checkIfThrashingAbout
 	call BattleRandom
-	cp $3f ; 25% to be fully paralysed
+	cp 25 percent ; chance to be fully paralysed
 	jr nc, .checkIfThrashingAbout
 	ld hl, FullyParalyzedText
 	call PrintText
@@ -6144,7 +6156,7 @@ CheckEnemyStatusConditions:
 	ld hl, wEnemyBattleStatus1
 	ld a, [hl]
 	; clear thrashing about, charging up, and multi-turn moves such as warp
-	and $ff ^ ((1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
+	and ~((1 << THRASHING_ABOUT) | (1 << CHARGING_UP) | (1 << USING_TRAPPING_MOVE))
 	res INVULNERABLE, [hl]
 	ld [hl], a
 	ld a, [wEnemyMoveEffect]
@@ -6236,7 +6248,7 @@ GetCurrentMove:
 	ld [wNameListType], a
 	call GetName
 	ld de, wcd6d
-	jp CopyStringToCF4B
+	jp CopyToStringBuffer
 
 LoadEnemyMonData:
 	ld a, [wLinkState]
@@ -6492,9 +6504,10 @@ LoadPlayerBackPic:
 	ld de, RedPicBack
 .next
 	ld a, BANK(RedPicBack)
+	ASSERT BANK(RedPicBack) == BANK(OldManPicBack)
 	call UncompressSpriteFromDE
 	predef ScaleSpriteByTwo
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	xor a
 	ldh [hOAMTile], a ; initial tile number
 	ld b, $7 ; 7 columns
@@ -6851,7 +6864,14 @@ BattleRandom:
 	ld a, [hl]
 	pop bc
 	pop hl
+	vc_hook Unknown_BattleRandom_ret_c
+	vc_patch BattleRandom_ret
+IF DEF(_RED_VC) || DEF(_BLUE_VC)
+	ret
+ELSE
 	ret c
+ENDC
+	vc_patch_end
 
 ; if we picked the last seed, we need to recalculate the nine seeds
 	push hl
@@ -6916,7 +6936,9 @@ HandleExplodingAnimation:
 
 PlayMoveAnimation:
 	ld [wAnimationID], a
+	vc_hook_red Reduce_move_anim_flashing_Confusion
 	call Delay3
+	vc_hook_red Reduce_move_anim_flashing_Psychic
 	predef MoveAnimation
 	callfar Func_78e98
 	ret
@@ -6935,11 +6957,11 @@ InitOpponent:
 DetermineWildOpponent:
 	ld a, [wd732]
 	bit 1, a
-	jr z, .asm_3ef2f
+	jr z, .notDebug
 	ldh a, [hJoyHeld]
-	bit 1, a ; B button pressed?
+	bit BIT_B_BUTTON, a
 	ret nz
-.asm_3ef2f
+.notDebug
 	ld a, [wNumberOfNoRandomBattleStepsLeft]
 	and a
 	ret nz
@@ -7080,7 +7102,7 @@ _LoadTrainerPic:
 	jr z, .chelleBattle
 	ld a, [wLinkState]
 	and a
-	ld a, BANK(TrainerPics) ; this is where all the trainer pics are (not counting Red's)
+	ld a, BANK("Pics 6") ; this is where all the trainer pics are (not counting Red's)
 	jr z, .loadSprite
 	ld a, BANK(RedPicFront)
 .loadSprite
@@ -7103,9 +7125,9 @@ ResetCryModifiers:
 
 ; animates the mon "growing" out of the pokeball
 AnimateSendingOutMon:
-	ld a, [wPredefRegisters]
+	ld a, [wPredefHL]
 	ld h, a
-	ld a, [wPredefRegisters + 1]
+	ld a, [wPredefHL + 1]
 	ld l, a
 	ldh a, [hStartTileID]
 	ldh [hBaseTileID], a
@@ -7143,9 +7165,9 @@ AnimateSendingOutMon:
 	jr CopyUncompressedPicToHL
 
 CopyUncompressedPicToTilemap:
-	ld a, [wPredefRegisters]
+	ld a, [wPredefHL]
 	ld h, a
-	ld a, [wPredefRegisters + 1]
+	ld a, [wPredefHL + 1]
 	ld l, a
 	ldh a, [hStartTileID]
 CopyUncompressedPicToHL::

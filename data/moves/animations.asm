@@ -237,7 +237,7 @@ AttackAnimationPointers:
 ; if \2 is a subanimation_id:
 ;\3: tileset_id
 ;\4: delay
-battle_anim: MACRO
+MACRO battle_anim
 	IF _NARG == 4
 		db (\3 << 6) | \4
 		db \1 - 1
@@ -935,9 +935,6 @@ FocusEnergyAnim:
 	battle_anim FOCUS_ENERGY, SE_SPIRAL_BALLS_INWARD
 	db -1 ; end
 
-; BideAnim:
-	; battle_anim BIDE, SUBANIM_04, 1, 6
-	; db -1 ; end
 
 MetronomeAnim:
 	battle_anim AMNESIA, SE_MOVE_MON_HORIZONTALLY

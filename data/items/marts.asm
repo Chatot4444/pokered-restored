@@ -1,67 +1,50 @@
 ; mart inventories are below
 ; they are texts
 
-; Viridian
 ViridianCashierText::
 	script_mart POKE_BALL, POTION, ANTIDOTE
 	
 ViridianCashierText2::
 	script_mart ULTRA_BALL, HYPER_POTION, MAX_REPEL, ESCAPE_ROPE, FULL_HEAL, REVIVE, TM_FISSURE
 
-; Pewter
 PewterCashierText::
 	script_mart POKE_BALL, POTION, ESCAPE_ROPE, ANTIDOTE, AWAKENING, PARLYZ_HEAL, $FF, TM_ROCK_TOMB
 
-; Cerulean
 CeruleanCashierText::
 	script_mart POKE_BALL, POTION, REPEL, ANTIDOTE, BURN_HEAL, AWAKENING, PARLYZ_HEAL, $FF, TM_BUBBLEBEAM
 
-; Bike shop
+BikeShopCashierText:: ; unreferenced
 	script_mart BICYCLE
 
-; Vermilion
 VermilionCashierText::
 	script_mart POKE_BALL, SUPER_POTION, ICE_HEAL, AWAKENING, PARLYZ_HEAL, REPEL, $FF, TM_THUNDERBOLT
 
-; Lavender
 LavenderCashierText::
 	script_mart GREAT_BALL, SUPER_POTION, REVIVE, ESCAPE_ROPE, SUPER_REPEL, ANTIDOTE, BURN_HEAL, ICE_HEAL, PARLYZ_HEAL
 
-; Celadon Dept. Store 2F (1)
 CeladonMart2Clerk1Text::
 	script_mart GREAT_BALL, SUPER_POTION, REVIVE, SUPER_REPEL, FULL_HEAL, $FF, TM_MEGA_DRAIN
 
-; Celadon Dept. Store 2F (2)
 CeladonMart2Clerk2Text::
 	script_mart  TM_DOUBLE_TEAM, TM_REFLECT, TM_AERIAL_ACE, TM_HORN_DRILL, TM_SLUDGE_BOMB, TM_MEGA_PUNCH, TM_MEGA_KICK, TM_TAKE_DOWN, TM_SUBMISSION, TM_WHIRLWIND, TM_THUNDER_WAVE, $FF
 
-; Celadon Dept. Store 4F
 CeladonMart4ClerkText::
 	script_mart POKE_DOLL, FIRE_STONE, THUNDER_STONE, WATER_STONE, LEAF_STONE, MOON_STONE, SUN_STONE, ICE_STONE, TRADE_STONE, FRIEND_STONE
 
-; Celadon Dept. Store 5F (1)
 CeladonMart5Clerk1Text::
 	script_mart X_ACCURACY, GUARD_SPEC, DIRE_HIT, X_ATTACK, X_DEFEND, X_SPEED, X_SPECIAL
 
-; Celadon Dept. Store 5F (2)
 CeladonMart5Clerk2Text::
 	script_mart HP_UP, PROTEIN, IRON, CARBOS, CALCIUM
 
-; Fuchsia
 FuchsiaCashierText::
 	script_mart ULTRA_BALL, GREAT_BALL, SUPER_POTION, REVIVE, FULL_HEAL, SUPER_REPEL, $FF, TM_TOXIC
 
-; unused?
-;	script_mart GREAT_BALL, HYPER_POTION, SUPER_POTION, FULL_HEAL , REVIVE
-
-; Cinnabar
 CinnabarCashierText::
 	script_mart ULTRA_BALL, GREAT_BALL, HYPER_POTION, MAX_REPEL, ESCAPE_ROPE, FULL_HEAL, REVIVE, $FF, TM_FIRE_BLAST
 
-; Saffron
 SaffronCashierText::
 	script_mart GREAT_BALL, HYPER_POTION, MAX_REPEL, FULL_HEAL, REVIVE, $FF, TM_PSYWAVE
 
-; Indigo
 IndigoCashierText::
 	script_mart ULTRA_BALL, FULL_RESTORE, MAX_POTION, FULL_HEAL, REVIVE, TM_EARTHQUAKE, TM_SEISMIC_TOSS, TM_BODY_SLAM, TM_DOUBLE_EDGE, TM_BLIZZARD, TM_SKY_ATTACK, TM_EXPLOSION 

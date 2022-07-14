@@ -1,6 +1,6 @@
 MtMoonSummit_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, ArticunogTrainerHeader
+	ld hl, MtMoonSummitTrainerHeaders
 	ld de, MtMoonSummit_ScriptPointers
 	ld a, [wMtMoonSummitCurScript]
 	call ExecuteCurMapScriptInTable
@@ -16,6 +16,8 @@ MtMoonSummit_TextPointers:
 	dw ArticunogText
 	dw BoulderText
 
+MtMoonSummitTrainerHeaders:
+	def_trainers 7
 ArticunogTrainerHeader:
 	trainer EVENT_BEAT_ARTICUNOG, 0, ArticunogBattleText, ArticunogBattleText, ArticunogBattleText
 	db -1 ; end

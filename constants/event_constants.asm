@@ -99,9 +99,9 @@
 	const EVENT_BEAT_POKEMONTOWER_7_TRAINER_2
 	const_skip 3
 	const EVENT_RESCUED_MR_FUJI_2
-	const_skip 14
+	const_skip 13
 	const EVENT_BEAT_MOLTRESG
-	const_skip
+	const_skip 2
 	const EVENT_GOT_POKE_FLUTE
 
 ; Vermilion City events
@@ -735,19 +735,23 @@
 	const_next $8E0
 	const ELITE4_EVENTS_START
 	const EVENT_BEAT_LORELEIS_ROOM_TRAINER_0
-	const_skip 4
+	const EVENT_BEAT_LORELEIS_ROOM_TRAINER_1
+	const_skip 3
 	const EVENT_AUTOWALKED_INTO_LORELEIS_ROOM
 	const_skip 2
 	const EVENT_BEAT_BRUNOS_ROOM_TRAINER_0
-	const_skip 4
+	const EVENT_BEAT_BRUNOS_ROOM_TRAINER_1
+	const_skip 3
 	const EVENT_AUTOWALKED_INTO_BRUNOS_ROOM
 	const_skip 2
 	const EVENT_BEAT_AGATHAS_ROOM_TRAINER_0
-	const_skip 4
+	const EVENT_BEAT_AGATHAS_ROOM_TRAINER_1
+	const_skip 3
 	const EVENT_AUTOWALKED_INTO_AGATHAS_ROOM
 	const_skip 2
 	const EVENT_BEAT_LANCES_ROOM_TRAINER_0
-	const_skip 4
+	const EVENT_BEAT_LANCES_ROOM_TRAINER_1
+	const_skip 3
 	const EVENT_BEAT_LANCE
 	const EVENT_LANCES_ROOM_LOCK_DOOR
 	const_skip
@@ -792,4 +796,4 @@
 
 ; End of events
 	const_next $A00
-NUM_EVENTS EQU const_value
+DEF NUM_EVENTS EQU const_value

@@ -50,11 +50,11 @@ INCLUDE "audio/sfx/push_boulder_1.asm"
 INCLUDE "audio/sfx/ss_anne_horn_1.asm"
 INCLUDE "audio/sfx/withdraw_deposit_1.asm"
 INCLUDE "audio/sfx/safari_zone_pa.asm"
-
 INCLUDE "audio/sfx/get_item1_1.asm"
 INCLUDE "audio/sfx/pokedex_rating_1.asm"
 INCLUDE "audio/sfx/get_item2_1.asm"
 INCLUDE "audio/sfx/get_key_item_1.asm"
+
 
 
 SECTION "Sound Effects 2", ROMX
@@ -113,10 +113,8 @@ INCLUDE "audio/sfx/battle_33.asm"
 INCLUDE "audio/sfx/battle_34.asm"
 INCLUDE "audio/sfx/battle_35.asm"
 INCLUDE "audio/sfx/battle_36.asm"
-
 INCLUDE "audio/sfx/level_up.asm"
 INCLUDE "audio/sfx/caught_mon.asm"
-
 INCLUDE "audio/sfx/pokeflute_ch5_ch6.asm"
 INCLUDE "audio/sfx/pokeflute_ch7.asm"
 

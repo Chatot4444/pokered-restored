@@ -220,4 +220,5 @@
 	const DEX_ARTICUNOG			 ; 214
 	const DEX_ZAPDOSG			 ; 215
 	const DEX_MOLTRESG			 ; 216
-NUM_POKEMON EQU const_value - 1
+DEF NUM_POKEMON EQU const_value - 1
+

@@ -26,13 +26,13 @@ _MoveDeleterWhichMoveText::
 _MoveDeleterConfirmText::
 	text "Make it forget"
 	line "@"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text "?"
 	prompt
 
 _MoveDeleterForgotText::
 	text "@"
-	text_ram wcf4b
+	text_ram wStringBuffer
 	text " was"
 	line "forgotten!"
 	prompt

@@ -1,15 +1,15 @@
 TowerGrounds_Object:
 	db $3 ; border block
 	
-	def_warps
-	warp 17, 43, 3, POKEMON_TOWER_1F
-	warp 18, 43, 4, POKEMON_TOWER_1F
+	def_warp_events
+	warp_event 17, 43, POKEMON_TOWER_1F, 4
+	warp_event 18, 43, POKEMON_TOWER_1F, 5
 	
-	def_signs
+	def_bg_events
 	
-	def_objects
-	object SPRITE_BIRD, 5, 5, STAY, DOWN, 1, MOLTRESG, 50 | OW_POKEMON
-	object SPRITE_BOULDER, 17, 40, STAY, BOULDER_MOVEMENT_BYTE_2, 2 ; person
-	object SPRITE_BOULDER, 21, 11, STAY, BOULDER_MOVEMENT_BYTE_2, 3 ; person
+	def_object_events
+	object_event 5, 5, SPRITE_BIRD, STAY, DOWN, 1, MOLTRESG, 50 | OW_POKEMON
+	object_event 17, 40, SPRITE_BOULDER, STAY, BOULDER_MOVEMENT_BYTE_2, 2 ; person
+	object_event 21, 11, SPRITE_BOULDER, STAY, BOULDER_MOVEMENT_BYTE_2, 3 ; person
 	
 	def_warps_to TOWER_GROUNDS

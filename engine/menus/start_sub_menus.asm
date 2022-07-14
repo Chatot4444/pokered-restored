@@ -65,7 +65,7 @@ StartMenu_Pokemon::
 	push af
 	call LoadScreenTilesFromBuffer1 ; restore saved screen
 	pop af
-	bit 1, a ; was the B button pressed?
+	bit BIT_B_BUTTON, a
 	jp nz, .loop
 ; if the B button wasn't pressed
 	ld a, [wMaxMenuItem]
@@ -405,7 +405,7 @@ StartMenu_Item::
 	ld [hl], a ; old menu item id
 	call HandleMenuInput
 	call PlaceUnfilledArrowMenuCursor
-	bit 1, a ; was the B button pressed?
+	bit BIT_B_BUTTON, a
 	jr z, .useOrTossItem
 	jp ItemMenuLoop
 .useOrRegister
@@ -421,7 +421,7 @@ StartMenu_Item::
 	ld a, [wcf91]
 	ld [wd11e], a
 	call GetItemName
-	call CopyStringToCF4B ; copy name to wcf4b
+	call CopyToStringBuffer
 	ld a, [wCurrentMenuItem]
 	and a
 	jr nz, .tossItem
@@ -751,7 +751,7 @@ SwitchPartyMon_ClearGfx:
 	dec c
 	jr nz, .clearMonBGLoop
 	pop af
-	ld hl, wOAMBuffer
+	ld hl, wShadowOAM
 	ld bc, $10
 	call AddNTimes
 	ld de, $4

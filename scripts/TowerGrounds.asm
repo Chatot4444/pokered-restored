@@ -1,6 +1,6 @@
 TowerGrounds_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, MoltresgTrainerHeader
+	ld hl, TowerGroundsTrainerHeaders
 	ld de, TowerGrounds_ScriptPointers
 	ld a, [wTowerGroundsCurScript]
 	call ExecuteCurMapScriptInTable
@@ -17,6 +17,8 @@ TowerGrounds_TextPointers:
 	dw BoulderText
 	dw BoulderText
 
+TowerGroundsTrainerHeaders:
+	def_trainers 5
 MoltresgTrainerHeader:
 	trainer EVENT_BEAT_MOLTRESG, 0, MoltresgBattleText, MoltresgBattleText, MoltresgBattleText
 	db -1 ; end

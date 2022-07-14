@@ -1,5 +1,5 @@
-HIDE EQU $11
-SHOW EQU $15
+DEF HIDE EQU $11
+DEF SHOW EQU $15
 
 ; MissableObjects indexes (see data/maps/hide_show_data.asm)
 ; this is a list of the sprites that can be enabled/disabled during the game
@@ -264,4 +264,5 @@ SHOW EQU $15
 	const HS_ZAPDOSG
 	const HS_ARTICUNOG
 	const HS_MOLTRESG
-NUM_HS_OBJECTS EQU const_value
+DEF NUM_HS_OBJECTS EQU const_value
+

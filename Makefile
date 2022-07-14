@@ -1,19 +1,27 @@
-roms := pokered-restored.gbc pokeblue-restored.gbc pokeblue-restored_debug.gbc
+roms := \
+	pokered-restored.gbc \
+	pokeblue-restored.gbc \
+	pokeblue-restored_debug.gbc
+patches := \
+	pokered-restored.patch \
+	pokeblue-restored.patch
 
 rom_obj := \
-audio.o \
-home.o \
-main.o \
-maps.o \
-text.o \
-wram.o \
-gfx/pics.o \
-gfx/sprites.o \
-gfx/tilesets.o
+	audio.o \
+	home.o \
+	main.o \
+	maps.o \
+	ram.o \
+	text.o \
+	gfx/pics.o \
+	gfx/sprites.o \
+	gfx/tilesets.o
 
 pokered-restored_obj        := $(rom_obj:.o=_red.o)
 pokeblue-restored_obj       := $(rom_obj:.o=_blue.o)
 pokeblue-restored_debug_obj := $(rom_obj:.o=_blue_debug.o)
+pokered-restored_vc_obj     := $(rom_obj:.o=_red_vc.o)
+pokeblue-restored_vc_obj    := $(rom_obj:.o=_blue_vc.o)
 
 
 ### Build tools
@@ -43,23 +51,44 @@ all: $(roms)
 red:        pokered-restored.gbc
 blue:       pokeblue-restored.gbc
 blue_debug: pokeblue-restored_debug.gbc
+red_vc:     pokered-restored.patch
+blue_vc:    pokeblue-restored.patch
 
 clean: tidy
-	find gfx \( -iname '*.1bpp' -o -iname '*.2bpp' -o -iname '*.pic' \) -delete
-	find audio/pikachu_cries \( -iname '*.pcm' \) -delete
+	find gfx \
+	     \( -iname '*.1bpp' \
+	        -o -iname '*.2bpp' \
+	        -o -iname '*.pic' \) \
+	     -delete
+	find audio/pikachu_cries \
+		\( -iname '*.pcm' \) \
+		-delete
 
 tidy:
-	rm -f $(roms) $(pokered-restored_obj) $(pokeblue-restored_obj) $(pokeblue-restored_debug_obj) $(roms:.gbc=.map) $(roms:.gbc=.sym) rgbdscheck.o
+	$(RM) $(roms) \
+	      $(roms:.gbc=.sym) \
+	      $(roms:.gbc=.map) \
+	      $(patches) \
+	      $(patches:.patch=_vc.gbc) \
+	      $(patches:.patch=_vc.sym) \
+	      $(patches:.patch=_vc.map) \
+	      $(patches:%.patch=vc/%.constants.sym) \
+	      $(pokered-restored_obj) \
+	      $(pokeblue-restored_obj) \
+	      $(pokered-restored_vc_obj) \
+	      $(pokeblue-restored_vc_obj) \
+	      $(pokeblue-restored_debug_obj) \
+	      rgbdscheck.o
 	$(MAKE) clean -C tools/
 
-compare: $(roms)
+compare: $(roms) $(patches)
 	@$(SHA1) -c roms.sha1
 
 tools:
 	$(MAKE) -C tools/
 
 
-RGBASMFLAGS = -h -L -Weverything
+RGBASMFLAGS = -h -L -Weverything -Wnumeric-string=2 -Wtruncation=1
 # Create a sym/map for debug purposes if `make` run with `DEBUG=1`
 ifeq ($(DEBUG),1)
 RGBASMFLAGS += -E
@@ -68,6 +97,11 @@ endif
 $(pokered-restored_obj):        RGBASMFLAGS += -D _RED
 $(pokeblue-restored_obj):       RGBASMFLAGS += -D _BLUE
 $(pokeblue-restored_debug_obj): RGBASMFLAGS += -D _BLUE -D _DEBUG
+$(pokered-restored_vc_obj):     RGBASMFLAGS += -D _RED -D _RED_VC
+$(pokeblue-restored_vc_obj):    RGBASMFLAGS += -D _BLUE -D _BLUE_VC
+
+%.patch: vc/%.constants.sym %_vc.gbc %.gbc vc/%.patch.template
+	tools/make_patch $*_vc.sym $^ $@
 
 rgbdscheck.o: rgbdscheck.asm
 	$(RGBASM) -o $@ $<
@@ -90,6 +124,12 @@ $(info $(shell $(MAKE) -C tools))
 $(foreach obj, $(pokered-restored_obj), $(eval $(call DEP,$(obj),$(obj:_red.o=.asm))))
 $(foreach obj, $(pokeblue-restored_obj), $(eval $(call DEP,$(obj),$(obj:_blue.o=.asm))))
 $(foreach obj, $(pokeblue-restored_debug_obj), $(eval $(call DEP,$(obj),$(obj:_blue_debug.o=.asm))))
+$(foreach obj, $(pokered-restored_vc_obj), $(eval $(call DEP,$(obj),$(obj:_red_vc.o=.asm))))
+$(foreach obj, $(pokeblue-restored_vc_obj), $(eval $(call DEP,$(obj),$(obj:_blue_vc.o=.asm))))
+
+# Dependencies for VC files that need to run scan_includes
+%.constants.sym: %.constants.asm $(shell tools/scan_includes %.constants.asm) | rgbdscheck.o
+	$(RGBASM) $< > $@
 
 endif
 
@@ -97,13 +137,19 @@ endif
 %.asm: ;
 
 
+
 pokered-restored_pad        = 0x00
 pokeblue-restored_pad       = 0x00
+pokered-restored_vc_pad     = 0x00
+pokeblue-restored_vc_pad    = 0x00
 pokeblue-restored_debug_pad = 0xff
 
 pokered-restored_opt        = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "RED RESTORED"
 pokeblue-restored_opt       = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "BLUE RESTORED"
 pokeblue-restored_debug_opt = -cjsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "BLUE RESTORED"
+pokered-restored_vc_opt     = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "RED RESTORED"
+pokeblue-restored_vc_opt    = -jsv -n 0 -k 01 -l 0x33 -m 0x13 -r 03 -t "BLUE RESTORED"
+
 
 %.gbc: $$(%_obj) layout.link
 	$(RGBLINK) -p $($*_pad) -d -m $*.map -n $*.sym -l layout.link -o $@ $(filter %.o,$^)

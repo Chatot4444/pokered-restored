@@ -1,6 +1,6 @@
 ViridianWilds_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, ZapdosgTrainerHeader
+	ld hl, ViridianWildsTrainerHeaders
 	ld de, ViridianWilds_ScriptPointers
 	ld a, [wViridianWildsCurScript]
 	call ExecuteCurMapScriptInTable
@@ -16,6 +16,8 @@ ViridianWilds_TextPointers:
 	dw ZapdosgText
 	dw BoulderText
 
+ViridianWildsTrainerHeaders:
+	def_trainers 0
 ZapdosgTrainerHeader:
 	trainer EVENT_BEAT_ZAPDOSG, 0, ZapdosgBattleText, ZapdosgBattleText, ZapdosgBattleText
 	db -1 ; end

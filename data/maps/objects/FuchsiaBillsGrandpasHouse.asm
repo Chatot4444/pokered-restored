@@ -1,15 +1,15 @@
 FuchsiaBillsGrandpasHouse_Object:
 	db $a ; border block
 
-	def_warps
-	warp  2,  7, 1, LAST_MAP
-	warp  3,  7, 1, LAST_MAP
+	def_warp_events
+	warp_event  2,  7, LAST_MAP, 2
+	warp_event  3,  7, LAST_MAP, 2
 
-	def_signs
+	def_bg_events
 
-	def_objects
-	object SPRITE_MIDDLE_AGED_WOMAN,  2,  4, STAY, DOWN, 1 ; person
-	object SPRITE_GAMBLER,  5,  4, STAY, DOWN, 2 ; person
-	object SPRITE_YOUNGSTER,  7,  2, STAY, UP, 3 ; person
+	def_object_events
+	object_event  2,  4, SPRITE_MIDDLE_AGED_WOMAN, STAY, DOWN, 1 ; person
+	object_event  5,  4, SPRITE_GAMBLER, STAY, DOWN, 2 ; person
+	object_event  7,  2, SPRITE_YOUNGSTER, STAY, UP, 3 ; person
 
 	def_warps_to FUCHSIA_BILLS_GRANDPAS_HOUSE

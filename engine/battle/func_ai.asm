@@ -102,27 +102,27 @@ CheckAISwitched:
 	jr z, .party1
 	jr .party0
 .party5
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	bit 6, a
 	jr .partyret
 .party4
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	bit 5, a
 	jr .partyret
 .party3
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	bit 4, a
 	jr .partyret
 .party2
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	bit 3, a
 	jr .partyret
 .party1
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	bit 2, a
 	jr .partyret
 .party0
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	bit 1, a
 .partyret
 	ret
@@ -141,27 +141,27 @@ ClearAISwitched:
 	jr z, .party1
 	jr .party0
 .party5
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	res 6, a
 	jr .partyret
 .party4
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	res 5, a
 	jr .partyret
 .party3
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	res 4, a
 	jr .partyret
 .party2
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	res 3, a
 	jr .partyret
 .party1
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	res 2, a
 	jr .partyret
 .party0
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	res 1, a
 .partyret
 	ret
@@ -180,34 +180,34 @@ SetAISwitched:
 	jr z, .party1
 	jr .party0
 .party5
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	set 6, a
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 	jr .partyret
 .party4
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	set 5, a
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 	jr .partyret
 .party3
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	set 4, a
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 	jr .partyret
 .party2
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	set 3, a
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 	jr .partyret
 .party1
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	set 2, a
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 	jr .partyret
 .party0
-	ld a, [wUnusedD366]
+	ld a, [wAISwitchingTracker]
 	set 1, a
-	ld [wUnusedD366], a
+	ld [wAISwitchingTracker], a
 .partyret
 	ret
 	
@@ -381,7 +381,7 @@ ScoreAIParty:
 	ld bc, $04	;get status byte
 	call GetRosterStructData
 	ld c, a	;back up the status byte in c
-	and SLP
+	and SLP_MASK
 	cp $02
 	ld b, 5
 	push af
