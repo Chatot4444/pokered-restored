@@ -1384,6 +1384,12 @@ EnemySendOutFirstMon:
 	ld [wEnemyMonSpecies2], a
 	ld [wcf91], a
 	call LoadEnemyMonData
+	ld a, [wEnemyMonStatus]
+	bit BADLY_POISONED_STATUS, a
+	jr nz, .notBadlyPoisoned
+	ld hl, wEnemyBattleStatus3
+	set BADLY_POISONED, [hl]
+.notBadlyPoisoned
 	ld hl, wEnemyMonHP
 	ld a, [hli]
 	ld [wLastSwitchInEnemyMonHP], a
@@ -1881,6 +1887,12 @@ DrawPlayerHUDAndHPBar:
 	ld de, wLoadedMonLevel
 	ld bc, wBattleMonPP - wBattleMonLevel
 	call CopyData
+	ld a, [wBattleMonStatus]
+	bit BADLY_POISONED_STATUS, a
+	jr nz, .notBadlyPoisoned
+	ld hl, wPlayerBattleStatus3
+	set BADLY_POISONED, [hl]
+.notBadlyPoisoned
 	hlcoord 14, 8
 	push hl
 	inc hl

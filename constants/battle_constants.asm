@@ -63,6 +63,7 @@ DEF SLP_MASK EQU %111 ; 0-7 turns
 	const BRN ; 4
 	const FRZ ; 5
 	const PAR ; 6
+	const BADLY_POISONED_STATUS ; stores badly poisoned when switching out
 
 DEF MAX_STAT_VALUE EQU 999
 

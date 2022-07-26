@@ -103,12 +103,12 @@ AlreadyAsleepText:
 
 PoisonEffect:
 	ld hl, wEnemyMonStatus
-	ld de, wPlayerMoveType
+	ld de, wPlayerMoveNum
 	ldh a, [hWhoseTurn]
 	and a
 	jr z, .poisonEffect
 	ld hl, wBattleMonStatus
-	ld de, wEnemyMoveType
+	ld de, wEnemyMoveNum
 .poisonEffect
 	call CheckTargetSubstitute
 	jp nz, .noEffect ; can't poison a substitute target
@@ -125,7 +125,7 @@ PoisonEffect:
 	ld a, [de]
 	inc de
 	cp POISONPOWDER
-	jr z, .notPoisonPowder
+	jr nz, .notPoisonPowder
 	ld a, [hli]
 	cp GRASS
 	jp z, .noEffect
@@ -177,6 +177,7 @@ PoisonEffect:
 	set 3, [hl] ; mon is now poisoned
 	push de
 	dec de
+	push hl
 	ldh a, [hWhoseTurn]
 	and a
 	ld b, ANIM_C7
@@ -194,11 +195,14 @@ PoisonEffect:
 	jr nz, .normalPoison ; done if move is not Toxic
 .toxicPoison	
 	set BADLY_POISONED, [hl] ; else set Toxic battstatus
+	pop hl 
+	set BADLY_POISONED_STATUS, [hl] ;set toxic in status so it is saved when switching out
 	xor a
 	ld [de], a
 	ld hl, BadlyPoisonedText
 	jr .continue
 .normalPoison
+	pop hl
 	ld hl, PoisonedText
 .continue
 	pop de
@@ -1001,9 +1005,10 @@ UpdateLoweredStatDone:
 	ld a, $ff
 .playerTurn2
 	add hl, bc
+	inc c
 .badgeLoop
 	dec c
-	jr c, .gotBadges
+	jr z, .gotBadges
 	srl a
 	srl a
 	jr .badgeLoop

@@ -14,7 +14,7 @@ Music_Celadon_Ch1::
 	octave 3
 	note D_, 8
 
-Music_Celadon_branch_b6d4::
+.mainloop:
 	duty_cycle 2
 	note_type 12, 11, 2
 	note G_, 4
@@ -110,7 +110,7 @@ Music_Celadon_branch_b6d4::
 	note G_, 4
 	note F#, 4
 	note A_, 4
-	sound_loop 0, Music_Celadon_branch_b6d4
+	sound_loop 0, .mainloop
 
 
 Music_Celadon_Ch2::
@@ -128,7 +128,7 @@ Music_Celadon_Ch2::
 	note_type 12, 10, 0
 	note A_, 8
 
-Music_Celadon_branch_b74a::
+.mainloop:
 	duty_cycle 2
 	note_type 12, 12, 2
 	octave 4
@@ -229,7 +229,7 @@ Music_Celadon_branch_b74a::
 	note D_, 2
 	note E_, 2
 	note D_, 8
-	sound_loop 0, Music_Celadon_branch_b74a
+	sound_loop 0, .mainloop
 
 
 Music_Celadon_Ch3::
@@ -245,7 +245,7 @@ Music_Celadon_Ch3::
 	note F#, 1
 	note G_, 1
 
-Music_Celadon_branch_b7c1::
+.mainloop:
 	octave 4
 	note D_, 2
 	note B_, 2
@@ -414,4 +414,4 @@ Music_Celadon_branch_b7c1::
 	note G_, 2
 	note F#, 2
 	note E_, 2
-	sound_loop 0, Music_Celadon_branch_b7c1
+	sound_loop 0, .mainloop

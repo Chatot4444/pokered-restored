@@ -3,7 +3,12 @@ TowerGroundsMons:
 	db  25, GASTLY
 	db  26, RATTATAA
 	db  28, RATTATAA
+IF DEF(_RED)
 	db  27, MEOWTHA
+ENDC
+IF DEF(_BLUE)
+	db  27, MEOWTHG
+ENDC
 	db  26, GASTLY
 	db  25, CUBONE
 	db  30, HAUNTER
