@@ -1,6 +1,6 @@
 # Instructions
 
-These instructions explain how to set up the tools required to build **pokered**, including [**rgbds**](https://github.com/gbdev/rgbds), which assembles the source files into a ROM.
+These instructions explain how to set up the tools required to build **pokered-restored**, including [**rgbds**](https://github.com/gbdev/rgbds), which assembles the source files into a ROM.
 
 If you run into trouble, ask for help on IRC or Discord (see [README.md](README.md)).
 
@@ -50,7 +50,7 @@ Now open the **Cygwin terminal** and enter the following commands.
 
 Cygwin has its own file system that's within Windows, at **C:\cygwin64\home\\*\<user>***. If you don't want to store pokered there, you'll have to change the **current working directory** every time you open Cygwin.
 
-For example, if you want to store pokered in **C:\Users\\*\<user>*\Desktop**:
+For example, if you want to store pokered-restored in **C:\Users\\*\<user>*\Desktop**:
 
 ```bash
 cd /cygdrive/c/Users/<user>/Desktop
@@ -58,7 +58,7 @@ cd /cygdrive/c/Users/<user>/Desktop
 
 (The Windows `C:\` drive is called `/cygdrive/c/` in Cygwin. Replace *\<user>* in the example path with your username.)
 
-Now you're ready to [build **pokered**](#build-pokered).
+Now you're ready to [build **pokered-restored**](#build-pokered-restored).
 
 
 ## macOS
@@ -69,7 +69,7 @@ Open **Terminal** and prepare to enter commands.
 
 Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#pre-built) for macOS to install **rgbds 0.5.2**.
 
-Now you're ready to [build **pokered**](#build-pokered).
+Now you're ready to [build **pokered-restored**](#build-pokered-restored).
 
 
 ## Linux
@@ -78,7 +78,7 @@ Open **Terminal** and enter the following commands, depending on which distro yo
 
 ### Debian or Ubuntu
 
-To install the software required for **pokered**:
+To install the software required for **pokered-restored**:
 
 ```bash
 sudo apt-get install make gcc git
@@ -88,7 +88,7 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building
 
 ### OpenSUSE
 
-To install the software required for **pokered**:
+To install the software required for **pokered-restored**:
 
 ```bash
 sudo zypper install make gcc git
@@ -98,7 +98,7 @@ Then follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building
 
 ### Arch Linux
 
-To install the software required for **pokered**:
+To install the software required for **pokered-restored**:
 
 ```bash
 sudo pacman -S make gcc git
@@ -110,7 +110,7 @@ If you want to compile and install **rgbds** yourself instead, then follow the [
 
 ### Termux
 
-To install the software required for **pokered**:
+To install the software required for **pokered-restored**:
 
 ```bash
 sudo apt install make clang git sed
@@ -135,19 +135,19 @@ If your distro is not listed here, try to find the required software in its repo
 
 If `rgbds` is not available, you'll need to follow the [**rgbds** instructions](https://rgbds.gbdev.io/install#building-from-source) to build **rgbds 0.5.2** from source.
 
-Now you're ready to [build **pokered**](#build-pokered).
+Now you're ready to [build **pokered-restored**](#build-pokered-restored).
 
 
-## Build pokered
+## Build pokered-restored
 
-To download the **pokered** source files:
+To download the **pokered-restored** source files:
 
 ```bash
-git clone https://github.com/pret/pokered
-cd pokered
+git clone https://github.com/Chatot4444/pokered-restored
+cd pokered-restored
 ```
 
-To build **pokered.gbc** and **pokeblue.gbc**:
+To build **pokered-restored.gbc** and **pokeblue-restored.gbc**:
 
 ```bash
 make
