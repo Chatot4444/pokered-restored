@@ -882,13 +882,13 @@ ItemUseMedicine:
 .checkItemType
 	ld a, [wcf91]
 	cp REVIVE
-	jr nc, .healHP ; if it's a Revive or Max Revive
+	jp nc, .healHP ; if it's a Revive or Max Revive
 	cp FULL_HEAL
 	jr z, .cureStatusAilment ; if it's a Full Heal
 	cp HP_UP
 	jp nc, .useVitamin ; if it's a vitamin or Rare Candy
 	cp FULL_RESTORE
-	jr nc, .healHP ; if it's a Full Restore or one of the potions
+	jp nc, .healHP ; if it's a Full Restore or one of the potions
 ; fall through if it's one of the status-specific healing items
 .cureStatusAilment
 	ld bc, wPartyMon1Status - wPartyMon1
@@ -911,10 +911,18 @@ ItemUseMedicine:
 	jr z, .checkMonStatus
 	lb bc, FULL_HEAL_MSG, $ff ; Full Heal
 .checkMonStatus
+	ld a, [wPlayerBattleStatus1]
+	bit CONFUSED, a
+	jr z, .notConfused
+	ld a, c
+	inc a ; cp $ff
+	jr z, .canCure
+.notConfused
 	ld a, [hl] ; pokemon's status
 	and c ; does the pokemon have a status ailment the item can cure?
 	jp z, .healingItemNoEffect
 ; if the pokemon has a status the item can heal
+.canCure
 	xor a
 	ld [hl], a ; remove the status ailment in the party data
 	ld a, b
@@ -928,13 +936,23 @@ ItemUseMedicine:
 	push hl
 	ld hl, wPlayerBattleStatus3
 	res BADLY_POISONED, [hl] ; heal Toxic status
+	dec hl
+	dec hl
+	res CONFUSED, [hl] ; heal confusion
 	pop hl
 	ld bc, wPartyMon1Stats - wPartyMon1Status
 	add hl, bc ; hl now points to party stats
 	ld de, wBattleMonStats
 	ld bc, NUM_STATS * 2
 	call CopyData ; copy party stats to in-battle stat data
-	; predef DoubleOrHalveSelectedStats
+	push hl
+	xor a
+	ld [wCalculateWhoseStats], a
+	callfar CalculateModifiedStats
+	ld a, [wOptions2]
+	bit 2, a
+	callfar_z ApplyBadgeStatBoosts
+	pop hl
 	jp .doneHealing
 .healHP
 	inc hl ; hl = address of current HP

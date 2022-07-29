@@ -11,8 +11,7 @@ HealEffect_:
 .healEffect
 	ld b, a
 	ld a, [de]
-	cp [hl] ; most significant bytes comparison is ignored
-	        ; causes the move to miss if max HP is 255 or 511 points higher than the current HP
+	cp [hl] ; most significant bytes comparison is no longer ignored
 	inc de
 	inc hl
 	jr nz, .passed
@@ -22,23 +21,17 @@ HealEffect_:
 .passed
 	ld a, b
 	cp REST
-	jr nz, .healHP
+	jp nz, .healHP
 	push hl
 	push de
 	push af
 	ld c, 50
 	call DelayFrames
-	ld hl, wBattleMonStatus
-	ldh a, [hWhoseTurn]
-	and a
-	jr z, .restEffect
-	ld hl, wEnemyMonStatus
-.restEffect
-;remove toxic and clear toxic counter
+;remove status if using rest
 .checkToxic	;remove toxic and clear toxic counter
 	ld hl, wPlayerBattleStatus3	;load in for toxic bit
 	ld de, wPlayerToxicCounter	;load in for toxic counter
-	ld a, [hWhoseTurn]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .undoToxic
 	ld hl, wEnemyBattleStatus3	;load in for toxic bit
@@ -47,9 +40,40 @@ HealEffect_:
 	res BADLY_POISONED, [hl] ; heal Toxic status
 	xor a	;clear a
 	ld [de], a	;write a to toxic counter
+	ldh a, [hWhoseTurn]
+	and a
+	jr nz, .enemyStats
+; reset player stats
+	ld hl, wPartyMon1Stats
+	ld a, [wPlayerMonNumber]
+	ld bc, wPartyMon2 - wPartyMon1
+	call AddNTimes
+	ld de, wBattleMonStats
+	ld bc, NUM_STATS * 2
+	call CopyData ; copy party stats to in-battle stat data
+	xor a
+	ld [wCalculateWhoseStats], a
+	callfar CalculateModifiedStats
+	ld a, [wOptions2]
+	bit 2, a
+	callfar_z ApplyBadgeStatBoosts
+	jr .finishedStatReset
+; reset enemy stats
+.enemyStats
+	ld de, wEnemyMonStats
+	ld hl, wEnemyMonUnmodifiedMaxHP
+	ld bc, NUM_STATS * 2
+	call CopyData
+	ld a, $1
+	ld [wCalculateWhoseStats], a
+	callfar CalculateModifiedStats
+	ld a, [wOptions2]
+	bit 3, a
+	callfar_z ApplyBadgeStatBoosts.ApplyToEnemy
 ;reload the initial status info so the correct condtions can be cleared
+.finishedStatReset
 	ld hl, wBattleMonStatus
-	ld a, [hWhoseTurn]
+	ldh a, [hWhoseTurn]
 	and a
 	jr z, .noCondition
 	ld hl, wEnemyMonStatus
@@ -58,9 +82,9 @@ HealEffect_:
 	ld a, [hl]
 	and a
 	ld [hl], 2 ; clear status and set number of turns asleep to 2
-	ld hl, StartedSleepingEffect ; if mon didn't have an status
+	ld hl, StartedSleepingEffect ; if mon didn't have a status
 	jr z, .printRestText
-	ld hl, FellAsleepBecameHealthyText ; if mon had an status
+	ld hl, FellAsleepBecameHealthyText ; if mon had a status
 .printRestText
 	call PrintText
 	pop af

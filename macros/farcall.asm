@@ -4,10 +4,22 @@ MACRO farcall
 	call Bankswitch
 ENDM
 
+MACRO farcall_z
+	ld b, BANK(\1)
+	ld hl, \1
+	call z, Bankswitch
+ENDM
+
 MACRO callfar
 	ld hl, \1
 	ld b, BANK(\1)
 	call Bankswitch
+ENDM
+
+MACRO callfar_z
+	ld hl, \1
+	ld b, BANK(\1)
+	call z, Bankswitch
 ENDM
 
 MACRO farjp

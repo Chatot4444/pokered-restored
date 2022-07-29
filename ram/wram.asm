@@ -1308,11 +1308,8 @@ wCriticalHitOrOHKO:: db
 
 wMoveMissed:: db
 
-; always 0
-wPlayerStatsToDouble:: db
+	ds 2
 
-; always 0
-wPlayerStatsToHalve:: db
 
 ; bit 0 - bide
 ; bit 1 - thrash / petal dance
@@ -1339,11 +1336,7 @@ wPlayerBattleStatus2:: db
 ; bit 3 - transformed
 wPlayerBattleStatus3:: db
 
-; always 0
-wEnemyStatsToDouble:: db
-
-; always 0
-wEnemyStatsToHalve:: db
+	ds 2
 
 wEnemyBattleStatus1:: db
 wEnemyBattleStatus2:: db

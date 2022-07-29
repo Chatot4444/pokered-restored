@@ -51,12 +51,15 @@ SleepEffect:
 .notGrass
 	dec de
 	dec de
+	ld a, [de] ; dont check recharge if already statused
+	and a
+	jr nz, .skipRecharge
 	ld a, [bc]
 	bit NEEDS_TO_RECHARGE, a ; does the target need to recharge? (hyper beam)
 	res NEEDS_TO_RECHARGE, a ; target no longer needs to recharge
 	ld [bc], a
 	jr nz, .setSleepCounter ; if the target had to recharge, all hit tests will be skipped
-	                        ; including the event where the target already has another status
+.skipRecharge
 	ld a, [de]
 	ld b, a
 	and $7
@@ -364,7 +367,6 @@ FreezeBurnParalyzeEffect:
 .burn1
 	ld a, 1 << BRN
 	ld [wEnemyMonStatus], a
-	call HalveAttackDueToBurn ; halve attack of affected mon
 	ld a, ANIM_A9
 	call PlayBattleAnimation
 	ld hl, BurnedText
@@ -432,7 +434,6 @@ FreezeBurnParalyzeEffect:
 .burn2
 	ld a, 1 << BRN
 	ld [wBattleMonStatus], a
-	call HalveAttackDueToBurn
 	ld hl, BurnedText
 	jp PrintText
 .freeze2
@@ -753,9 +754,6 @@ UpdateStatDone:
 	ld a, [de]
 	cp SPEED_UP1_EFFECT
 	call z, QuarterSpeedDueToParalysis ; apply speed penalty to the player whose turn is not, if it's paralyzed
-	ld a, [de]
-	cp ATTACK_UP1_EFFECT
-	call z, HalveAttackDueToBurn ; apply attack penalty to the player whose turn is not, if it's burned
 	ldh a, [hWhoseTurn]
 	xor $1
 	ldh [hWhoseTurn], a
@@ -1034,8 +1032,6 @@ UpdateLoweredStatDone:
 	ld a, [de]
 	cp SPEED_DOWN1_EFFECT
 	call z, QuarterSpeedDueToParalysis
-	cp ATTACK_DOWN1_EFFECT
-	call z, HalveAttackDueToBurn
 	ld hl, MonsStatsFellText
 	jp PrintText
 	

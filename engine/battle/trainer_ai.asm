@@ -236,7 +236,7 @@ AIMoveChoiceModification1:
 	and a
 	jp z, .heavydiscourage	;heavily discourage counter if enemy is using zero-power move
 	ld a, [wPlayerMoveType]
-	cp FIRE
+	cp SPECIAL
 	jr c, .countercheck_end	; skip ahead if countering physical move
 	ld a, [wPlayerMoveEffect]
 	cp PHYS_BURN_SIDE_EFFECT1 ;check for elemental punches (they are physical in this hack) 
@@ -377,7 +377,7 @@ AIMoveChoiceModification1:
 	cp 10
 	jr c, .nodefupmove
 	ld a, [wPlayerMoveType]	;physical move types are numbers $00 to $08 while special is $14 to $1A
-	cp FIRE
+	cp SPECIAL
 	jp c, .heavydiscourage	;at this point, heavy discourage defense-boosting because player is using a special move of 10+ power
 .nodefupmove
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1567,7 +1567,10 @@ AICureStatus:
 	ld [hl], a ; clear status in enemy team roster
 	ld [wEnemyMonStatus], a ; clear status of active enemy
 	ld hl, wEnemyBattleStatus3
-	res 0, [hl]
+	res BADLY_POISONED, [hl]
+	dec hl
+	dec hl
+	res CONFUSED, [hl]
 	ret
 
 AIUseXAccuracy: ; unused

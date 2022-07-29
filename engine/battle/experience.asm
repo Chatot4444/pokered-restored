@@ -285,7 +285,7 @@ GainExperience:
 	xor a ; battle mon
 	ld [wCalculateWhoseStats], a
 	callfar CalculateModifiedStats
-	callfar ApplyBurnAndParalysisPenaltiesToPlayer
+	callfar ApplyParalysisPenaltyToPlayer
 	callfar ApplyBadgeStatBoosts
 	callfar DrawPlayerHUDAndHPBar
 	callfar PrintEmptyString

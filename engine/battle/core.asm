@@ -1329,9 +1329,7 @@ EnemySendOut:
 ; don't change wPartyGainExpFlags or wPartyFoughtCurrentEnemyFlags
 EnemySendOutFirstMon:
 	xor a
-	ld hl, wEnemyStatsToDouble ; clear enemy statuses
-	ld [hli], a
-	ld [hli], a
+	ld hl, wEnemyBattleStatus1 ; clear enemy statuses
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
@@ -1551,6 +1549,9 @@ TryRunningFromBattle:
 	ld a, [wIsInBattle]
 	dec a
 	jr nz, .trainerBattle ; jump if it's a trainer battle
+	ld a, [wEnemyBattleStatus1]
+	bit USING_TRAPPING_MOVE, a
+	jr nz, .cantEscape
 	ld a, [wNumRunAttempts]
 	inc a
 	ld [wNumRunAttempts], a
@@ -1613,7 +1614,7 @@ TryRunningFromBattle:
 	cp b
 	jr nc, .canEscape ; if the random value was less than or equal to the quotient
 	                  ; plus 30 times the number of attempts, the player can escape
-; can't escape
+.cantEscape
 	ld a, $1
 	ld [wActionResultOrTookBattleTurn], a ; you lose your turn when you can't escape
 	ld hl, CantEscapeText
@@ -1701,7 +1702,7 @@ LoadBattleMonFromParty:
 	ld de, wPlayerMonUnmodifiedLevel ; block of memory used for unmodified stats
 	ld bc, 1 + NUM_STATS * 2
 	call CopyData
-	call ApplyBurnAndParalysisPenaltiesToPlayer
+	call ApplyParalysisPenaltyToPlayer
 	ld a, [wOptions2]
 	bit 2, a
 	call nz, ApplyBadgeStatBoosts
@@ -1747,7 +1748,7 @@ LoadEnemyMonFromParty:
 	ld de, wEnemyMonUnmodifiedLevel ; block of memory used for unmodified stats
 	ld bc, 1 + NUM_STATS * 2
 	call CopyData
-	call ApplyBurnAndParalysisPenaltiesToEnemy
+	call ApplyParalysisPenaltyToEnemy
 	ld a, [wOptions2]
 	bit 3, a
 	call nz, ApplyBadgeStatBoosts.ApplyToEnemy
@@ -4203,13 +4204,32 @@ GetDamageVarsForPlayerAttack:
 	and a
 	ld d, a ; d = move power
 	ret z ; return if move power is zero
-	ld a, [hl] ; a = [wPlayerMoveType]
+	ld a, [hld] ; a = [wPlayerMoveType]
+	dec hl
+	dec hl ; hl = wPlayerMoveNum
 	cp SPECIAL ; types >= SPECIAL are all special
+	ld a, [hli] ; a = [wPlayerMoveNum], hl = wPlayerMoveEffect
 	jr nc, .specialAttack
-	ld a, [wPlayerMoveNum]
 	cp FIERY_WRATH
 	jr z, .specialAttack
 .physicalAttack
+	ld a, [wBattleMonStatus]
+	and 1 << BRN    ; if burned, halve move base power
+	jr z, .notBurn
+	srl d
+	ld a, d
+	and a
+	jr nz, .notBurn
+	inc d
+.notBurn
+	dec hl ; hl = wPlayerMoveNum
+	cp STOMP
+	jr nz, .notStomp
+	ld a, [wEnemyMonMinimized]
+	and a
+	jr nz, .notStomp
+	sla d  ; if using stomp and opponent is minimized, double base power
+.notStomp
 	ld hl, wEnemyMonDefense
 	ld a, [hli]
 	ld b, a
@@ -4254,17 +4274,9 @@ GetDamageVarsForPlayerAttack:
 	ld bc, wPartyMon2 - wPartyMon1
 	call AddNTimes
 	pop bc
-	ld a, [wBattleMonStatus]
-	and 1 << BRN    ; if burned, halve move base power
-	jr z, .scaleStats
-	srl d
-	ld a, d
-	and a
-	jr nz, .scaleStats
-	inc d
 	jr .scaleStats
 .specialAttack
-	ld a, [wPlayerMoveEffect]
+	ld a, [hl] ;  hl = wPlayerMoveEffect
 	cp PHYS_BURN_SIDE_EFFECT1
 	jr nc, .physicalAttack
 	ld hl, wEnemyMonSpecial
@@ -4367,13 +4379,32 @@ GetDamageVarsForEnemyAttack:
 	ld d, a ; d = move power
 	and a
 	ret z ; return if move power is zero
-	ld a, [hl] ; a = [wEnemyMoveType]
+	ld a, [hld] ; a = [wEnemyMoveType]
+	dec hl
+	dec hl ; hl = wEnemyMoveNum
 	cp SPECIAL ; types >= SPECIAL are all special
+	ld a, [hli]  ; a = [wEnemyMoveNum], hl = wEnemyMoveEffect
 	jr nc, .specialAttack
-	ld a, [wEnemyMoveNum]
 	cp FIERY_WRATH
 	jr z, .specialAttack
 .physicalAttack
+	ld a, [wEnemyMonStatus]
+	and 1 << BRN    ; if burned, halve move base power
+	jr z, .notBurn
+	srl d
+	ld a, d
+	and a
+	jr nz, .notBurn
+	inc d
+.notBurn
+	dec hl ;hl = wEnemyMoveNum
+	cp STOMP
+	jr nz, .notStomp
+	ld a, [wPlayerMonMinimized]
+	and a
+	jr nz, .notStomp
+	sla d  ; if using stomp and player is minimized, double base power
+.notStomp
 	ld hl, wBattleMonDefense
 	ld a, [hli]
 	ld b, a
@@ -4411,17 +4442,9 @@ GetDamageVarsForEnemyAttack:
 	call GetEnemyMonStat
 	ld hl, hProduct + 2
 	pop bc
-	ld a, [wEnemyMonStatus]
-	and 1 << BRN    ; if burned, halve move base power
-	jr z, .scaleStats
-	srl d
-	ld a, d
-	and a
-	jr nz, .scaleStats
-	inc d
 	jr .scaleStats
 .specialAttack
-	ld a, [wEnemyMoveEffect]
+	ld a, [hl]  ; hl = wEnemyMoveEffect
 	cp PHYS_BURN_SIDE_EFFECT1
 	jr nc, .physicalAttack
 	ld hl, wBattleMonSpecial
@@ -4770,14 +4793,6 @@ CriticalHitTest:
 	ret z                        ; do nothing if zero
 	dec hl
 	ld c, [hl]                   ; read move id
-	ld a, [de]
-	bit GETTING_PUMPED, a         ; test for focus energy
-	jr z, .noFocusEnergyUsed      ; focus energy now works properly
-	sla b                        
-	jr c, .guaranteedCritical
-	sla b                         ; x4 if used focus energy
-	jr c, .guaranteedCritical
-.noFocusEnergyUsed
 	ld hl, HighCriticalMoves     ; table of high critical hit moves
 .Loop
 	ld a, [hli]                  ; read move from move table
@@ -4793,6 +4808,14 @@ CriticalHitTest:
 	sla b                        ; *4 for high critical move
 	jr c, .guaranteedCritical
 .SkipHighCritical
+	ld a, [de]
+	bit GETTING_PUMPED, a         ; test for focus energy
+	jr z, .noFocusEnergyUsed      ; focus energy now works properly
+	sla b                        
+	jr c, .guaranteedCritical
+	sla b                         ; x4 if used focus energy
+	jr c, .guaranteedCritical
+.noFocusEnergyUsed
 	call BattleRandom            ; generates a random value, in "a"
 	rlc a
 	rlc a
@@ -5559,6 +5582,14 @@ MoveHitTest:
 	and a
 	jr nz, .enemyTurn
 .playerTurn
+; if using stomp and opponent is minimized, never miss
+	ld a, [de]
+	cp STOMP
+	jr nz, .notStomp
+	ld a, [wEnemyMonMinimized]
+	and a
+	ret nz
+.notStomp
 ; this checks if the move effect is disallowed by mist
 	ld a, [wPlayerMoveEffect]
 	cp ATTACK_DOWN1_EFFECT
@@ -5586,6 +5617,14 @@ MoveHitTest:
 	ret nz ; if so, always hit regardless of accuracy/evasion
 	jr .calcHitChance
 .enemyTurn
+	; if using stomp and player is minimized, never miss
+	ld a, [de]
+	cp STOMP
+	jr nz, .notStomp2
+	ld a, [wPlayerMonMinimized]
+	and a
+	ret nz
+.notStomp2
 	ld a, [wEnemyMoveEffect]
 	cp ATTACK_DOWN1_EFFECT
 	jr c, .skipPlayerMistCheck
@@ -6444,7 +6483,7 @@ LoadEnemyMonData:
 	cp $2 ; is it a trainer battle?
 	jr nz, .end_set_sendout
 	callfar SetAISentOut	;joenote - custom function
-	call ApplyBurnAndParalysisPenaltiesToEnemy
+	call ApplyParalysisPenaltyToEnemy
 	ld a, [wOptions2]
 	bit 3, a
 	call nz, ApplyBadgeStatBoosts.ApplyToEnemy
@@ -6572,17 +6611,16 @@ LoadPlayerBackPic:
 ScrollTrainerPicAfterBattle:
 	jpfar _ScrollTrainerPicAfterBattle
 
-ApplyBurnAndParalysisPenaltiesToPlayer:
+ApplyParalysisPenaltyToPlayer:
 	ld a, $1
-	jr ApplyBurnAndParalysisPenalties
+	jr ApplyParalysisPenalty
 
-ApplyBurnAndParalysisPenaltiesToEnemy:
+ApplyParalysisPenaltyToEnemy:
 	xor a
 
-ApplyBurnAndParalysisPenalties:
+ApplyParalysisPenalty:
 	ldh [hWhoseTurn], a
-	call QuarterSpeedDueToParalysis
-	jp HalveAttackDueToBurn
+	;fallthrough
 
 QuarterSpeedDueToParalysis:
 	ldh a, [hWhoseTurn]
@@ -6627,45 +6665,7 @@ QuarterSpeedDueToParalysis:
 	ld [hl], b
 	ret
 
-HalveAttackDueToBurn:
-	ldh a, [hWhoseTurn]
-	and a
-	jr z, .playerTurn
-.enemyTurn ; halve the player's attack
-	ld a, [wBattleMonStatus]
-	and 1 << BRN
-	ret z ; return if player not burnt
-	ld hl, wBattleMonAttack + 1
-	ld a, [hld]
-	ld b, a
-	ld a, [hl]
-	srl a
-	rr b
-	ld [hli], a
-	or b
-	jr nz, .storePlayerAttack
-	ld b, 1 ; give the player a minimum of at least one attack point
-.storePlayerAttack
-	ld [hl], b
-	ret
-.playerTurn ; halve the enemy's attack
-	ld a, [wEnemyMonStatus]
-	and 1 << BRN
-	ret z ; return if enemy not burnt
-	ld hl, wEnemyMonAttack + 1
-	ld a, [hld]
-	ld b, a
-	ld a, [hl]
-	srl a
-	rr b
-	ld [hli], a
-	or b
-	jr nz, .storeEnemyAttack
-	ld b, 1 ; give the enemy a minimum of at least one attack point
-.storeEnemyAttack
-	ld [hl], b
-	ret
-
+; input: which player in [wCalculateWhoseStats], 0 for player, 1 for enemy
 CalculateModifiedStats:
 	ld c, 0
 .loop
@@ -6766,6 +6766,9 @@ ApplyBadgeStatBoosts:
 	jr .loop
 	
 .ApplyToEnemy
+	ld a, [wIsTrainerBattle]
+	and a
+	ret z
 	ld a, [wObtainedBadges]
 	ld b, a
 	ld hl, wEnemyMonAttack
