@@ -7,7 +7,7 @@
 	db 45 ; catch rate
 	db 184 ; base exp
 
-	INCBIN "gfx/pokemon/front/Leafeon.pic", 0, 1 ; sprite dimensions
+	INCBIN "gfx/pokemon/front/leafeon.pic", 0, 1 ; sprite dimensions
 	dw LeafeonPicFront, LeafeonPicBack
 
 	db IRON_HEAD, TACKLE, SAND_ATTACK, RAZOR_LEAF ; level 1 learnset
