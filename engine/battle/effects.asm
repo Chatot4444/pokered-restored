@@ -707,6 +707,8 @@ UpdateStatDone:
 	jr z, .finishedBadgeBoost
 	ld a, [de]
 	sub ATTACK_UP1_EFFECT
+	cp MOD_ACCURACY
+	jr nc, .finishedBadgeBoost
 	add a
 	ld c, a
 	ld b, $0
@@ -987,6 +989,8 @@ UpdateLoweredStatDone:
 	jr z, .finishedBadgeBoost
 	ld a, [de]
 	sub ATTACK_DOWN1_EFFECT
+	cp MOD_ACCURACY
+	jr nc, .finishedBadgeBoost
 	add a
 	ld c, a
 	ld b, $0
