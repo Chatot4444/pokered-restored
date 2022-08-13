@@ -249,8 +249,11 @@ GiovanniScript_AfterRematch:
 	jr nz, .alreadyWon
 	ld hl, wRematchWinCount
 	inc [hl]
-	ld hl, wLevelCap
-	inc [hl]
+	ld a, [wLevelCap]
+	cp 75
+	jr z, .alreadyWon
+	inc a
+	ld [wLevelCap], a
 .alreadyWon
 	ld a, $B
 	ldh [hSpriteIndexOrTextID], a
