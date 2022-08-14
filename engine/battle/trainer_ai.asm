@@ -416,6 +416,8 @@ AIMoveChoiceModification1:
 .nostatdownmod
 	;check for stat up effects
 	ld a, [wEnemyMoveEffect]	;get the move effect
+	cp GROWTH_EFFECT
+	jr z, .growth
 	cp ATTACK_UP1_EFFECT
 	jr c, .endstatmod	;if value is < the ATTACK_UP1_EFFECT value, jump out
 	cp EVASION_UP2_EFFECT + $1
@@ -425,6 +427,14 @@ AIMoveChoiceModification1:
 	cp ATTACK_UP2_EFFECT	
 	jr nc, .statupmod	;if value is >= the ATTACK_UP2_EFFECT value, there is a stat up move
 	jr .endstatmod; else the effect is something else in-between the target values
+.growth
+	ld a, [wEnemyMonAttackMod]
+	cp 13 ; max stat mods
+	jp z, .heavydiscourage
+	ld a, [wEnemyMonSpecialMod]
+	cp 13 ; max stat mods
+	jp z, .heavydiscourage
+	jr .endstatmod
 .statupmod
 	sub ATTACK_UP1_EFFECT	;normalize the effects from 0 to 5 to get an offset
 	cp EVASION_UP1_EFFECT + $1 - ATTACK_UP1_EFFECT ; covers all +1 effects

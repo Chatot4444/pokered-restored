@@ -1618,6 +1618,7 @@ SandslashEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
+	db 3, DEFENSE_CURL
 	db 8, MUD_SHOT
 	db 12, SAND_ATTACK
 	db 17, FURY_SWIPES
@@ -2945,6 +2946,7 @@ SandslashaEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
+	db 3, DEFENSE_CURL
 	db 8, MAGNET_BOMB
 	db 12, MIST
 	db 17, FURY_SWIPES

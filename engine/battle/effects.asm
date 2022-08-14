@@ -666,13 +666,13 @@ UpdateStatDone:
 	pop de
 .notMinimize
 	ld a, [de]
+	push de
 	cp SKULL_BASH
 	jr z, .applyBadgeBoostsAndStatusPenalties
 	cp ANCIENTPOWER
 	jr z, .applyBadgeBoostsAndStatusPenalties
 	call PlayCurrentMoveAnimation
 	ld a, [de]
-	push de
 	cp MINIMIZE
 	jr nz, .applyBadgeBoostsAndStatusPenalties
 	pop de

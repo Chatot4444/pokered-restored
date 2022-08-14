@@ -40,7 +40,12 @@ ChargeEffect_::
 	inc de
 	ld a, DEFENSE_UP1_EFFECT
 	ld [de], a
-	jpfar StatModifierUpEffect
+	push de
+	farcall StatModifierUpEffect
+	pop de
+	ld a, CHARGE_EFFECT
+	ld [de], a
+	ret
 
 ChargeMoveEffectText:
 	text_far _ChargeMoveEffectText
