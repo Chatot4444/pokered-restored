@@ -89,6 +89,9 @@ SleepEffect:
 	call BattleRandom
 	and b
 	jr z, .sleepLoop
+	inc a
+	cp 8
+	jr z, .sleepLoop
 	ld [de], a
 	call PlayCurrentMoveAnimation2
 	ld hl, FellAsleepText
@@ -806,13 +809,13 @@ RoseText:
 StatModifierDownEffect:
 	ld hl, wEnemyMonStatMods
 	ld de, wPlayerMoveEffect
-	ld bc, wEnemyBattleStatus1
+	ld bc, wEnemyBattleStatus2
 	ldh a, [hWhoseTurn]
 	and a
 	jr z, .statModifierDownEffect
 	ld hl, wPlayerMonStatMods
 	ld de, wEnemyMoveEffect
-	ld bc, wPlayerBattleStatus1
+	ld bc, wPlayerBattleStatus2
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .statModifierDownEffect
@@ -823,6 +826,9 @@ StatModifierDownEffect:
 	cp ATTACK_DOWN_SIDE_EFFECT
 	jr c, .nonSideEffect
 	; this is where new stuff starts
+	ld a, [bc] ;mist check for side effect moves (non side effect is handled by MoveHitTest)
+	bit PROTECTED_BY_MIST, a
+	ret nz
 	dec de ;wPlayerMoveNum or wEnemyMoveNum
 	ld a, [de]
 	inc de ;wPlayerMoveEffect or wEnemyMoveEffect
@@ -855,6 +861,7 @@ StatModifierDownEffect:
 	ld a, [wMoveMissed]
 	and a
 	jp nz, MoveMissed
+	dec bc
 	ld a, [bc]
 	bit INVULNERABLE, a ; fly/dig
 	jp nz, MoveMissed

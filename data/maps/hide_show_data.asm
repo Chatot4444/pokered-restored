@@ -217,6 +217,9 @@ MapHSPointers:
 	dw SilphCo6FHS
 	dw SilphCo7FHS
 	dw SilphCo8FHS
+	dw SilphCo9FHS
+	dw SilphCo10FHS
+	dw SilphCo11FHS
 	dw PokemonMansion2FHS
 	dw PokemonMansion3FHS
 	dw PokemonMansionB1FHS
@@ -236,9 +239,7 @@ MapHSPointers:
 	dw NoHS
 	dw NoHS
 	dw NoHS
-	dw SilphCo9FHS
-	dw SilphCo10FHS
-	dw SilphCo11FHS
+	
 	dw NoHS
 	dw NoHS
 	dw NoHS
@@ -247,7 +248,7 @@ MapHSPointers:
 	dw ViridianWildsHS
 	dw MtMoonSummitHS
 	dw TowerGroundsHS
-	dw UnusedMapF4HS
+	dw NoHS
 	dw LoreleisRoomHS
 	dw BrunosRoomHS
 	dw AgathasRoomHS
@@ -504,7 +505,6 @@ SilphCo7FHS:
 	db SILPH_CO_7F, $05, SHOW
 	db SILPH_CO_7F, $06, SHOW
 	db SILPH_CO_7F, $07, SHOW
-	db SILPH_CO_7F, $08, SHOW
 	db SILPH_CO_7F, $09, SHOW
 	db SILPH_CO_7F, $0A, SHOW
 	db SILPH_CO_7F, $0B, SHOW
@@ -528,8 +528,6 @@ SilphCo11FHS:
 	db SILPH_CO_11F, $03, SHOW
 	db SILPH_CO_11F, $04, SHOW
 	db SILPH_CO_11F, $05, SHOW
-UnusedMapF4HS:
-	db UNUSED_MAP_F4, $02, SHOW
 PokemonMansion2FHS:
 	db POKEMON_MANSION_2F, $02, SHOW
 PokemonMansion3FHS:
@@ -601,9 +599,12 @@ AgathasRoomHS:
 	db AGATHAS_ROOM, $02, HIDE
 ViridianWildsHS:
 	db VIRIDIAN_WILDS, $01, SHOW
+	db VIRIDIAN_WILDS, $02, SHOW
 MtMoonSummitHS:
 	db MT_MOON_SUMMIT, $01, SHOW
+	db MT_MOON_SUMMIT, $02, SHOW
 TowerGroundsHS:
 	db TOWER_GROUNDS, $01, SHOW
+	db TOWER_GROUNDS, $02, SHOW
 	db $FF, $01, SHOW ; end
 	assert_table_length NUM_HS_OBJECTS + 1

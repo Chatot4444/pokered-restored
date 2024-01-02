@@ -214,6 +214,9 @@ WildDataPointers:
 	dw NothingWildMons
 	dw NothingWildMons
 	dw NothingWildMons
+	dw NothingWildMons
+	dw NothingWildMons
+	dw NothingWildMons	
 	dw PokemonMansion2FWildMons
 	dw PokemonMansion3FWildMons
 	dw PokemonMansionB1FWildMons
@@ -233,9 +236,7 @@ WildDataPointers:
 	dw NothingWildMons
 	dw NothingWildMons
 	dw RockTunnelB1FWildMons
-	dw NothingWildMons
-	dw NothingWildMons
-	dw NothingWildMons
+
 	dw NothingWildMons
 	dw NothingWildMons
 	dw NothingWildMons

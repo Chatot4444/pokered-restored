@@ -14,7 +14,9 @@ ViridianWilds_ScriptPointers:
 	
 ViridianWilds_TextPointers:
 	dw ZapdosgText
+	dw PickUpItemText
 	dw BoulderText
+
 
 ViridianWildsTrainerHeaders:
 	def_trainers 0

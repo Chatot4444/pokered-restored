@@ -84,6 +84,9 @@ HiddenObjectMaps:
 	db VERMILION_CITY
 	db CERULEAN_CITY
 	db ROUTE_4
+	db VIRIDIAN_WILDS
+	db MT_MOON_SUMMIT
+	db TOWER_GROUNDS
 	db -1 ; end
 
 HiddenObjectPointers:
@@ -173,6 +176,9 @@ HiddenObjectPointers:
 	dw VermilionCityHiddenObjects
 	dw CeruleanCityHiddenObjects
 	dw Route4HiddenObjects
+	dw ViridianWildsHiddenObjects
+	dw MtMoonSummitHiddenObjects
+	dw TowerGroundsHiddenObjects
 
 MACRO hidden_object
 	db \2 ; y coord
@@ -665,4 +671,16 @@ CeruleanCityHiddenObjects:
 
 Route4HiddenObjects:
 	hidden_object 40,  3, GREAT_BALL, HiddenItems
+	db -1 ; end
+
+ViridianWildsHiddenObjects:
+	hidden_object 28, 27, MAX_ELIXER, HiddenItems
+	db -1 ; end
+
+MtMoonSummitHiddenObjects:
+	hidden_object 26,  2, NUGGET, HiddenItems
+	db -1 ; end
+	
+TowerGroundsHiddenObjects:
+	hidden_object 24,  6, RARE_CANDY, HiddenItems
 	db -1 ; end

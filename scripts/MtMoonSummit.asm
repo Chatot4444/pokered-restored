@@ -14,6 +14,7 @@ MtMoonSummit_ScriptPointers:
 	
 MtMoonSummit_TextPointers:
 	dw ArticunogText
+	dw PickUpItemText
 	dw BoulderText
 
 MtMoonSummitTrainerHeaders:

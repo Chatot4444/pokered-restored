@@ -8,6 +8,8 @@ ViridianWilds_Object:
 	
 	def_object_events
 	object_event 6, 10, SPRITE_BIRD, STAY, DOWN, 1, ZAPDOSG, 50 | OW_POKEMON
-	object_event 13, 16, SPRITE_BOULDER, STAY, BOULDER_MOVEMENT_BYTE_2, 2 ; person
-	
+	object_event 11, 25, SPRITE_POKE_BALL, STAY, NONE, 2, RARE_CANDY	
+	object_event 13, 16, SPRITE_BOULDER, STAY, BOULDER_MOVEMENT_BYTE_2, 3 ; person
+
+
 	def_warps_to VIRIDIAN_WILDS

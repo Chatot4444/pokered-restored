@@ -215,6 +215,9 @@ MapHeaderBanks::
 	db BANK(SilphCo6F_h)
 	db BANK(SilphCo7F_h)
 	db BANK(SilphCo8F_h)
+	db BANK(SilphCo9F_h)
+	db BANK(SilphCo10F_h)
+	db BANK(SilphCo11F_h)
 	db BANK(PokemonMansion2F_h)
 	db BANK(PokemonMansion3F_h)
 	db BANK(PokemonMansionB1F_h)
@@ -234,9 +237,7 @@ MapHeaderBanks::
 	db BANK(CeruleanBadgeHouse_h)
 	db $01 ; UNUSED_MAP_E7
 	db BANK(RockTunnelB1F_h)
-	db BANK(SilphCo9F_h)
-	db BANK(SilphCo10F_h)
-	db BANK(SilphCo11F_h)
+
 	db BANK(SilphCoElevator_h)
 	db $11 ; UNUSED_MAP_ED
 	db $11 ; UNUSED_MAP_EE

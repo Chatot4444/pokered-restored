@@ -233,6 +233,9 @@ DEF FIRST_INDOOR_MAP EQU const_value
 	mapconst SILPH_CO_6F,                    9, 13 ; $D3
 	mapconst SILPH_CO_7F,                    9, 13 ; $D4
 	mapconst SILPH_CO_8F,                    9, 13 ; $D5
+	mapconst SILPH_CO_9F,                    9, 13 ; $E9
+	mapconst SILPH_CO_10F,                   9,  8 ; $EA
+	mapconst SILPH_CO_11F,                   9,  9 ; $EB
 	mapconst POKEMON_MANSION_2F,            14, 15 ; $D6
 	mapconst POKEMON_MANSION_3F,             9, 15 ; $D7
 	mapconst POKEMON_MANSION_B1F,           14, 15 ; $D8
@@ -252,9 +255,6 @@ DEF FIRST_INDOOR_MAP EQU const_value
 	mapconst CERULEAN_BADGE_HOUSE,           4,  4 ; $E6
 	mapconst UNUSED_MAP_E7,                  0,  0 ; $E7
 	mapconst ROCK_TUNNEL_B1F,               18, 20 ; $E8
-	mapconst SILPH_CO_9F,                    9, 13 ; $E9
-	mapconst SILPH_CO_10F,                   9,  8 ; $EA
-	mapconst SILPH_CO_11F,                   9,  9 ; $EB
 	mapconst SILPH_CO_ELEVATOR,              2,  2 ; $EC
 	mapconst UNUSED_MAP_ED,                  0,  0 ; $ED
 	mapconst UNUSED_MAP_EE,                  0,  0 ; $EE

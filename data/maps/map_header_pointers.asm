@@ -215,6 +215,9 @@ MapHeaderPointers::
 	dw SilphCo6F_h
 	dw SilphCo7F_h
 	dw SilphCo8F_h
+	dw SilphCo9F_h
+	dw SilphCo10F_h
+	dw SilphCo11F_h
 	dw PokemonMansion2F_h
 	dw PokemonMansion3F_h
 	dw PokemonMansionB1F_h
@@ -234,9 +237,7 @@ MapHeaderPointers::
 	dw CeruleanBadgeHouse_h
 	dw Route16Gate1F_h ; UNUSED_MAP_E7
 	dw RockTunnelB1F_h
-	dw SilphCo9F_h
-	dw SilphCo10F_h
-	dw SilphCo11F_h
+	
 	dw SilphCoElevator_h
 	dw SilphCo2F_h ; UNUSED_MAP_ED
 	dw SilphCo2F_h ; UNUSED_MAP_EE

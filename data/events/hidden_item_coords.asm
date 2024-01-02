@@ -58,4 +58,7 @@ HiddenItemCoords:
 	hidden_item VERMILION_CITY,                14,  11
 	hidden_item CERULEAN_CITY,                 15,   8
 	hidden_item ROUTE_4,                       40,   3
+	hidden_item VIRIDIAN_WILDS,                28,  27
+	hidden_item MT_MOON_SUMMIT,                26,   2
+	hidden_item TOWER_GROUNDS,                 24,   6
 	db -1 ; end

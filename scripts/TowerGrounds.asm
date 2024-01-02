@@ -14,6 +14,7 @@ TowerGrounds_ScriptPointers:
 	
 TowerGrounds_TextPointers:
 	dw MoltresgText
+	dw PickUpItemText
 	dw BoulderText
 	dw BoulderText
 

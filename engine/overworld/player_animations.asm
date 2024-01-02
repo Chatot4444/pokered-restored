@@ -8,7 +8,7 @@ EnterMapAnim::
 	ld hl, wFlags_D733
 	bit 7, [hl] ; used fly out of battle?
 	res 7, [hl]
-	jr nz, .flyAnimation
+	jp nz, .flyAnimation
 	ld a, SFX_TELEPORT_ENTER_1
 	call PlaySound
 	ld hl, wd732
@@ -16,13 +16,31 @@ EnterMapAnim::
 	res 4, [hl]
 	pop hl
 	jr nz, .dungeonWarpAnimation
+	ld a, [wCurMap]
+	cp SILPH_CO_2F
+	jr c, .notSilphCo
+	cp SILPH_CO_11F + 1
+	jr nc, .notSilphCo
+	sub SILPH_CO_2F - FLOOR_2F
+	ld [wd11e], a
+	ld a, 1
+	ld [wAutoTextBoxDrawingControl], a
+	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
+	callfar DisplayTextIDInit
+	ld a, MENU_TEMPLATE_03
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	call GetItemName
+	hlcoord 1, 1
+	call PlaceString
+.notSilphCo	
 	call PlayerSpinWhileMovingDown
 	ld a, SFX_TELEPORT_ENTER_2
 	call PlaySound
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b
 	and a
-	jr nz, .done
+	jr nz, .onWarpPadOrHole
 ; if the player is not standing on a warp pad or hole
 	ld hl, wPlayerSpinInPlaceAnimFrameDelay
 	xor a
@@ -38,6 +56,15 @@ EnterMapAnim::
 	call PlayDefaultMusic
 .done
 	jp RestoreFacingDirectionAndYScreenPos
+.onWarpPadOrHole
+	ld a, [wCurMap]
+	cp SILPH_CO_2F
+	jr c, .done
+	cp SILPH_CO_11F + 1
+	jr nc, .done
+	call Delay3
+	call CloseTextDisplay
+	jr .done
 .dungeonWarpAnimation
 	ld c, 50
 	call DelayFrames
