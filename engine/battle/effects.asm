@@ -720,6 +720,9 @@ UpdateStatDone:
 	and a
 	ld a, [wObtainedBadges]
 	jr z, .playerTurn2
+	ld a, [wIsTrainerBattle]
+	and a
+	jr z, .finishedBadgeBoost
 	ld hl, wEnemyMonAttack
 	ld a, [wGymLeaderNo]
 	and a
@@ -728,9 +731,10 @@ UpdateStatDone:
 	ld a, $ff
 .playerTurn2
 	add hl, bc
+	inc c
 .badgeLoop
 	dec c
-	jr c, .gotBadges
+	jr z, .gotBadges
 	srl a
 	srl a
 	jr .badgeLoop
@@ -1007,6 +1011,9 @@ UpdateLoweredStatDone:
 	ld a, [wObtainedBadges]
 	jr nz, .playerTurn2
 	ld hl, wEnemyMonAttack
+	ld a, [wIsTrainerBattle]
+	and a
+	jr z, .finishedBadgeBoost
 	ld a, [wGymLeaderNo]
 	and a
 	ld a, [wObtainedBadges]
