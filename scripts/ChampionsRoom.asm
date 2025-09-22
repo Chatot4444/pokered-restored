@@ -56,6 +56,12 @@ GaryScript2:
 	res 7, [hl]  ; Turn on battle animations to make the battle feel more epic.
 	CheckEvent EVENT_BECOME_CHAMPION
 	jr z, .firstBattle
+	ld a, [wLevelCap]
+	cp 85
+	jr nc, .skipCap
+	ld a, 85
+	ld [wLevelCap], a
+.skipCap
 	ld a, $6
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

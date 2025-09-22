@@ -431,3 +431,9 @@ ENDM
 pikacry: MACRO
 	ldpikacry a, \1
 ENDM
+
+DEF tone           EQUS "pitch_offset"
+DEF restartchannel EQUS "restart_channel"
+DEF newsong        EQUS "new_song"
+DEF sfxpriorityon  EQUS "sfx_priority_on"
+DEF sfxpriorityoff EQUS "sfx_priority_off"

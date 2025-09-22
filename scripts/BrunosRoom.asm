@@ -15,11 +15,13 @@ BrunoShowOrHideExitBlock:
 	res 5, [hl]
 	ret z
 	CheckEvent EVENT_BEAT_BRUNOS_ROOM_TRAINER_0
-	jr z, .blockExitToNextRoom
-	ld a, $5
-	jp .setExitBlock
-.blockExitToNextRoom
+	jr nz, .openExitToNextRoom
+	CheckEvent EVENT_BEAT_BRUNOS_ROOM_TRAINER_1
+	jr nz, .openExitToNextRoom
 	ld a, $24
+	jr .setExitBlock
+.openExitToNextRoom
+	ld a, $5
 .setExitBlock
 	ld [wNewTileBlockID], a
 	lb bc, 0, 2
